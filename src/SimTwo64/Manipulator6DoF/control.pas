@@ -9,7 +9,7 @@ var
   R01, R12, R23: Matrix;
   R03: Matrix;
 
-  JointPos: array[0..NumJoints - 1] of double;
+  JointPos, JointPosRef: array[0..NumJoints - 1] of double;
 
   state: string;
   ReqThetas: matrix;
@@ -110,6 +110,8 @@ var i: integer;
     RTool, XTool, XWrist, LTool: matrix;
 
     HeadPos, HeadRot: matrix;
+    mess: TStringList;
+    tmp: string;
 begin
 
   B5Pos := GetSolidPosMat(iRobot, iB5);
@@ -133,24 +135,29 @@ begin
 
   // control equations
   // ...
+  mess := TStringList.create;
+  try
+    for i := 0 to NumJoints -1 do begin
+      mess.add(format('%.4g',[JointPos[i]]));
+    end;
 
-  if (state = 'idle') and RCButtonPressed(10,4) then begin
-    SetNewState('above');
-  end else if (state = 'above') and (JointError(ReqThetas) < Tol) and (tis > 5.0) then begin
-    SetNewState('lock');
+    WriteUDPData('127.0.0.1', 9809, mess.text);
+
+    tmp := ReadUDPData();
+    if tmp <> '' then begin
+      //SetRCValue(1, 2, tmp);
+      mess.text := tmp;
+      if mess.count >= NumJoints then begin
+        for i := 0 to NumJoints -1 do begin
+          JointPosRef[i] := StrToFloat(mess.strings[i]);
+          SetRCValue(3 + i, 3,  format('%.3g',[Deg(JointPosRef[i])]));
+        end;
+      end;
+    end;
+
+  finally
+    mess.free;
   end;
-
-  if state = 'idle' then begin
-    ReqThetas := Mzeros(6, 1);
-    SetThetas(ReqThetas);
-  end else if state = 'above' then begin
-    ReqThetas := Ik(HeadPos, HeadRot, 0.15);
-    SetThetas(ReqThetas);
-  end else if state = 'lock' then begin
-    ReqThetas := Ik(HeadPos, HeadRot, 0.8);
-    SetThetas(ReqThetas);
-  end;
-
 
   tis := tis + 0.04;
 

@@ -1,0 +1,192 @@
+object FMain: TFMain
+  Left = 458
+  Height = 482
+  Top = 125
+  Width = 491
+  Caption = 'ControlUDP'
+  ClientHeight = 482
+  ClientWidth = 491
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnShow = FormShow
+  SessionProperties = 'Height;Left;Top;Width;EditIP.Text'
+  LCLVersion = '2.1.0.0'
+  object BConnect: TButton
+    Left = 8
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Connect'
+    OnClick = BConnectClick
+    TabOrder = 0
+  end
+  object MemoMess: TMemo
+    Left = 8
+    Height = 400
+    Top = 48
+    Width = 176
+    Anchors = [akTop, akLeft, akBottom]
+    TabOrder = 1
+  end
+  object EditIP: TEdit
+    Left = 96
+    Height = 23
+    Top = 10
+    Width = 120
+    TabOrder = 2
+  end
+  object BSend: TButton
+    Left = 240
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Send'
+    OnClick = BSendClick
+    TabOrder = 3
+  end
+  object EditTheta1: TEdit
+    Left = 344
+    Height = 23
+    Top = 8
+    Width = 80
+    TabOrder = 4
+    Text = '30'
+  end
+  object Label1: TLabel
+    Left = 320
+    Height = 15
+    Top = 12
+    Width = 13
+    Caption = 'θ1'
+    ParentColor = False
+  end
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 459
+    Width = 491
+    Panels = <>
+  end
+  object SGJoints: TStringGrid
+    Left = 200
+    Height = 132
+    Top = 48
+    Width = 212
+    AutoFillColumns = True
+    ColCount = 3
+    DefaultRowHeight = 18
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goSmoothScroll]
+    RowCount = 7
+    TabOrder = 6
+    ColWidths = (
+      64
+      72
+      72
+    )
+    Cells = (
+      9
+      0
+      0
+      'Joint'
+      0
+      1
+      '1'
+      0
+      2
+      '2'
+      0
+      3
+      '3'
+      0
+      4
+      '4'
+      0
+      5
+      '5'
+      0
+      6
+      '6'
+      1
+      0
+      'Act'
+      2
+      0
+      'Ref'
+    )
+  end
+  object SGPos: TStringGrid
+    Left = 200
+    Height = 132
+    Top = 232
+    Width = 212
+    AutoFillColumns = True
+    ColCount = 3
+    DefaultRowHeight = 18
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goSmoothScroll]
+    RowCount = 7
+    TabOrder = 7
+    ColWidths = (
+      64
+      72
+      72
+    )
+    Cells = (
+      8
+      0
+      1
+      'Xw'
+      0
+      2
+      'Yw'
+      0
+      3
+      'Zw'
+      0
+      4
+      'Xt'
+      0
+      5
+      'Yt'
+      0
+      6
+      'Zt'
+      1
+      0
+      'IK'
+      2
+      0
+      'DK'
+    )
+  end
+  object BIK: TButton
+    Left = 265
+    Height = 25
+    Top = 192
+    Width = 68
+    Caption = 'IK'
+    TabOrder = 8
+  end
+  object BDK: TButton
+    Left = 344
+    Height = 25
+    Top = 192
+    Width = 68
+    Caption = 'DK'
+    TabOrder = 9
+  end
+  object UDP: TLUDPComponent
+    Port = 9809
+    OnReceive = UDPReceive
+    OnError = UDPError
+    Timeout = 0
+    Left = 68
+    Top = 284
+  end
+  object IniPropStorage: TIniPropStorage
+    StoredValues = <>
+    IniFileName = 'config.ini'
+    IniSection = 'main'
+    Left = 108
+    Top = 288
+  end
+end
