@@ -9,7 +9,7 @@ var
   R01, R12, R23: Matrix;
   R03: Matrix;
 
-  JointPos: array[0..NumJoints - 1] of double;
+  JointPos, JointPosRef: array[0..NumJoints - 1] of double;
 
   state: string;
   ReqThetas: matrix;
@@ -145,7 +145,14 @@ begin
 
     tmp := ReadUDPData();
     if tmp <> '' then begin
-      SetRCValue(1, 2, tmp);
+      //SetRCValue(1, 2, tmp);
+      mess.text := tmp;
+      if mess.count >= NumJoints then begin
+        for i := 0 to NumJoints -1 do begin
+          JointPosRef[i] := StrToFloat(mess.strings[i]);
+          SetRCValue(3 + i, 3,  format('%.3g',[Deg(JointPosRef[i])]));
+        end;
+      end;
     end;
 
   finally

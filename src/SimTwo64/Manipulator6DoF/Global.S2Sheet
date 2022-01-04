@@ -14,12 +14,12 @@
   </columns>
   <cells>
     <cell r="2" c="2" text="Pos (deg)" />
-    <cell r="3" c="2" text="-0.00285" />
-    <cell r="4" c="2" text="-0.0000947" />
-    <cell r="5" c="2" text="-0.000166" />
-    <cell r="6" c="2" text="-0.0000555" />
+    <cell r="3" c="2" text="-0.000433" />
+    <cell r="4" c="2" text="-0.000335" />
+    <cell r="5" c="2" text="-0.000712" />
+    <cell r="6" c="2" text="-0.000222" />
     <cell r="7" c="2" text="0.000137" />
-    <cell r="8" c="2" text="-0.000102" />
+    <cell r="8" c="2" text="-0.000862" />
     <cell r="2" c="1" text="Joint" />
     <cell r="4" c="1" text="1" />
     <cell r="3" c="1" text="0" />
@@ -27,17 +27,17 @@
     <cell r="6" c="1" text="3" />
     <cell r="7" c="1" text="4" />
     <cell r="8" c="1" text="5" />
-    <cell r="13" c="2" text="0.5500017" />
+    <cell r="13" c="2" text="0.5500087" />
     <cell r="11" c="1" text="X:" />
     <cell r="12" c="1" text="Y:" />
     <cell r="13" c="1" text="Z:" />
-    <cell r="11" c="2" text="0.7700003" />
-    <cell r="12" c="2" text="-0.00003919619" />
+    <cell r="11" c="2" text="0.7700002" />
+    <cell r="12" c="2" text="-6.116806E-6" />
     <cell r="10" c="2" text="B5" />
     <cell r="15" c="2" text="B6" />
-    <cell r="16" c="2" text="0.8050003" />
-    <cell r="17" c="2" text="-0.00004093964" />
-    <cell r="18" c="2" text="0.5500017" />
+    <cell r="16" c="2" text="0.8050002" />
+    <cell r="17" c="2" text="-6.366456E-6" />
+    <cell r="18" c="2" text="0.5500093" />
     <cell r="16" c="4" text="1.000" />
     <cell r="16" c="5" text="0.000" />
     <cell r="16" c="6" text="0.000" />
@@ -76,5 +76,11 @@
 0
 0
 0" />
+    <cell r="3" c="3" text="30" />
+    <cell r="4" c="3" text="2" />
+    <cell r="5" c="3" text="10" />
+    <cell r="6" c="3" text="2" />
+    <cell r="7" c="3" text="3" />
+    <cell r="8" c="3" text="5" />
   </cells>
 </sheet>
