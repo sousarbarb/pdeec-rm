@@ -1,0 +1,82 @@
+object FMain: TFMain
+  Left = 458
+  Height = 482
+  Top = 125
+  Width = 491
+  Caption = 'ControlUDP'
+  ClientHeight = 482
+  ClientWidth = 491
+  SessionProperties = 'Height;Left;Top;Width;EditIP.Text'
+  LCLVersion = '2.0.12.0'
+  object BConnect: TButton
+    Left = 8
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Connect'
+    OnClick = BConnectClick
+    TabOrder = 0
+  end
+  object MemoMess: TMemo
+    Left = 8
+    Height = 400
+    Top = 48
+    Width = 176
+    Anchors = [akTop, akLeft, akBottom]
+    TabOrder = 1
+  end
+  object EditIP: TEdit
+    Left = 96
+    Height = 23
+    Top = 10
+    Width = 120
+    TabOrder = 2
+  end
+  object BSend: TButton
+    Left = 240
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Send'
+    OnClick = BSendClick
+    TabOrder = 3
+  end
+  object EditTheta1: TEdit
+    Left = 344
+    Height = 23
+    Top = 8
+    Width = 80
+    TabOrder = 4
+    Text = '30'
+  end
+  object Label1: TLabel
+    Left = 320
+    Height = 15
+    Top = 12
+    Width = 13
+    Caption = 'θ1'
+    ParentColor = False
+  end
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 459
+    Width = 491
+    Panels = <>
+  end
+  object UDP: TLUDPComponent
+    Port = 9809
+    OnReceive = UDPReceive
+    OnError = UDPError
+    Timeout = 0
+    Left = 216
+    Top = 80
+  end
+  object IniPropStorage: TIniPropStorage
+    StoredValues = <>
+    IniFileName = 'config.ini'
+    IniSection = 'main'
+    Left = 299
+    Top = 88
+  end
+end
