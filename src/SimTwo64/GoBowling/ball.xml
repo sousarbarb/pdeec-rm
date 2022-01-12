@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<robot>
+
+  <defines>
+    <const name='scale_factor' value='4'/>
+
+    <!-- Dimensions: https://www.dimensions.com/element/bowling-lane -->
+    <const name='length' value='26.36'/>
+    <const name='width' value='1.52'/>
+    <const name='lane_length_headpin' value='18.29'/>
+    <const name='lane_length' value='19.16'/>
+    <const name='lane_width' value='1.0636'/>
+    <const name='lane_thickness' value='0.06'/>
+    <const name='approach_area_length' value='4.57'/>
+    <const name='channel_depth' value='0.0476'/>
+
+    <!-- Dimensions: Ten-Pin Bowling -->
+    <const name='pin_mass' value='1.6'/>
+    <const name='pin_base_diameter' value='0.0516'/>
+    <const name='pin_diameter' value='0.121'/>
+    <const name='pin_height' value='0.381'/>
+    <const name='pin_spacing_x' value='0.2635'/>
+    <const name='pin_spacing_y' value='0.3048'/>
+
+    <!-- Dimensions: Bowling Ball -->
+    <const name='ball_mass' value='7.257'/>
+    <const name='ball_diameter' value='0.2183'/>
+  </defines>
+
+  <solids>
+    <sphere>
+      <ID value='Ball'/>
+      <radius value='ball_diameter*0.5/scale_factor'/>
+      <mass value='ball_mass/(scale_factor*scale_factor*scale_factor)'/>
+      <pos x='0' y='0' z='0'/>
+      <surface mu='0.1' softness='0.1'/>
+      <drag coefficient='1e-4' stokes='1e-4' roll='5e-4'/>
+      <color_rgb r='8' g='75' b='130'/>
+    </sphere>
+  </solids>
+
+</robot>

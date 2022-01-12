@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<obstacles>
+
+  <defines>
+    <const name='scale_factor' value='4'/>
+
+    <!-- Dimensions: https://www.dimensions.com/element/bowling-lane -->
+    <const name='length' value='26.36'/>
+    <const name='width' value='1.52'/>
+    <const name='lane_length_headpin' value='18.29'/>
+    <const name='lane_length' value='19.16'/>
+    <const name='lane_width' value='1.0636'/>
+    <const name='lane_thickness' value='0.06'/>
+    <const name='approach_area_length' value='4.57'/>
+    <const name='channel_depth' value='0.0476'/>
+
+    <!-- Dimensions: Ten-Pin Bowling -->
+    <const name='pin_mass' value='1.6'/>
+    <const name='pin_base_diameter' value='0.0516'/>
+    <const name='pin_diameter' value='0.121'/>
+    <const name='pin_height' value='0.381'/>
+    <const name='pin_spacing_x' value='0.2635'/>
+    <const name='pin_spacing_y' value='0.3048'/>
+  </defines>
+
+  <cuboid>
+    <imovable/>
+    <size x='length/scale_factor' y='width/scale_factor' z='(lane_thickness-channel_depth)/scale_factor'/>
+    <pos x='length*0.5/scale_factor' y='0' z='(lane_thickness-channel_depth)*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='87' g='87' b='87'/>
+  </cuboid>
+
+  <!-- Bowling Lane -->
+  <cuboid>
+    <imovable/>
+    <size x='(length-approach_area_length)/scale_factor' y='lane_width/scale_factor' z='lane_thickness/scale_factor'/>
+    <pos x='(approach_area_length+(length-approach_area_length)*0.5)/scale_factor' y='0' z='lane_thickness*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='186' g='126' b='72'/>
+  </cuboid>
+
+  <!-- Approach Area -->
+  <cuboid>
+    <imovable/>
+    <size x='approach_area_length/scale_factor' y='width/scale_factor' z='lane_thickness/scale_factor'/>
+    <pos x='approach_area_length*0.5/scale_factor' y='0' z='lane_thickness*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='186' g='126' b='72'/>
+  </cuboid>
+
+  <!-- Outer walls -->
+  <cuboid>
+    <imovable/>
+    <size x='length/scale_factor' y='channel_depth/scale_factor' z='lane_thickness/scale_factor'/>
+    <pos x='length*0.5/scale_factor' y='(width+channel_depth)*0.5/scale_factor' z='lane_thickness*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='87' g='87' b='87'/>
+  </cuboid>
+  <cuboid>
+    <imovable/>
+    <size x='length/scale_factor' y='channel_depth/scale_factor' z='lane_thickness/scale_factor'/>
+    <pos x='length*0.5/scale_factor' y='-(width+channel_depth)*0.5/scale_factor' z='lane_thickness*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='87' g='87' b='87'/>
+  </cuboid>
+
+</obstacles>
