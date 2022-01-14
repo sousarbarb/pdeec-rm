@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<obstacles>
+
+  <cuboid>
+    <imovable/>
+    <size x='length/scale_factor' y='width/scale_factor' z='(lane_thickness-channel_depth)/scale_factor'/>
+    <pos x='length*0.5/scale_factor' y='0' z='(lane_thickness-channel_depth)*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='87' g='87' b='87'/>
+  </cuboid>
+
+  <!-- Bowling Lane -->
+  <cuboid>
+    <imovable/>
+    <size x='(length-approach_area_length)/scale_factor' y='lane_width/scale_factor' z='lane_thickness/scale_factor'/>
+    <pos x='(approach_area_length+(length-approach_area_length)*0.5)/scale_factor' y='0' z='lane_thickness*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='186' g='126' b='72'/>
+  </cuboid>
+
+  <!-- Approach Area -->
+  <cuboid>
+    <imovable/>
+    <size x='approach_area_length/scale_factor' y='width/scale_factor' z='lane_thickness/scale_factor'/>
+    <pos x='approach_area_length*0.5/scale_factor' y='0' z='lane_thickness*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='186' g='126' b='72'/>
+  </cuboid>
+
+  <!-- Outer walls -->
+  <cuboid>
+    <imovable/>
+    <size x='length/scale_factor' y='channel_depth/scale_factor' z='lane_thickness/scale_factor'/>
+    <pos x='length*0.5/scale_factor' y='(width+channel_depth)*0.5/scale_factor' z='lane_thickness*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='87' g='87' b='87'/>
+  </cuboid>
+  <cuboid>
+    <imovable/>
+    <size x='length/scale_factor' y='channel_depth/scale_factor' z='lane_thickness/scale_factor'/>
+    <pos x='length*0.5/scale_factor' y='-(width+channel_depth)*0.5/scale_factor' z='lane_thickness*0.5/scale_factor'/>
+    <rot_deg x='0' y='0' z='0'/>
+    <color_rgb r='87' g='87' b='87'/>
+  </cuboid>
+
+</obstacles>
