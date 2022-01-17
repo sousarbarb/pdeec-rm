@@ -1,0 +1,199 @@
+<?xml version="1.0" ?>
+<robot>
+  <kind value='Arm2D'/>
+
+  <defines>
+    <const name='eps' value='0.0001' />
+
+    <!-- Links Dimensions -->
+    <const name='L0_length_max' value='approach_area_length/scale_factor'/>
+    <const name='L0_square_size' value='0.06/scale_factor'/>
+    <const name='L0_height' value='1.2/scale_factor'/>
+
+    <const name='L1_square_size' value='0.06/scale_factor'/>
+    <const name='L1_base_length' value='0.10/scale_factor'/>
+    <const name='L2_length' value='0.5/scale_factor'/>
+    <const name='L2_height' value='0.1/scale_factor'/>
+    <const name='L3_length' value='0.4/scale_factor'/>
+    <const name='L3_height' value='0.08/scale_factor'/>
+    <const name='L4_length' value='0.05/scale_factor'/>
+    <const name='L4_height' value='0.05/scale_factor'/>
+    <const name='L5_length' value='0.04/scale_factor'/>
+    <const name='L5_height' value='0.04/scale_factor'/>
+    <const name='L6_length' value='0.03/scale_factor'/>
+    <const name='L6_height' value='0.03/scale_factor'/>
+
+  </defines>
+
+  <solids>
+
+    <cuboid>
+      <ID value='L0'/>
+      <mass value='1'/>
+      <size x='L0_square_size' y='L0_square_size' z='L0_square_size'/>
+      <pos x='0' y='0' z='L0_height'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='128' g='128' b='128'/>
+    </cuboid>
+
+    <cuboid>
+      <ID value='L1'/>
+      <mass value='1'/>
+      <size x='L1_square_size' y='L1_square_size' z='L1_square_size'/>
+      <pos x='0' y='0' z='L0_height-L1_base_length'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='128' g='128' b='128'/>
+    </cuboid>
+
+    <cuboid>
+      <ID value='L2'/>
+      <mass value='1'/>
+      <size x='L2_length' y='L2_height/2' z='L2_height'/>
+      <pos x='L2_length/2' y='L3_height' z='L0_height-L1_base_length'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='32' g='32' b='32'/>
+    </cuboid>
+
+    <cuboid>
+      <ID value='L3'/>
+      <mass value='1'/>
+      <size x='L3_length' y='L3_height' z='L3_height'/>
+      <pos x='L2_length+L3_length/2' y='0' z='L0_height-L1_base_length'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='64' g='64' b='64'/>
+    </cuboid>
+
+    <cuboid>
+      <ID value='L4'/>
+      <size x='L4_length' y='L4_height' z='L4_height'/>
+      <mass value='0.2'/>
+      <pos x='L2_length+L3_length+L4_length/2' y='0' z='L0_height-L1_base_length'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='200' g='200' b='200'/>
+      <drag stokes='1e-2' roll='1e-1'/>
+    </cuboid>
+
+    <sphere>
+      <ID value='L5'/>
+      <mass value='0.2'/>
+      <radius value='L5_length/2'/>
+      <pos x='L2_length+L3_length+L4_length+L5_length/2' y='0' z='L0_height-L1_base_length'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='128' g='0' b='0'/>
+      <drag stokes='1e-2' roll='1e-1'/>
+    </sphere>
+
+    <cuboid>
+      <ID value='L6'/>
+      <mass value='0.2'/>
+      <size x='L6_length' y='L6_height' z='L6_height'/>
+      <pos x='L2_length+L3_length+L4_length+L5_length+L6_length/2' y='0' z='L0_height-L1_base_length'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='0' g='64' b='64'/>
+      <drag stokes='1e-2' roll='1e-1'/>
+    </cuboid>
+
+  </solids>
+
+  <shells>
+
+    <cylinder>
+      <ID value='L2_LCap'/>
+      <solid id='L2'/>
+      <size x='L2_height/2' z='L2_height/2 + eps'/>
+      <pos x='-L2_length/2' y='0' z='0'/>
+      <rot_deg x='90' y='0' z='0'/>
+      <color_rgb r='32' g='32' b='32'/>
+    </cylinder>
+
+    <cylinder>
+      <ID value='L2_RCap'/>
+      <solid id='L2'/>
+      <size x='L2_height/2' z='L2_height/2 + eps'/>
+      <pos x='L2_length/2' y='0' z='0'/>
+      <rot_deg x='90' y='0' z='0'/>
+      <color_rgb r='32' g='32' b='32'/>
+    </cylinder>
+
+    <cylinder>
+      <ID value='L3_LCap'/>
+      <solid id='L3'/>
+      <size x='L3_height/2' z='L3_height + eps'/>
+      <pos x='-L3_length/2' y='0' z='0'/>
+      <rot_deg x='90' y='0' z='0'/>
+      <color_rgb r='64' g='64' b='64'/>
+    </cylinder>
+
+  </shells>
+
+  <articulations>
+    <default>
+      <draw radius='L0_square_size/4' height='L1_base_length*4' rgb24='8F0000'/>
+      <motor ri='0.5'  ki='0.3' vmax='24' imax='20' active='1'/>
+      <gear ratio='10'/>
+      <friction bv='0.05' fc='0.1'/>
+      <encoder ppr='1000' mean='0' stdev='0'/>
+      <controller mode='pidposition' kp='10' ki='20' kd='0.0' kf='0.0' active='0' period='10'/>
+      <spring k='0' zeropos='0'/>
+    </default>
+
+    <joint>
+      <ID value='J0'/>
+      <pos x='0' y='0' z='L0_height'/>
+      <axis x='1' y='0' z='0'/>
+      <connect B1='L0' B2='world'/>
+      <limits Min='-L0_length_max*0.5' Max='L0_length_max*0.5'/>
+      <type value='Slider'/>
+    </joint>
+
+    <joint>
+      <ID value='J1'/>
+      <pos x='0' y='0' z='L0_height-L1_base_length'/>
+      <axis x='0' y='0' z='1' wrap='1'/>
+      <connect B1='L1' B2='L0'/>
+      <type value='Hinge'/>
+    </joint>
+
+    <joint>
+      <ID value='J2'/>
+      <pos x='0' y='0' z='L0_height-L1_base_length'/>
+      <axis x='0' y='1' z='0' wrap='1'/>
+      <connect B1='L2' B2='L1'/>
+      <type value='Hinge'/>
+    </joint>
+
+    <joint>
+      <ID value='J3'/>
+      <pos x='L2_length' y='0' z='L0_height-L1_base_length'/>
+      <axis x='0' y='1' z='0' wrap='1'/>
+      <connect B1='L3' B2='L2'/>
+      <type value='Hinge'/>
+    </joint>
+
+    <joint>
+      <ID value='J4'/>
+      <pos x='L2_length+L3_length+L4_length/2' y='0' z='L0_height-L1_base_length'/>
+      <axis x='1' y='0' z='0' wrap='1'/>
+      <connect B1='L4' B2='L3'/>
+      <type value='Hinge'/>
+    </joint>
+
+    <joint>
+      <ID value='J5'/>
+      <pos x='L2_length+L3_length+L4_length+L5_length/2' y='0' z='L0_height-L1_base_length'/>
+      <axis x='0' y='0' z='1' wrap='1'/>
+      <connect B1='L5' B2='L4'/>
+      <type value='Hinge'/>
+    </joint>
+
+    <joint>
+      <ID value='J6'/>
+      <pos x='L2_length+L3_length+L4_length+L5_length+L6_length/2' y='0' z='L0_height-L1_base_length'/>
+      <axis x='1' y='0' z='0' wrap='1'/>
+      <connect B1='L6' B2='L5'/>
+      <type value='Hinge'/>
+    </joint>
+
+  </articulations>
+
+</robot>
