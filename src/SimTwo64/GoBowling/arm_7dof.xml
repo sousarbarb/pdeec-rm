@@ -9,7 +9,6 @@
     <const name='L0_length_max' value='approach_area_length/scale_factor'/>
     <const name='L0_square_size' value='0.06/scale_factor'/>
     <const name='L0_height' value='1.2/scale_factor'/>
-
     <const name='L1_square_size' value='0.06/scale_factor'/>
     <const name='L1_base_length' value='0.10/scale_factor'/>
     <const name='L2_length' value='0.5/scale_factor'/>
@@ -23,13 +22,22 @@
     <const name='L6_length' value='0.03/scale_factor'/>
     <const name='L6_height' value='0.03/scale_factor'/>
 
+    <!-- Links Mass -->
+    <const name='L0_mass' value='1'/>
+    <const name='L1_mass' value='1'/>
+    <const name='L2_mass' value='1'/>
+    <const name='L3_mass' value='1'/>
+    <const name='L4_mass' value='0.5'/>
+    <const name='L5_mass' value='0.5'/>
+    <const name='L6_mass' value='0.2'/>
+
   </defines>
 
   <solids>
 
     <cuboid>
       <ID value='L0'/>
-      <mass value='1'/>
+      <mass value='L0_mass'/>
       <size x='L0_square_size' y='L0_square_size' z='L0_square_size'/>
       <pos x='0' y='0' z='L0_height'/>
       <rot_deg x='0' y='0' z='0'/>
@@ -38,7 +46,7 @@
 
     <cuboid>
       <ID value='L1'/>
-      <mass value='1'/>
+      <mass value='L1_mass'/>
       <size x='L1_square_size' y='L1_square_size' z='L1_square_size'/>
       <pos x='0' y='0' z='L0_height-L1_base_length'/>
       <rot_deg x='0' y='0' z='0'/>
@@ -47,7 +55,7 @@
 
     <cuboid>
       <ID value='L2'/>
-      <mass value='1'/>
+      <mass value='L2_mass'/>
       <size x='L2_length' y='L2_height/2' z='L2_height'/>
       <pos x='L2_length/2' y='L3_height' z='L0_height-L1_base_length'/>
       <rot_deg x='0' y='0' z='0'/>
@@ -56,42 +64,42 @@
 
     <cuboid>
       <ID value='L3'/>
-      <mass value='1'/>
+      <mass value='L3_mass'/>
       <size x='L3_length' y='L3_height' z='L3_height'/>
       <pos x='L2_length+L3_length/2' y='0' z='L0_height-L1_base_length'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='64' g='64' b='64'/>
     </cuboid>
 
-    <cuboid>
+    <ncuboid>
       <ID value='L4'/>
       <size x='L4_length' y='L4_height' z='L4_height'/>
-      <mass value='0.2'/>
+      <mass value='L4_mass'/>
       <pos x='L2_length+L3_length+L4_length/2' y='0' z='L0_height-L1_base_length'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='200' g='200' b='200'/>
       <drag stokes='1e-2' roll='1e-1'/>
-    </cuboid>
+    </ncuboid>
 
-    <sphere>
+    <nsphere>
       <ID value='L5'/>
-      <mass value='0.2'/>
+      <mass value='L5_mass'/>
       <radius value='L5_length/2'/>
       <pos x='L2_length+L3_length+L4_length+L5_length/2' y='0' z='L0_height-L1_base_length'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='128' g='0' b='0'/>
       <drag stokes='1e-2' roll='1e-1'/>
-    </sphere>
+    </nsphere>
 
-    <cuboid>
+    <ncuboid>
       <ID value='L6'/>
-      <mass value='0.2'/>
+      <mass value='L6_mass'/>
       <size x='L6_length' y='L6_height' z='L6_height'/>
       <pos x='L2_length+L3_length+L4_length+L5_length+L6_length/2' y='0' z='L0_height-L1_base_length'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='0' g='64' b='64'/>
       <drag stokes='1e-2' roll='1e-1'/>
-    </cuboid>
+    </ncuboid>
 
   </solids>
 
@@ -129,11 +137,11 @@
   <articulations>
     <default>
       <draw radius='L0_square_size/4' height='L1_base_length*4' rgb24='8F0000'/>
-      <motor ri='0.5'  ki='0.3' vmax='24' imax='20' active='1'/>
-      <gear ratio='10'/>
+      <motor ri='0.05' ki='0.3' vmax='24' imax='400' active='1'/>
+      <gear ratio='1'/>
       <friction bv='0.05' fc='0.1'/>
       <encoder ppr='1000' mean='0' stdev='0'/>
-      <controller mode='pidposition' kp='10' ki='20' kd='0.0' kf='0.0' active='0' period='10'/>
+      <controller mode='pidposition' kp='2' ki='20' kd='0.0' kf='0.0' active='1' period='10'/>
       <spring k='0' zeropos='0'/>
     </default>
 
@@ -170,29 +178,29 @@
       <type value='Hinge'/>
     </joint>
 
-    <joint>
+    <njoint>
       <ID value='J4'/>
       <pos x='L2_length+L3_length+L4_length/2' y='0' z='L0_height-L1_base_length'/>
       <axis x='1' y='0' z='0' wrap='1'/>
       <connect B1='L4' B2='L3'/>
       <type value='Hinge'/>
-    </joint>
+    </njoint>
 
-    <joint>
+    <njoint>
       <ID value='J5'/>
       <pos x='L2_length+L3_length+L4_length+L5_length/2' y='0' z='L0_height-L1_base_length'/>
       <axis x='0' y='0' z='1' wrap='1'/>
       <connect B1='L5' B2='L4'/>
       <type value='Hinge'/>
-    </joint>
+    </njoint>
 
-    <joint>
+    <njoint>
       <ID value='J6'/>
       <pos x='L2_length+L3_length+L4_length+L5_length+L6_length/2' y='0' z='L0_height-L1_base_length'/>
       <axis x='1' y='0' z='0' wrap='1'/>
       <connect B1='L6' B2='L5'/>
       <type value='Hinge'/>
-    </joint>
+    </njoint>
 
   </articulations>
 
