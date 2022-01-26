@@ -42,7 +42,7 @@
   <!-- Robot Manipulator 7DoF -->
   <robot>
     <ID name='Arm7D'/>
-    <pos x='0.5*approach_area_length/scale_factor' y='0' z='0'/>
+    <pos x='0.5*approach_area_length/scale_factor' y='0' z='1'/>
     <rot_deg x='0' y='0' z='0'/>
     <body file='arm_7dof.xml'/>
   </robot>

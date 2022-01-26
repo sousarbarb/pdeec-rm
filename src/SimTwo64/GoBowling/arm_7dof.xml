@@ -1,207 +1,261 @@
 <?xml version="1.0" ?>
 <robot>
   <kind value='Arm2D'/>
-
+  
   <defines>
-    <const name='eps' value='0.0001' />
+    <const name='eps' value='0.0001'/>
+    <const name='B0_length' value='0.3'/>
+    <const name='B0_height' value='0.1'/>
+    <const name='B1_height' value='0.2'/>
+    <const name='B2_length' value='0.4'/>
+    <const name='B2_height' value='0.1'/>
+    <const name='B3_length' value='0.3'/>
+    <const name='B3_height' value='0.08'/>
 
-    <!-- Links Dimensions -->
-    <const name='L0_length_max' value='approach_area_length/scale_factor'/>
-    <const name='L0_square_size' value='0.06/scale_factor'/>
-    <const name='L0_height' value='1.2/scale_factor'/>
-    <const name='L1_square_size' value='0.06/scale_factor'/>
-    <const name='L1_base_length' value='0.10/scale_factor'/>
-    <const name='L2_length' value='0.5/scale_factor'/>
-    <const name='L2_height' value='0.1/scale_factor'/>
-    <const name='L3_length' value='0.4/scale_factor'/>
-    <const name='L3_height' value='0.08/scale_factor'/>
-    <const name='L4_length' value='0.05/scale_factor'/>
-    <const name='L4_height' value='0.05/scale_factor'/>
-    <const name='L5_length' value='0.04/scale_factor'/>
-    <const name='L5_height' value='0.04/scale_factor'/>
-    <const name='L6_length' value='0.03/scale_factor'/>
-    <const name='L6_height' value='0.03/scale_factor'/>
+    <const name='B4_length' value='0.05'/>
+    <const name='B4_height' value='0.05'/>
+    <const name='B5_length' value='0.04'/>
+    <const name='B5_height' value='0.04'/>
+    <const name='B6_length' value='0.03'/>
+    <const name='B6_height' value='0.03'/>  claw_gap/2 + claw_width
 
-    <!-- Links Mass -->
-    <const name='L0_mass' value='1'/>
-    <const name='L1_mass' value='1'/>
-    <const name='L2_mass' value='1'/>
-    <const name='L3_mass' value='1'/>
-    <const name='L4_mass' value='0.5'/>
-    <const name='L5_mass' value='0.5'/>
-    <const name='L6_mass' value='0.2'/>
+    <const name='ball_diameter_scaled' value='ball_diameter/scale_factor'/>
 
+    <const name='claw_width' value='0.01'/>
+    <const name='claw_length' value='0.08'/>
+    <const name='claw_gap' value='ball_diameter_scaled * 4 * sqrt(2) / 3'/>
   </defines>
-
+  
   <solids>
 
     <cuboid>
-      <ID value='L0'/>
-      <mass value='L0_mass'/>
-      <size x='L0_square_size' y='L0_square_size' z='L0_square_size'/>
-      <pos x='0' y='0' z='L0_height'/>
+      <ID value='B0'/>
+      <mass value='1'/>
+      <size x='B0_height' y='B0_height' z='B0_height/2'/>
+      <pos x='0' y='0' z='B0_length-B1_height+B2_height/2'/>
       <rot_deg x='0' y='0' z='0'/>
-      <color_rgb r='128' g='128' b='128'/>
+      <color_rgb r='32' g='32' b='32'/>
     </cuboid>
 
-    <cuboid>
-      <ID value='L1'/>
-      <mass value='L1_mass'/>
-      <size x='L1_square_size' y='L1_square_size' z='L1_square_size'/>
-      <pos x='0' y='0' z='L0_height-L1_base_length'/>
+    <cylinder>
+      <ID value='B1'/>
+      <mass value='1'/>
+      <size radius='0.05' z='B1_height'/>
+      <pos x='0' y='0' z='-B1_height/2'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='128' g='128' b='128'/>
-    </cuboid>
+    </cylinder>
 
     <cuboid>
-      <ID value='L2'/>
-      <mass value='L2_mass'/>
-      <size x='L2_length' y='L2_height/2' z='L2_height'/>
-      <pos x='L2_length/2' y='L3_height' z='L0_height-L1_base_length'/>
+      <ID value='B2'/>
+      <mass value='1'/>
+      <size x='B2_length' y='B2_height/2' z='B2_height'/>
+      <pos x='B2_length/2' y='B3_height' z='-B1_height+B2_height/2'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='32' g='32' b='32'/>
     </cuboid>
 
     <cuboid>
-      <ID value='L3'/>
-      <mass value='L3_mass'/>
-      <size x='L3_length' y='L3_height' z='L3_height'/>
-      <pos x='L2_length+L3_length/2' y='0' z='L0_height-L1_base_length'/>
+      <ID value='B3'/>
+      <mass value='1'/>
+      <size x='B3_length' y='B3_height' z='B3_height'/>
+      <pos x='B2_length+B3_length/2' y='0' z='-B1_height+B2_height/2'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='64' g='64' b='64'/>
     </cuboid>
 
-    <ncuboid>
-      <ID value='L4'/>
-      <size x='L4_length' y='L4_height' z='L4_height'/>
-      <mass value='L4_mass'/>
-      <pos x='L2_length+L3_length+L4_length/2' y='0' z='L0_height-L1_base_length'/>
-      <rot_deg x='0' y='0' z='0'/>
+    <cuboid>
+      <ID value='B4'/>
+      <size x='B4_length' y='B4_height' z='B4_height'/>
+      <mass value='0.5'/>
+      <pos x='B2_length+B3_length+B4_length/2' y='0' z='-B1_height+B2_height/2'/>
       <color_rgb r='200' g='200' b='200'/>
       <drag stokes='1e-2' roll='1e-1'/>
-    </ncuboid>
+    </cuboid>
 
-    <nsphere>
-      <ID value='L5'/>
-      <mass value='L5_mass'/>
-      <radius value='L5_length/2'/>
-      <pos x='L2_length+L3_length+L4_length+L5_length/2' y='0' z='L0_height-L1_base_length'/>
+    <sphere>
+      <ID value='B5'/>
+      <mass value='0.5'/>
+      <radius value='B5_length/2'/>
+      <pos x='B2_length+B3_length+B4_length+B5_length/2' y='0' z='-B1_height+B2_height/2'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='128' g='0' b='0'/>
       <drag stokes='1e-2' roll='1e-1'/>
-    </nsphere>
+    </sphere>
 
-    <ncuboid>
-      <ID value='L6'/>
-      <mass value='L6_mass'/>
-      <size x='L6_length' y='L6_height' z='L6_height'/>
-      <pos x='L2_length+L3_length+L4_length+L5_length+L6_length/2' y='0' z='L0_height-L1_base_length'/>
+    <cuboid>
+      <ID value='B6'/>
+      <mass value='0.2'/>
+      <size x='B6_length' y='B6_height' z='B6_height'/>
+      <pos x='B2_length+B3_length+B4_length+B5_length+B6_length/2' y='0' z='-B1_height+B2_height/2'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='0' g='64' b='64'/>
       <drag stokes='1e-2' roll='1e-1'/>
-    </ncuboid>
+    </cuboid>
 
   </solids>
 
   <shells>
 
+    <cuboid>
+      <ID value='B2_hub'/>
+      <solid id='B1'/>
+      <size x='B2_height' y='B2_height' z='B2_height'/>
+      <pos x='0' y='0' z='B1_height/2+B2_height/2'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='128' g='128' b='128'/>
+    </cuboid>
+
     <cylinder>
-      <ID value='L2_LCap'/>
-      <solid id='L2'/>
-      <size x='L2_height/2' z='L2_height/2 + eps'/>
-      <pos x='-L2_length/2' y='0' z='0'/>
+      <ID value='B2_LCap'/>
+      <solid id='B2'/>
+      <size x='B2_height/2' z='B2_height/2 + eps'/>
+      <pos x='-B2_length/2' y='0' z='0'/>
       <rot_deg x='90' y='0' z='0'/>
       <color_rgb r='32' g='32' b='32'/>
     </cylinder>
 
     <cylinder>
-      <ID value='L2_RCap'/>
-      <solid id='L2'/>
-      <size x='L2_height/2' z='L2_height/2 + eps'/>
-      <pos x='L2_length/2' y='0' z='0'/>
+      <ID value='B2_RCap'/>
+      <solid id='B2'/>
+      <size x='B2_height/2' z='B2_height/2 + eps'/>
+      <pos x='B2_length/2' y='0' z='0'/>
       <rot_deg x='90' y='0' z='0'/>
       <color_rgb r='32' g='32' b='32'/>
     </cylinder>
 
     <cylinder>
-      <ID value='L3_LCap'/>
-      <solid id='L3'/>
-      <size x='L3_height/2' z='L3_height + eps'/>
-      <pos x='-L3_length/2' y='0' z='0'/>
+      <ID value='B3_LCap'/>
+      <solid id='B3'/>
+      <size x='B3_height/2' z='B3_height + eps'/>
+      <pos x='-B3_length/2' y='0' z='0'/>
       <rot_deg x='90' y='0' z='0'/>
       <color_rgb r='64' g='64' b='64'/>
     </cylinder>
 
+    <cylinder>
+      <ID value='B6_claw_base'/>
+      <solid id='B6'/>
+      <size x='claw_gap/2 + claw_width' z='B6_height'/>
+      <pos x='B6_length/2 + claw_width/2' y='0' z='0'/>
+      <rot_deg x='0' y='90' z='0'/>
+      <color_rgb r='128' g='128' b='128'/>
+    </cylinder>
+
+    <cuboid>
+      <ID value='B6_claw_finger_left'/>
+      <solid id='B6'/>
+      <size x='claw_length' y='claw_width' z='B6_height'/>
+      <pos x='B6_length/2 + claw_length/2' y='-claw_gap/2 - claw_width/2' z='0'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='128' g='128' b='128'/>
+    </cuboid>
+
+    <cuboid>
+      <ID value='B6_claw_finger_240'/>
+      <solid id='B6'/>
+      <size x='claw_length' y='claw_width' z='B6_height'/>
+      <pos x='B6_length/2 + claw_length/2' y='(-claw_gap/2 - claw_width/2) * -1/2' z='(-claw_gap/2 - claw_width/2) * -sqrt(3)/2'/>
+      <rot_deg x='240' y='0' z='0'/>
+      <color_rgb r='128' g='128' b='128'/>
+    </cuboid>
+
+    <cuboid>
+      <ID value='B6_claw_finger_120'/>
+      <solid id='B6'/>
+      <size x='claw_length' y='claw_width' z='B6_height'/>
+      <pos x='B6_length/2 + claw_length/2' y='(-claw_gap/2 - claw_width/2) * -1/2' z='(-claw_gap/2 - claw_width/2) *  sqrt(3)/2'/>
+      <rot_deg x='120' y='0' z='0'/>
+      <color_rgb r='128' g='128' b='128'/>
+    </cuboid>
+
   </shells>
 
   <articulations>
+
     <default>
-      <draw radius='L0_square_size/4' height='L1_base_length*4' rgb24='8F0000'/>
+      <draw radius='0.015' height='0.25' rgb24='8F0000'/>
       <motor ri='0.05' ki='0.3' vmax='24' imax='400' active='1'/>
       <gear ratio='1'/>
       <friction bv='0.05' fc='0.1'/>
       <encoder ppr='1000' mean='0' stdev='0'/>
-      <controller mode='pidposition' kp='2' ki='20' kd='0.0' kf='0.0' active='1' period='10'/>
+      <controller mode='pidposition' kp='20' ki='200' kd='0.0' kf='0.0' active='1' period='10'/>
       <spring k='0' zeropos='0'/>
     </default>
 
     <joint>
       <ID value='J0'/>
-      <pos x='0' y='0' z='L0_height'/>
+      <pos x='0' y='0' z='-B1_height'/>
       <axis x='1' y='0' z='0'/>
-      <connect B1='L0' B2='world'/>
-      <limits Min='-L0_length_max*0.5' Max='L0_length_max*0.5'/>
+      <connect B1='B0' B2='world'/>
+      <limits Min='-approach_area_length/2' Max='approach_area_length/2'/>
       <type value='Slider'/>
     </joint>
 
     <joint>
       <ID value='J1'/>
-      <pos x='0' y='0' z='L0_height-L1_base_length'/>
+      <pos x='0' y='0' z='-B1_height'/>
       <axis x='0' y='0' z='1' wrap='1'/>
-      <connect B1='L1' B2='L0'/>
+      <connect B1='B1' B2='B0'/>
       <type value='Hinge'/>
     </joint>
 
     <joint>
       <ID value='J2'/>
-      <pos x='0' y='0' z='L0_height-L1_base_length'/>
-      <axis x='0' y='1' z='0' wrap='1'/>
-      <connect B1='L2' B2='L1'/>
+      <pos x='0' y='0' z='-B1_height+B2_height/2'/>
+      <axis x='0' y='1' z='0'/>
+      <connect B1='B2' B2='B1'/>
+      <type value='Hinge'/>
+    </joint>
+    
+    <joint>
+      <ID value='J3'/>
+      <pos x='B2_length' y='0' z='-B1_height+B2_height/2'/>
+      <axis x='0' y='1' z='0'/>
+      <connect B1='B3' B2='B2'/>
       <type value='Hinge'/>
     </joint>
 
     <joint>
-      <ID value='J3'/>
-      <pos x='L2_length' y='0' z='L0_height-L1_base_length'/>
-      <axis x='0' y='1' z='0' wrap='1'/>
-      <connect B1='L3' B2='L2'/>
+      <ID value='J4'/>
+      <pos x='B2_length+B3_length+B4_length/2' y='0' z='-B1_height+B2_height/2'/>
+      <axis x='1' y='0' z='0'/>
+      <connect B1='B4' B2='B3'/>
       <type value='Hinge'/>
     </joint>
 
-    <njoint>
-      <ID value='J4'/>
-      <pos x='L2_length+L3_length+L4_length/2' y='0' z='L0_height-L1_base_length'/>
-      <axis x='1' y='0' z='0' wrap='1'/>
-      <connect B1='L4' B2='L3'/>
-      <type value='Hinge'/>
-    </njoint>
-
-    <njoint>
+    <joint>
       <ID value='J5'/>
-      <pos x='L2_length+L3_length+L4_length+L5_length/2' y='0' z='L0_height-L1_base_length'/>
-      <axis x='0' y='0' z='1' wrap='1'/>
-      <connect B1='L5' B2='L4'/>
+      <pos x='B2_length+B3_length+B4_length+B5_length/2' y='0' z='-B1_height+B2_height/2'/>
+      <axis x='0' y='0' z='1'/>
+      <connect B1='B5' B2='B4'/>
       <type value='Hinge'/>
-    </njoint>
+      <draw radius='0.005' height='0.2' rgb24='8F0000'/>
+    </joint>
 
-    <njoint>
+    <joint>
       <ID value='J6'/>
-      <pos x='L2_length+L3_length+L4_length+L5_length+L6_length/2' y='0' z='L0_height-L1_base_length'/>
-      <axis x='1' y='0' z='0' wrap='1'/>
-      <connect B1='L6' B2='L5'/>
+      <pos x='B2_length+B3_length+B4_length+B5_length+B6_length/2' y='0' z='-B1_height+B2_height/2'/>
+      <axis x='1' y='0' z='0'/>
+      <connect B1='B6' B2='B5'/>
       <type value='Hinge'/>
-    </njoint>
+    </joint>
 
   </articulations>
+
+  <tools>
+
+    <solenoid>
+      <ID value='grab'/>
+      <beam length='0.15' initial_width='0.011' final_width='0.011'/>
+      <solid id='B6'/>
+      <size x='claw_gap/2 + claw_width' z='B6_height'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <tag value='00'/>
+      <force fmax='10' k2='0.5'/>
+      <color_rgb r='0' g='255' b='0'/>
+    </solenoid>
+
+  </tools>
 
 </robot>
