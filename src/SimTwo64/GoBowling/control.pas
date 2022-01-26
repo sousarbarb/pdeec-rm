@@ -1,88 +1,127 @@
-// Global Variables Here
+const
+  DEBUG = true;
+  NUM_JOINTS = 7;
+
+// Global Variables
 var
-  NetOutBuf: TUDPBuffer;
+  iBall, iRobot: integer;
+  l0, l1, l2, l3, lt: double;
 
-{procedure SendLaserMessage(LaserScanRays: Matrix; SendToIP: string);
-var i, start: integer;
-    ld: word;
-    d: double;
+  JointPos, JointPosRef: array[0..NUM_JOINTS - 1] of double;
+
+
+
+procedure CommunicationLazarus;
+var
+  i: integer;
+  mess: TStringList;
+  tmp: string;
 begin
-  ClearUDPBuffer(NetOutBuf);
-  // tag this packet as Hokuyo -> Anyone
-  NetPutByte(NetOutBuf, ord('H'));
-  NetPutByte(NetOutBuf, ord('A'));
-  NetPutByte(NetOutBuf, ord('1'));
-  //NetPutByte(NetOutBuf, ord('0') + mtype); // Type = 1,2,3
-  for i := 44 to 725 do begin
-    d := mgetv(LaserScanRays, i, 0);
-    if d < 0 then d := 0;
-    ld := round(d * 1000);
-    NetPutWord(NetOutBuf, ld);
-  end;
-  WriteUDPData(SendToIP, 9876, NetStringBuffer(NetOutBuf));
-  //UDP.Send(NetOutBuf.data, NetOutBuf.MessSize, EditSendToIP.Text + ':9876');
-end;}
+  mess := TStringList.create;
+  try
+    for i := 0 to NUM_JOINTS -1 do begin
+      mess.add(format('%.4g',[JointPos[i]]));
+    end;
 
-// this procedure is called periodicaly (default: 40 ms)
+    WriteUDPData('127.0.0.1', 9809, mess.text);
+
+    tmp := ReadUDPData();
+    if tmp <> '' then begin
+      mess.text := tmp;
+      if mess.count >= NUM_JOINTS then begin
+        for i := 0 to NUM_JOINTS -1 do begin
+          JointPosRef[i] := StrToFloat(mess.strings[i]);
+          SetRCValue(3 + i, 3,  format('%.3g',[Deg(JointPosRef[i])]));
+        end;
+      end;
+    end;
+
+  finally
+    mess.free;
+  end;
+end;
+
+procedure VisualizeSheet;
+var
+  i: integer;
+begin
+  if (DEBUG) then begin
+    // - update joints state
+    for i:=0 to NUM_JOINTS-1 do begin
+      if (i <> 0) then begin
+        SetRCValue(2,2+i, Format('%.6g', [GetAxisPosDeg(iRobot,i)]) );
+        SetRCValue(3,2+i, Format('%.6g', [GetAxisPosRefDeg(iRobot,i)]) );
+      end else begin
+        SetRCValue(2,2+i, Format('%.6g', [GetAxisPos(iRobot,i)]) );
+        SetRCValue(3,2+i, Format('%.6g', [GetAxisPosRef(iRobot,i)]) );
+      end;
+      SetRCValue(4,2+i, Format('%.6g', [GetAxisSpeed(iRobot,i)]) );
+      SetRCValue(5,2+i, Format('%.6g', [GetAxisSpeedRef(iRobot,i)]) );
+      SetRCValue(6,2+i, Format('%.6g', [GetAxisU(iRobot,i)]) );
+      SetRCValue(7,2+i, Format('%.6g', [GetAxisI(iRobot,i)]) );
+      SetRCValue(8,2+i, Format('%.6g', [GetAxisTorque(iRobot,i)]) );
+      SetRCValue(9,2+i, Format('%d', [GetMotorControllerState(iRobot,i)]) );
+      SetRCValue(10,2+i,Format('%s', [GetMotorControllerMode(iRobot,i)]) );
+    end;
+  end;
+end;
+
 procedure Control;
-var vs: TPoint3d;
-    A, B, C, R: Matrix;
-    i, n: integer;
-    clr: TRGBAColor;
+var
+  i: integer;
 begin
-  //StartSolidFire(0,1);
-  {if KeyPressed(vk_down) then begin
-    vs := GetThingSize(1);
-    SetThingSize(1, 0.9*vs.x, 0.9*vs.y, 0.9*vs.z);
-  end else if KeyPressed(vk_up) then begin
-    vs := GetThingSize(1);
-    SetThingSize(1, vs.x/0.9, vs.y/0.9, vs.z/0.9);
-  end;
-  
-  A := RangeToMatrix(4, 2, 3, 3);
-  B := RangeToMatrix(4, 6, 3, 3);
-  C := Mzeros(3, 3);
-  MSetv(C, 1, 1, 3.5);
-  
-  clr := GetThingColor(2,0);
-  SetRCValue( 23, 1, format('%d',[clr.red]));
-  SetRCValue( 23, 2, format('%d',[clr.green]));
-  SetRCValue( 23, 3, format('%d',[clr.blue]));
-
-  if RCButtonPressed(9, 1) then begin
-    R := Minv(A);
-    MatrixToRange(9, 2, R);
+  // Read joint positions
+  for i:=0 to NUM_JOINTS-1 do begin
+    JointPos[i] := GetAxisPos(iRobot, i);
   end;
 
-  if RCButtonPressed(9, 5) then begin
-    MatrixToRange(9, 6, C);
+  // Read UDP data + send joints state
+  CommunicationLazarus;
+
+  // Set joint reference positions
+  for i:=0 to NUM_JOINTS-1 do begin
+    SetAxisPosRef(iRobot, i, JointPosRef[i]);
   end;
 
-  if RCButtonPressed(14, 1) then begin
-    R := MAdd(A,B);
-    MatrixToRange(14, 2, R);
-  end;
-
-  if RCButtonPressed(19, 1) then begin
-    R := MMult(A,B);
-    MatrixToRange(19, 2, R);
-  end;
-
-  A := GetGlobalSensorValues(3);
-  //A := GetSensorValues(0, 1);
-  SendLaserMessage(A, '127.0.0.1');
-  n := MNumRows(A);
-  SetRCValue(1, 10, format('%d',[n]));
-  //for i := 0 to n - 1 do begin
-  //  SetRCValue( 2 + i, 10, format('%g',[mgetv(A, i, 0)]));
-  //end;}
+  // Display debug information in the sheet
+  VisualizeSheet;
 end;
 
-// this procedure is called once when the script is started
+
 procedure Initialize;
+var
+  i: integer;
 begin
-  {ClearButtons();
-  SetThingPos(2, 0, 0, 1);
-  WriteLn('Test');}
-end;
+  iBall  := GetRobotIndex('ball');
+  iRobot := GetRobotIndex('Arm7D');
 
+  // Set links lengths
+  l1 := 0.3;
+  l2 := 0.4;
+  l3 := 0.37;
+  lt := 0.11;
+
+  // Reset sheet
+  SetRCValue(1,1,'JOINTS');
+  SetRCValue(2,1,'p:');
+  SetRCValue(3,1,'p_ref:');
+  SetRCValue(4,1,'w:');
+  SetRCValue(5,1,'w_ref:');
+  SetRCValue(6,1,'u:');
+  SetRCValue(7,1,'i:');
+  SetRCValue(8,1,'t:');
+  SetRCValue(9,1,'ctrl:');
+  SetRCValue(10,1,'ctrl_mod:');
+  SetRCValue(2,2+NUM_JOINTS,'(m/deg)');
+  SetRCValue(3,2+NUM_JOINTS,'(deg)');
+  SetRCValue(4,2+NUM_JOINTS,'(rad/s)');
+  SetRCValue(5,2+NUM_JOINTS,'(rad/s)');
+  SetRCValue(6,2+NUM_JOINTS,'(V)');
+  SetRCValue(7,2+NUM_JOINTS,'(A)');
+  SetRCValue(8,2+NUM_JOINTS,'(N/m)');
+  SetRCValue(9,2+NUM_JOINTS,'(on/off)');
+  SetRCValue(10,2+NUM_JOINTS,'');
+  for i:=0 to NUM_JOINTS-1 do begin
+    SetRCValue(1,2+i, Format('%d',[i]) );
+  end;
+end;
