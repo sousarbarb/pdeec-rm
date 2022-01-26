@@ -17,7 +17,7 @@
     <const name='B5_length' value='0.04'/>
     <const name='B5_height' value='0.04'/>
     <const name='B6_length' value='0.03'/>
-    <const name='B6_height' value='0.03'/>  claw_gap/2 + claw_width
+    <const name='B6_height' value='0.03'/>
 
     <const name='ball_diameter_scaled' value='ball_diameter/scale_factor'/>
 
