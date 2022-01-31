@@ -1,0 +1,6 @@
+backup/
+lib/
+GoBowlingApp
+*.exe
+*.res
+*.dbg
