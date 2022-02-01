@@ -186,8 +186,7 @@ begin
 end;
 
 procedure TFMain.UDPReceive(aSocket: TLSocket);
-var msg, dbgMsg: String;
-    i: Integer;
+var msg: String;
 begin
   // Receive message
   UDP.GetMessage(msg);
@@ -213,15 +212,18 @@ end;
 
 procedure TFMain.Control;
 begin
-  // Control Mode
+  // Input data processment
+  Robot.FK;
+
+  // Control
   if (RbModeStop.Checked) then begin
     ControlStop;
   end else if (RbModeManual.Checked) then begin
     ControlManual;
   end;
 
-  // Send joints reference
-  //SendUDPMessage;
+  // Output joints reference
+  SendUDPMessage;
 
   // Debug: Update GUI
   if (CbDebug.Checked) then
@@ -304,7 +306,7 @@ begin
 end;
 
 procedure TFMain.UpdateGUI;
-var i: Integer;
+var i, j: Integer;
 begin
   // Joints 
   SgKinJoints.Cells[1,1] := format('%.6g',[Robot.JointsPrism.Pos[0,0]]);
@@ -314,6 +316,16 @@ begin
     SgKinJoints.Cells[1,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.Pos[i,0])]);
     SgKinJoints.Cells[2,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.Vel[i,0])]);
     SgKinJoints.Cells[3,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.PosRef[i,0])]);
+  end;
+
+  // Forward Kinematics
+  EdFKactXt.Text := format('%.6g',[Robot.Tool.Pos[0,0]]);
+  EdFKactYt.Text := format('%.6g',[Robot.Tool.Pos[1,0]]);
+  EdFKactZt.Text := format('%.6g',[Robot.Tool.Pos[2,0]]);
+  for i := 0 to 2 do begin
+    for j := 0 to 2 do begin
+      SgFKactRt.Cells[j,i] := format('%.6g',[Robot.Tool.Rot[i,j]]);
+    end;
   end;
 end;
 
