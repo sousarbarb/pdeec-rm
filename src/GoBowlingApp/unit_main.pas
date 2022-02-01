@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ComCtrls, IniPropStorage, Grids, lNetComponents, lNet, math, dynmatrix;
+  ComCtrls, IniPropStorage, Grids, lNetComponents, lNet, math, dynmatrix,
+  unit_robot;
 
 type
 
@@ -114,8 +115,8 @@ type
     procedure Control;
     procedure ControlStop;
     procedure ControlManual;
-    procedure ParseUDPMessage(var msg: String; var JPos, JVel: TDMatrix);
-    procedure SendUDPMessage(var JRef: TDMatrix);
+    procedure ParseUDPMessage(var msg: String);
+    procedure SendUDPMessage;
     procedure UpdateGUI;
 
   public
@@ -125,13 +126,8 @@ type
 
   end;
 
-const
-  NUMJOINTS = 7;
-
 var
   FMain: TFMain;
-
-  JointPos, JointVel, JointPosRef: TDMatrix;
 
 implementation
 
@@ -181,9 +177,7 @@ end;
 
 procedure TFMain.FormCreate(Sender: TObject);
 begin
-  JointPos := Mzeros(NUMJOINTS, 1);
-  JointVel := Mzeros(NUMJOINTS, 1);
-  JointPosRef := Mzeros(NUMJOINTS, 1);
+  Robot := TRobot.Create;
 end;
 
 procedure TFMain.UDPError(const msg: string; aSocket: TLSocket);
@@ -199,7 +193,7 @@ begin
   UDP.GetMessage(msg);
 
   // Parse message
-  ParseUDPMessage(msg, JointPos, JointVel);
+  ParseUDPMessage(msg);
 
   // Control
   Control;
@@ -227,7 +221,7 @@ begin
   end;
 
   // Send joints reference
-  SendUDPMessage(JointPosRef);
+  //SendUDPMessage;
 
   // Debug: Update GUI
   if (CbDebug.Checked) then
@@ -235,11 +229,8 @@ begin
 end;
 
 procedure TFMain.ControlStop;
-var i: Integer;
 begin
-  for i := 0 to NUMJOINTS -1 do begin
-    JointPosRef[i, 0] := 0;
-  end;
+  Robot.Stop;
 end;
 
 procedure TFMain.ControlManual;
@@ -247,7 +238,7 @@ begin
 
 end;
 
-procedure TFMain.ParseUDPMessage(var msg: String; var JPos, JVel: TDMatrix);
+procedure TFMain.ParseUDPMessage(var msg: String);
 var mess: TStringList;
     dbgMsg: String;
     i: Integer;
@@ -260,8 +251,9 @@ begin
     //if mess.Count < NUMJOINTS then exit;
 
     // Current joint values
-    for i := 0 to NUMJOINTS - 1 do begin
-      JPos[i,0] := StrToFloatDef(mess.Strings[i], 0);
+    Robot.JointsPrism.Pos[0,0] := StrToFloatDef(mess.Strings[0], 0);
+    for i := 0 to 5 do begin
+      Robot.JointsRot.Pos[i,0] := StrToFloatDef(mess.Strings[i+1], 0);
     end;
 
     // Current joint velocities
@@ -282,15 +274,17 @@ begin
   end;
 end;
 
-procedure TFMain.SendUDPMessage(var JRef: TDMatrix);
+procedure TFMain.SendUDPMessage;
 var mess: TStringList;
     dbgMsg: String;
     i: integer;
 begin
   mess := TStringList.create;
   try
-    for i := 0 to NUMJOINTS -1 do begin
-      mess.add(format('%.4g',[JRef[i,0]]));
+    // Reference joints value
+    mess.add(format('%.4g',[Robot.JointsPrism.PosRef[0,0]]));
+    for i := 0 to 5 do begin
+      mess.add(format('%.4g',[Robot.JointsRot.PosRef[i,0]]));
     end;
 
     UDP.SendMessage(mess.text, UDPstrS2);
@@ -313,13 +307,13 @@ procedure TFMain.UpdateGUI;
 var i: Integer;
 begin
   // Joints 
-  SgKinJoints.Cells[1,1] := format('%.6g',[JointPos[0,0]]);
-  SgKinJoints.Cells[2,1] := format('%.6g',[JointVel[0,0]]);
-  SgKinJoints.Cells[3,1] := format('%.6g',[JointPosRef[0,0]]);
-  for i := 1 to NUMJOINTS -1 do begin
-    SgKinJoints.Cells[1,1+i] := format('%.6g',[RadToDeg(JointPos[i,0])]);
-    SgKinJoints.Cells[2,1+i] := format('%.6g',[RadToDeg(JointVel[i,0])]);
-    SgKinJoints.Cells[3,1+i] := format('%.6g',[RadToDeg(JointPosRef[i,0])]);
+  SgKinJoints.Cells[1,1] := format('%.6g',[Robot.JointsPrism.Pos[0,0]]);
+  SgKinJoints.Cells[2,1] := format('%.6g',[Robot.JointsPrism.Vel[0,0]]);
+  SgKinJoints.Cells[3,1] := format('%.6g',[Robot.JointsPrism.PosRef[0,0]]);
+  for i := 0 to 5 do begin
+    SgKinJoints.Cells[1,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.Pos[i,0])]);
+    SgKinJoints.Cells[2,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.Vel[i,0])]);
+    SgKinJoints.Cells[3,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.PosRef[i,0])]);
   end;
 end;
 

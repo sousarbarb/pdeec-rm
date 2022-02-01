@@ -2194,8 +2194,8 @@ object FMain: TFMain
     Height = 456
     Top = 56
     Width = 784
-    ActivePage = TsComms
-    TabIndex = 0
+    ActivePage = TsKinematics
+    TabIndex = 1
     TabOrder = 2
     object TsComms: TTabSheet
       Caption = 'Comms'
