@@ -4,7 +4,7 @@ const
 
 // Global Variables
 var
-  iBall, iRobot: integer;
+  iBall, iRobot, iB0, iB6: integer;
   l0, l1, l2, l3, lt: double;
 
   JointPos, JointPosRef: array[0..NUM_JOINTS - 1] of double;
@@ -45,25 +45,28 @@ procedure VisualizeSheet;
 var
   i: integer;
 begin
-  if (DEBUG) then begin
-    // - update joints state
-    for i:=0 to NUM_JOINTS-1 do begin
-      if (i <> 0) then begin
-        SetRCValue(2,2+i, Format('%.6g', [GetAxisPosDeg(iRobot,i)]) );
-        SetRCValue(3,2+i, Format('%.6g', [GetAxisPosRefDeg(iRobot,i)]) );
-      end else begin
-        SetRCValue(2,2+i, Format('%.6g', [GetAxisPos(iRobot,i)]) );
-        SetRCValue(3,2+i, Format('%.6g', [GetAxisPosRef(iRobot,i)]) );
-      end;
-      SetRCValue(4,2+i, Format('%.6g', [GetAxisSpeed(iRobot,i)]) );
-      SetRCValue(5,2+i, Format('%.6g', [GetAxisSpeedRef(iRobot,i)]) );
-      SetRCValue(6,2+i, Format('%.6g', [GetAxisU(iRobot,i)]) );
-      SetRCValue(7,2+i, Format('%.6g', [GetAxisI(iRobot,i)]) );
-      SetRCValue(8,2+i, Format('%.6g', [GetAxisTorque(iRobot,i)]) );
-      SetRCValue(9,2+i, Format('%d', [GetMotorControllerState(iRobot,i)]) );
-      SetRCValue(10,2+i,Format('%s', [GetMotorControllerMode(iRobot,i)]) );
+  // - update joints state
+  for i:=0 to NUM_JOINTS-1 do begin
+    if (i <> 0) then begin
+      SetRCValue(2,2+i, Format('%.6g', [GetAxisPosDeg(iRobot,i)]) );
+      SetRCValue(3,2+i, Format('%.6g', [GetAxisPosRefDeg(iRobot,i)]) );
+    end else begin
+      SetRCValue(2,2+i, Format('%.6g', [GetAxisPos(iRobot,i)]) );
+      SetRCValue(3,2+i, Format('%.6g', [GetAxisPosRef(iRobot,i)]) );
     end;
+    SetRCValue(4,2+i, Format('%.6g', [GetAxisSpeed(iRobot,i)]) );
+    SetRCValue(5,2+i, Format('%.6g', [GetAxisSpeedRef(iRobot,i)]) );
+    SetRCValue(6,2+i, Format('%.6g', [GetAxisU(iRobot,i)]) );
+    SetRCValue(7,2+i, Format('%.6g', [GetAxisI(iRobot,i)]) );
+    SetRCValue(8,2+i, Format('%.6g', [GetAxisTorque(iRobot,i)]) );
+    SetRCValue(9,2+i, Format('%d', [GetMotorControllerState(iRobot,i)]) );
+    SetRCValue(10,2+i,Format('%s', [GetMotorControllerMode(iRobot,i)]) );
   end;
+  // - B6;
+  MatrixToRangeF(13,2,GetSolidPosMat(iRobot,iB6),'%.6g');
+  MatrixToRangeF(13,4,GetSolidRotMat(iRobot,iB6),'%.6g');
+  MatrixToRangeF(13,8,Msub(GetSolidPosMat(iRobot,iB6),GetSolidPosMat(iRobot,iB0)),'%.6g');
+  MatrixToRangeF(13,10,GetSolidRotMat(iRobot,iB6),'%.6g');
 end;
 
 procedure Control;
@@ -84,7 +87,8 @@ begin
   end;
 
   // Display debug information in the sheet
-  VisualizeSheet;
+  if (DEBUG) then
+    VisualizeSheet;
 end;
 
 
@@ -94,6 +98,8 @@ var
 begin
   iBall  := GetRobotIndex('ball');
   iRobot := GetRobotIndex('Arm7D');
+  iB0    := GetSolidIndex(iRobot,'B0');
+  iB6    := GetSolidIndex(iRobot,'B6');
 
   // Set links lengths
   l1 := 0.3;
@@ -124,4 +130,27 @@ begin
   for i:=0 to NUM_JOINTS-1 do begin
     SetRCValue(1,2+i, Format('%d',[i]) );
   end;
+  SetRCValue(12,1,'B6');
+  SetRCValue(12,2,'PosW:');
+  SetRCValue(13,1,'x:');
+  SetRCValue(14,1,'y:');
+  SetRCValue(15,1,'z:');
+  SetRCValue(12,3,'RW:');
+  SetRCValue(13,3,'(0):');
+  SetRCValue(14,3,'(1):');
+  SetRCValue(15,3,'(2):');
+  SetRCValue(12,4,'(0):');
+  SetRCValue(12,5,'(1):');
+  SetRCValue(12,6,'(2):');
+  SetRCValue(12,8,'Pos0:');
+  SetRCValue(13,7,'x:');
+  SetRCValue(14,7,'y:');
+  SetRCValue(15,7,'z:');
+  SetRCValue(12,9,'R0:');
+  SetRCValue(13,9,'(0):');
+  SetRCValue(14,9,'(1):');
+  SetRCValue(15,9,'(2):');
+  SetRCValue(12,10,'(0):');
+  SetRCValue(12,11,'(1):');
+  SetRCValue(12,12,'(2):');
 end;
