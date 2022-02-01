@@ -120,8 +120,8 @@ var HTool: TDMatrix;
 begin
   // DH convention
   H10 := DHMat( JointsRot.Pos[0,0]      , -L1 , 0  , pi/2 );
-  H21 := DHMat( JointsRot.Pos[1,0]      , 0   , L2 , 0    );
-  H32 := DHMat( JointsRot.Pos[2,0]+pi/2 , 0   , 0  , pi/2 );
+  H21 := DHMat(-JointsRot.Pos[1,0]      , 0   , L2 , 0    );
+  H32 := DHMat(-JointsRot.Pos[2,0]+pi/2 , 0   , 0  , pi/2 );
   H43 := DHMat( JointsRot.Pos[3,0]+pi/2 , L3  , 0  , pi/2 );
   H54 := DHMat( JointsRot.Pos[4,0]+pi   , 0   , 0  , pi/2 );
   H65 := DHMat( JointsRot.Pos[5,0]      , Lt  , 0  , 0    );
