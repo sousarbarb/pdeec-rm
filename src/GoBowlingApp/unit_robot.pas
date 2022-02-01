@@ -27,6 +27,10 @@ type
   TTool = record
     Pos: TDMatrix;
     Rot: TDMatrix;
+    PosRef: TDMatrix;
+    RotRef: TDMatrix;
+    PosRefFK: TDMatrix;
+    RotRefFK: TDMatrix;
   end;
 
   TRobot = class
@@ -38,6 +42,7 @@ type
 
       constructor Create;
       procedure FK;
+      procedure FK(var JPrismMat, JRotMat: TDMatrix; var RMat, TMat: TDMatrix);
       procedure SetConfigH0W(var R, T: TDMatrix);
       procedure UpdateConfigH0W;
       procedure Stop;
@@ -133,25 +138,36 @@ begin
   // Initialize tool
   Tool.Pos := Mzeros(3,1);
   Tool.Rot := Meye(3);
+  Tool.PosRef := Mzeros(3,1);
+  Tool.RotRef := Meye(3);
+  Tool.PosRefFK := Mzeros(3,1);
+  Tool.RotRefFK := Meye(3);
 end;
 
 procedure TRobot.FK;
 var HTool: TDMatrix;
     H10, H21, H32, H43, H54, H65: TDMatrix;
 begin
+  FK(JointsPrism.Pos, JointsRot.Pos, Tool.Rot, Tool.Pos);
+end;
+
+procedure TRobot.FK(var JPrismMat, JRotMat: TDMatrix; var RMat, TMat: TDMatrix);
+var HTool: TDMatrix;
+    H10, H21, H32, H43, H54, H65: TDMatrix;
+begin
   // DH convention
-  H10 := DHMat( JointsRot.Pos[0,0]      , -config.l1 , 0         , pi/2 );
-  H21 := DHMat(-JointsRot.Pos[1,0]      , 0          , config.l2 , 0    );
-  H32 := DHMat(-JointsRot.Pos[2,0]+pi/2 , 0          , 0         , pi/2 );
-  H43 := DHMat( JointsRot.Pos[3,0]+pi/2 , config.l3  , 0         , pi/2 );
-  H54 := DHMat( JointsRot.Pos[4,0]+pi   , 0          , 0         , pi/2 );
-  H65 := DHMat( JointsRot.Pos[5,0]      , config.lt  , 0         , 0    );
+  H10 := DHMat( JRotMat[0,0]      , -config.l1 , 0         , pi/2 );
+  H21 := DHMat(-JRotMat[1,0]      , 0          , config.l2 , 0    );
+  H32 := DHMat(-JRotMat[2,0]+pi/2 , 0          , 0         , pi/2 );
+  H43 := DHMat( JRotMat[3,0]+pi/2 , config.l3  , 0         , pi/2 );
+  H54 := DHMat( JRotMat[4,0]+pi   , 0          , 0         , pi/2 );
+  H65 := DHMat( JRotMat[5,0]      , config.lt  , 0         , 0    );
 
   // Forward Kinematics (FK): 6DoFs
   HTool := H10 * H21 * H32 * H43 * H54 * H65;
 
   // FK
-  HMat2RT(HTool, Tool.Rot, Tool.Pos);
+  HMat2RT(HTool, RMat, TMat);
 end;
 
 procedure TRobot.SetConfigH0W(var R, T: TDMatrix);

@@ -2679,7 +2679,7 @@ object FMain: TFMain
         object EdIKRtRx: TEdit
           Left = 56
           Height = 23
-          Top = 96
+          Top = 144
           Width = 56
           Alignment = taRightJustify
           TabOrder = 3
@@ -2695,7 +2695,7 @@ object FMain: TFMain
         object EdIKRtRz: TEdit
           Left = 56
           Height = 23
-          Top = 144
+          Top = 96
           Width = 56
           Alignment = taRightJustify
           TabOrder = 5
@@ -2703,7 +2703,7 @@ object FMain: TFMain
         object LbIKRtRx: TLabel
           Left = 8
           Height = 15
-          Top = 100
+          Top = 148
           Width = 32
           Caption = 'Rx (º):'
           ParentColor = False
@@ -2719,7 +2719,7 @@ object FMain: TFMain
         object LbIKRtRz: TLabel
           Left = 8
           Height = 15
-          Top = 148
+          Top = 100
           Width = 31
           Caption = 'Rz (º):'
           ParentColor = False
@@ -2730,6 +2730,7 @@ object FMain: TFMain
           Top = 0
           Width = 56
           Caption = 'Set'
+          OnClick = BtIKsetClick
           TabOrder = 6
         end
       end
@@ -2769,7 +2770,7 @@ object FMain: TFMain
         object LbConfigR0wRx: TLabel
           Left = 8
           Height = 15
-          Top = 96
+          Top = 144
           Width = 32
           Caption = 'Rx (º):'
           ParentColor = False
@@ -2785,7 +2786,7 @@ object FMain: TFMain
         object LbConfigR0wRz: TLabel
           Left = 8
           Height = 15
-          Top = 144
+          Top = 96
           Width = 31
           Caption = 'Rz (º):'
           ParentColor = False
@@ -2825,7 +2826,7 @@ object FMain: TFMain
         object EdConfigR0wRx: TEdit
           Left = 56
           Height = 23
-          Top = 92
+          Top = 140
           Width = 56
           Alignment = taRightJustify
           TabOrder = 3
@@ -2841,7 +2842,7 @@ object FMain: TFMain
         object EdConfigR0wRz: TEdit
           Left = 56
           Height = 23
-          Top = 140
+          Top = 92
           Width = 56
           Alignment = taRightJustify
           TabOrder = 5
@@ -2987,48 +2988,48 @@ object FMain: TFMain
           Left = 8
           Height = 15
           Top = 28
-          Width = 44
-          Caption = 'q1 (rad):'
+          Width = 32
+          Caption = 'q1 (º):'
           ParentColor = False
         end
         object LbJointsRefQ2: TLabel
           Left = 8
           Height = 15
           Top = 52
-          Width = 44
-          Caption = 'q2 (rad):'
+          Width = 32
+          Caption = 'q2 (º):'
           ParentColor = False
         end
         object LbJointsRefQ3: TLabel
           Left = 8
           Height = 15
           Top = 76
-          Width = 44
-          Caption = 'q3 (rad):'
+          Width = 32
+          Caption = 'q3 (º):'
           ParentColor = False
         end
         object LbJointsRefQ4: TLabel
           Left = 8
           Height = 15
           Top = 100
-          Width = 44
-          Caption = 'q4 (rad):'
+          Width = 32
+          Caption = 'q4 (º):'
           ParentColor = False
         end
         object LbJointsRefQ5: TLabel
           Left = 8
           Height = 15
           Top = 124
-          Width = 44
-          Caption = 'q5 (rad):'
+          Width = 32
+          Caption = 'q5 (º):'
           ParentColor = False
         end
         object LbJointsRefQ6: TLabel
           Left = 8
           Height = 15
           Top = 148
-          Width = 44
-          Caption = 'q6 (rad):'
+          Width = 32
+          Caption = 'q6 (º):'
           ParentColor = False
         end
         object EdJointsRefQ0: TEdit

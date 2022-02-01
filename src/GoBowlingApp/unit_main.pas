@@ -116,6 +116,7 @@ type
     TsComms: TTabSheet;
     procedure BtCommsConnectClick(Sender: TObject);
     procedure BtConfigSetClick(Sender: TObject);
+    procedure BtIKsetClick(Sender: TObject);
     procedure BtJointsRefResetClick(Sender: TObject);
     procedure BtJointsRefSetClick(Sender: TObject);
     procedure CbCommsDbgClearClick(Sender: TObject);
@@ -179,7 +180,7 @@ begin
   thx := DegToRad(StrToFloatDef(EdConfigR0wRx.Text,0));
   thy := DegToRad(StrToFloatDef(EdConfigR0wRy.Text,0));
   thz := DegToRad(StrToFloatDef(EdConfigR0wRz.Text,0));
-  Robot.config.R0W := RxMat(thx) * RyMat(thy) * RzMat(thz);
+  Robot.config.R0W := RzMat(thz) * RyMat(thy) * RxMat(thx);
   for i := 0 to 2 do begin
     for j := 0 to 2 do begin
       SgConfigR0w.Cells[j,i] := format('%.6g',[Robot.config.R0W[i,j]]);
@@ -194,6 +195,21 @@ begin
   Robot.config.l2 := StrToFloatDef(EdConfigL2.Text,0.4);
   Robot.config.l3 := StrToFloatDef(EdConfigL3.Text,0.37);
   Robot.config.lt := StrToFloatDef(EdConfigLt.Text,0.04/2 + 0.03/2);
+end;
+
+procedure TFMain.BtIKsetClick(Sender: TObject);
+var thx, thy, thz: double;
+begin
+  // Tool Reference: Position
+  Robot.Tool.PosRef[0,0] := StrToFloatDef(EdIKXt.Text,Robot.config.l2+Robot.config.l3+Robot.config.lt);
+  Robot.Tool.PosRef[1,0] := StrToFloatDef(EdIKYt.Text,0);
+  Robot.Tool.PosRef[2,0] := StrToFloatDef(EdIKZt.Text,-Robot.config.l1);
+
+  // Tool Reference: Rotation
+  thx := DegToRad(StrToFloatDef(EdIKRtRx.Text,90));
+  thy := DegToRad(StrToFloatDef(EdIKRtRy.Text,0));
+  thz := DegToRad(StrToFloatDef(EdIKRtRz.Text,90));
+  Robot.Tool.RotRef := RzMat(thz) * RyMat(thy) * RxMat(thx);
 end;
 
 procedure TFMain.BtJointsRefResetClick(Sender: TObject);
@@ -409,6 +425,17 @@ begin
   for i := 0 to 2 do begin
     for j := 0 to 2 do begin
       SgFKactRt.Cells[j,i] := format('%.6g',[Robot.Tool.Rot[i,j]]);
+    end;
+  end;
+
+  // Inverse Kinematics
+  Robot.FK(Robot.JointsPrism.PosRef, Robot.JointsRot.PosRef, Robot.Tool.RotRefFK, Robot.Tool.PosRefFK);
+  EdFKrefXt.Text := format('%.6g',[Robot.Tool.PosRefFK[0,0]]);
+  EdFKrefYt.Text := format('%.6g',[Robot.Tool.PosRefFK[1,0]]);
+  EdFKrefZt.Text := format('%.6g',[Robot.Tool.PosRefFK[2,0]]);
+  for i := 0 to 2 do begin
+    for j := 0 to 2 do begin
+      SgFKrefRt.Cells[j,i] := format('%.6g',[Robot.Tool.RotRefFK[i,j]]);
     end;
   end;
 end;
