@@ -1,7 +1,7 @@
 object FMain: TFMain
-  Left = 482
+  Left = 339
   Height = 540
-  Top = 266
+  Top = 271
   Width = 800
   Caption = 'FMain'
   ClientHeight = 540
@@ -2125,7 +2125,8 @@ object FMain: TFMain
   }
   OnClose = FormClose
   OnCreate = FormCreate
-  SessionProperties = 'CbCommsDgRx.Checked;CbCommsDgTx.Checked;CbDebug.Checked;EdCommsIPS2.Text;EdCommsPortLz.Text;EdCommsPortS2.Text;EdConfigL1.Text;EdConfigL2.Text;EdConfigL3.Text;EdConfigLt.Text;EdConfigR0wRx.Text;EdConfigR0wRy.Text;EdConfigR0wRz.Text;EdConfigT0wX.Text;EdConfigT0wY.Text;EdConfigT0wZ.Text;EdIKRtRx.Text;EdIKRtRy.Text;EdIKRtRz.Text;EdIKXt.Text;EdIKYt.Text;EdIKZt.Text;PcMain.ActivePage'
+  OnShow = FormShow
+  SessionProperties = 'CbCommsDgRx.Checked;CbCommsDgTx.Checked;CbDebug.Checked;EdCommsIPS2.Text;EdCommsPortLz.Text;EdCommsPortS2.Text;EdConfigL1.Text;EdConfigL2.Text;EdConfigL3.Text;EdConfigLt.Text;EdConfigR0wRx.Text;EdConfigR0wRy.Text;EdConfigR0wRz.Text;EdConfigT0wX.Text;EdConfigT0wY.Text;EdConfigT0wZ.Text;EdIKRtRx.Text;EdIKRtRy.Text;EdIKRtRz.Text;EdIKXt.Text;EdIKYt.Text;EdIKZt.Text;PcMain.ActivePage;EdJointsRefQ0.Text;EdJointsRefQ1.Text;EdJointsRefQ2.Text;EdJointsRefQ3.Text;EdJointsRefQ4.Text;EdJointsRefQ5.Text;EdJointsRefQ6.Text'
   LCLVersion = '2.0.10.0'
   object CbDebug: TCheckBox
     Left = 8
@@ -2170,6 +2171,7 @@ object FMain: TFMain
       Top = 0
       Width = 60
       Caption = 'Manual'
+      OnChange = RbModeManualChange
       TabOrder = 0
     end
     object RbModeBall: TRadioButton
@@ -2274,7 +2276,7 @@ object FMain: TFMain
       end
       object BtCommsConnect: TButton
         Left = 200
-        Height = 24
+        Height = 23
         Top = 8
         Width = 80
         Caption = 'Connect'
@@ -2382,7 +2384,7 @@ object FMain: TFMain
         Height = 200
         Top = 224
         Width = 376
-        Caption = 'Forward Kinematics (joints > world):'
+        Caption = 'Forward Kinematics (Q > W):'
         ClientHeight = 180
         ClientWidth = 372
         TabOrder = 1
@@ -2618,13 +2620,13 @@ object FMain: TFMain
         end
       end
       object GbKinematicsInverse: TGroupBox
-        Left = 392
+        Left = 584
         Height = 200
         Top = 224
-        Width = 376
-        Caption = 'Inverse Kinematics (world > joints):'
+        Width = 184
+        Caption = 'Inverse Kinematics (W > Q):'
         ClientHeight = 180
-        ClientWidth = 372
+        ClientWidth = 180
         TabOrder = 2
         object LbIKXt: TLabel
           Left = 8
@@ -2650,16 +2652,8 @@ object FMain: TFMain
           Caption = 'Zt (m):'
           ParentColor = False
         end
-        object LbIKRt: TLabel
-          Left = 120
-          Height = 15
-          Top = 96
-          Width = 14
-          Caption = 'Rt:'
-          ParentColor = False
-        end
         object EdIKXt: TEdit
-          Left = 48
+          Left = 56
           Height = 23
           Top = 0
           Width = 56
@@ -2667,7 +2661,7 @@ object FMain: TFMain
           TabOrder = 0
         end
         object EdIKYt: TEdit
-          Left = 48
+          Left = 56
           Height = 23
           Top = 24
           Width = 56
@@ -2675,7 +2669,7 @@ object FMain: TFMain
           TabOrder = 1
         end
         object EdIKZt: TEdit
-          Left = 48
+          Left = 56
           Height = 23
           Top = 48
           Width = 56
@@ -2683,25 +2677,25 @@ object FMain: TFMain
           TabOrder = 2
         end
         object EdIKRtRx: TEdit
-          Left = 48
+          Left = 56
           Height = 23
-          Top = 92
+          Top = 96
           Width = 56
           Alignment = taRightJustify
           TabOrder = 3
         end
         object EdIKRtRy: TEdit
-          Left = 48
+          Left = 56
           Height = 23
-          Top = 116
+          Top = 120
           Width = 56
           Alignment = taRightJustify
           TabOrder = 4
         end
         object EdIKRtRz: TEdit
-          Left = 48
+          Left = 56
           Height = 23
-          Top = 140
+          Top = 144
           Width = 56
           Alignment = taRightJustify
           TabOrder = 5
@@ -2709,7 +2703,7 @@ object FMain: TFMain
         object LbIKRtRx: TLabel
           Left = 8
           Height = 15
-          Top = 96
+          Top = 100
           Width = 32
           Caption = 'Rx (º):'
           ParentColor = False
@@ -2717,7 +2711,7 @@ object FMain: TFMain
         object LbIKRtRy: TLabel
           Left = 8
           Height = 15
-          Top = 120
+          Top = 124
           Width = 32
           Caption = 'Ry (º):'
           ParentColor = False
@@ -2725,64 +2719,18 @@ object FMain: TFMain
         object LbIKRtRz: TLabel
           Left = 8
           Height = 15
-          Top = 144
+          Top = 148
           Width = 31
           Caption = 'Rz (º):'
           ParentColor = False
         end
-        object SgIKRt: TStringGrid
-          Left = 144
-          Height = 76
-          Top = 92
-          Width = 156
-          AutoEdit = False
-          AutoFillColumns = True
-          Color = clForm
-          ColCount = 3
-          Columns = <          
-            item
-              Alignment = taRightJustify
-              Title.Caption = 'Title'
-              Width = 50
-            end          
-            item
-              Alignment = taRightJustify
-              Title.Caption = 'Title'
-              Width = 50
-            end          
-            item
-              Alignment = taRightJustify
-              Title.Caption = 'Title'
-              Width = 52
-            end>
-          Enabled = False
-          FixedCols = 0
-          FixedRows = 0
-          Font.Height = -9
-          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goSmoothScroll]
-          ParentFont = False
-          RowCount = 3
-          TabOrder = 6
-          TitleFont.Height = -12
-          TitleFont.Name = 'Sans'
-          ColWidths = (
-            50
-            50
-            52
-          )
-          RowHeights = (
-            22
-            22
-            22
-          )
-        end
         object BtIKset: TButton
-          Left = 312
-          Height = 25
+          Left = 120
+          Height = 23
           Top = 0
           Width = 56
           Caption = 'Set'
-          TabOrder = 7
+          TabOrder = 6
         end
       end
       object GbKinematicsConfig: TGroupBox
@@ -2843,7 +2791,7 @@ object FMain: TFMain
           ParentColor = False
         end
         object LbConfigR0w: TLabel
-          Left = 120
+          Left = 127
           Height = 15
           Top = 96
           Width = 14
@@ -2875,7 +2823,7 @@ object FMain: TFMain
           TabOrder = 2
         end
         object EdConfigR0wRx: TEdit
-          Left = 48
+          Left = 56
           Height = 23
           Top = 92
           Width = 56
@@ -2883,7 +2831,7 @@ object FMain: TFMain
           TabOrder = 3
         end
         object EdConfigR0wRy: TEdit
-          Left = 48
+          Left = 56
           Height = 23
           Top = 116
           Width = 56
@@ -2891,7 +2839,7 @@ object FMain: TFMain
           TabOrder = 4
         end
         object EdConfigR0wRz: TEdit
-          Left = 48
+          Left = 56
           Height = 23
           Top = 140
           Width = 56
@@ -2899,7 +2847,7 @@ object FMain: TFMain
           TabOrder = 5
         end
         object SgConfigR0w: TStringGrid
-          Left = 144
+          Left = 151
           Height = 76
           Top = 92
           Width = 156
@@ -3010,11 +2958,152 @@ object FMain: TFMain
         end
         object BtConfigSet: TButton
           Left = 312
-          Height = 25
+          Height = 23
           Top = 0
           Width = 56
           Caption = 'Set'
+          OnClick = BtConfigSetClick
           TabOrder = 11
+        end
+      end
+      object GbKinematicsJointsRef: TGroupBox
+        Left = 392
+        Height = 200
+        Top = 224
+        Width = 184
+        Caption = 'Joints References:'
+        ClientHeight = 180
+        ClientWidth = 180
+        TabOrder = 4
+        object LbJointsRefQ0: TLabel
+          Left = 8
+          Height = 15
+          Top = 4
+          Width = 38
+          Caption = 'q0 (m):'
+          ParentColor = False
+        end
+        object LbJointsRefQ1: TLabel
+          Left = 8
+          Height = 15
+          Top = 28
+          Width = 44
+          Caption = 'q1 (rad):'
+          ParentColor = False
+        end
+        object LbJointsRefQ2: TLabel
+          Left = 8
+          Height = 15
+          Top = 52
+          Width = 44
+          Caption = 'q2 (rad):'
+          ParentColor = False
+        end
+        object LbJointsRefQ3: TLabel
+          Left = 8
+          Height = 15
+          Top = 76
+          Width = 44
+          Caption = 'q3 (rad):'
+          ParentColor = False
+        end
+        object LbJointsRefQ4: TLabel
+          Left = 8
+          Height = 15
+          Top = 100
+          Width = 44
+          Caption = 'q4 (rad):'
+          ParentColor = False
+        end
+        object LbJointsRefQ5: TLabel
+          Left = 8
+          Height = 15
+          Top = 124
+          Width = 44
+          Caption = 'q5 (rad):'
+          ParentColor = False
+        end
+        object LbJointsRefQ6: TLabel
+          Left = 8
+          Height = 15
+          Top = 148
+          Width = 44
+          Caption = 'q6 (rad):'
+          ParentColor = False
+        end
+        object EdJointsRefQ0: TEdit
+          Left = 56
+          Height = 23
+          Top = 0
+          Width = 56
+          Alignment = taRightJustify
+          TabOrder = 0
+        end
+        object EdJointsRefQ1: TEdit
+          Left = 56
+          Height = 23
+          Top = 24
+          Width = 56
+          Alignment = taRightJustify
+          TabOrder = 1
+        end
+        object EdJointsRefQ2: TEdit
+          Left = 56
+          Height = 23
+          Top = 48
+          Width = 56
+          Alignment = taRightJustify
+          TabOrder = 2
+        end
+        object EdJointsRefQ3: TEdit
+          Left = 56
+          Height = 23
+          Top = 72
+          Width = 56
+          Alignment = taRightJustify
+          TabOrder = 3
+        end
+        object EdJointsRefQ4: TEdit
+          Left = 56
+          Height = 23
+          Top = 96
+          Width = 56
+          Alignment = taRightJustify
+          TabOrder = 4
+        end
+        object EdJointsRefQ5: TEdit
+          Left = 56
+          Height = 23
+          Top = 120
+          Width = 56
+          Alignment = taRightJustify
+          TabOrder = 5
+        end
+        object EdJointsRefQ6: TEdit
+          Left = 56
+          Height = 23
+          Top = 144
+          Width = 56
+          Alignment = taRightJustify
+          TabOrder = 6
+        end
+        object BtJointsRefSet: TButton
+          Left = 120
+          Height = 23
+          Top = 0
+          Width = 56
+          Caption = 'Set'
+          OnClick = BtJointsRefSetClick
+          TabOrder = 7
+        end
+        object BtJointsRefReset: TButton
+          Left = 120
+          Height = 23
+          Top = 24
+          Width = 56
+          Caption = 'Reset'
+          OnClick = BtJointsRefResetClick
+          TabOrder = 8
         end
       end
     end

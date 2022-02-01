@@ -17,6 +17,8 @@ type
     BtCommsConnect: TButton;
     BtIKset: TButton;
     BtConfigSet: TButton;
+    BtJointsRefSet: TButton;
+    BtJointsRefReset: TButton;
     CbCommsDbgClear: TButton;
     CbDebug: TCheckBox;
     CbCommsDgRx: TCheckBox;
@@ -34,6 +36,7 @@ type
     EdConfigT0wX: TEdit;
     EdConfigL1: TEdit;
     EdConfigLt: TEdit;
+    EdJointsRefQ0: TEdit;
     EdIKYt: TEdit;
     EdIKRtRy: TEdit;
     EdFKactZt: TEdit;
@@ -46,32 +49,43 @@ type
     EdFKrefZt: TEdit;
     EdConfigT0wZ: TEdit;
     EdConfigL3: TEdit;
+    EdJointsRefQ1: TEdit;
+    EdJointsRefQ2: TEdit;
+    EdJointsRefQ3: TEdit;
+    EdJointsRefQ4: TEdit;
+    EdJointsRefQ5: TEdit;
+    EdJointsRefQ6: TEdit;
     GbKinematicsInverse: TGroupBox;
     GbKinematicsConfig: TGroupBox;
+    GbKinematicsJointsRef: TGroupBox;
     GbKinematicsJoints: TGroupBox;
     GbKinematicsForward: TGroupBox;
     GbFKactual: TGroupBox;
     GbFKref: TGroupBox;
     IniPropStorage: TIniPropStorage;
-    LbIKRt: TLabel;
     LbConfigR0w: TLabel;
     LbIKRtRx: TLabel;
     LbConfigR0wRx: TLabel;
+    LbJointsRefQ3: TLabel;
     LbIKRtRy: TLabel;
     LbConfigR0wRy: TLabel;
+    LbJointsRefQ4: TLabel;
     LbIKRtRz: TLabel;
     LbFKactXt: TLabel;
     LbConfigR0wRz: TLabel;
+    LbJointsRefQ5: TLabel;
     LbIKXt: TLabel;
     LbFKactYt: TLabel;
     LbConfigT0wX: TLabel;
     LbConfigL1: TLabel;
     LbConfigLt: TLabel;
+    LbJointsRefQ0: TLabel;
     LbIKYt: TLabel;
     LbFKactZt: TLabel;
     LbFKactRt: TLabel;
     LbConfigT0wY: TLabel;
     LbConfigL2: TLabel;
+    LbJointsRefQ1: TLabel;
     LbIKZt: TLabel;
     LbFKrefXt: TLabel;
     LbFKrefYt: TLabel;
@@ -83,8 +97,9 @@ type
     LbCommsDebug: TLabel;
     LbConfigT0wZ: TLabel;
     LbConfigL3: TLabel;
+    LbJointsRefQ2: TLabel;
+    LbJointsRefQ6: TLabel;
     SgFKactRt: TStringGrid;
-    SgIKRt: TStringGrid;
     SgConfigR0w: TStringGrid;
     SgKinJoints: TStringGrid;
     SgFKrefRt: TStringGrid;
@@ -100,12 +115,17 @@ type
     StatusBar: TStatusBar;
     TsComms: TTabSheet;
     procedure BtCommsConnectClick(Sender: TObject);
+    procedure BtConfigSetClick(Sender: TObject);
+    procedure BtJointsRefResetClick(Sender: TObject);
+    procedure BtJointsRefSetClick(Sender: TObject);
     procedure CbCommsDbgClearClick(Sender: TObject);
     procedure CbCommsDgRxChange(Sender: TObject);
     procedure CbCommsDgTxChange(Sender: TObject);
     procedure CbDebugChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure RbModeManualChange(Sender: TObject);
     procedure UDPError(const msg: string; aSocket: TLSocket);
     procedure UDPReceive(aSocket: TLSocket);
   private
@@ -115,6 +135,7 @@ type
     procedure Control;
     procedure ControlStop;
     procedure ControlManual;
+    procedure ControlManualConfig(enable: boolean);
     procedure ParseUDPMessage(var msg: String);
     procedure SendUDPMessage;
     procedure UpdateGUI;
@@ -143,6 +164,52 @@ begin
 
   UDP.Listen(UDPportLz);
   UDPstrS2 := Format('%s:%d', [UDPipS2, UDPportS2]);
+end;
+
+procedure TFMain.BtConfigSetClick(Sender: TObject);
+var thx, thy, thz: double;
+    i, j: Integer;
+begin
+  // Configuration Robot: T 0 >>> World
+  Robot.config.T0W[0,0] := StrToFloatDef(EdConfigT0wX.Text,0.57125);
+  Robot.config.T0W[1,0] := StrToFloatDef(EdConfigT0wY.Text,0);
+  Robot.config.T0W[2,0] := StrToFloatDef(EdConfigT0wZ.Text,1.15);
+
+  // Configuration Robot: R 0 >>> World
+  thx := DegToRad(StrToFloatDef(EdConfigR0wRx.Text,0));
+  thy := DegToRad(StrToFloatDef(EdConfigR0wRy.Text,0));
+  thz := DegToRad(StrToFloatDef(EdConfigR0wRz.Text,0));
+  Robot.config.R0W := RxMat(thx) * RyMat(thy) * RzMat(thz);
+  for i := 0 to 2 do begin
+    for j := 0 to 2 do begin
+      SgConfigR0w.Cells[j,i] := format('%.6g',[Robot.config.R0W[i,j]]);
+    end;
+  end;
+
+  // Configuration Robot: H 0 >>> World
+  Robot.UpdateConfigH0W;
+
+  // Configuration Robot: links + tools lengths
+  Robot.config.l1 := StrToFloatDef(EdConfigL1.Text,0.3);
+  Robot.config.l2 := StrToFloatDef(EdConfigL2.Text,0.4);
+  Robot.config.l3 := StrToFloatDef(EdConfigL3.Text,0.37);
+  Robot.config.lt := StrToFloatDef(EdConfigLt.Text,0.04/2 + 0.03/2);
+end;
+
+procedure TFMain.BtJointsRefResetClick(Sender: TObject);
+begin
+  Robot.Stop;
+end;
+
+procedure TFMain.BtJointsRefSetClick(Sender: TObject);
+begin
+  Robot.JointsPrism.PosRef[0,0] := StrToFloatDef(EdJointsRefQ0.Text,0);
+  Robot.JointsRot.PosRef[0,0] := DegToRad(StrToFloatDef(EdJointsRefQ1.Text,0));
+  Robot.JointsRot.PosRef[1,0] := DegToRad(StrToFloatDef(EdJointsRefQ2.Text,0));
+  Robot.JointsRot.PosRef[2,0] := DegToRad(StrToFloatDef(EdJointsRefQ3.Text,0));
+  Robot.JointsRot.PosRef[3,0] := DegToRad(StrToFloatDef(EdJointsRefQ4.Text,0));
+  Robot.JointsRot.PosRef[4,0] := DegToRad(StrToFloatDef(EdJointsRefQ5.Text,0));
+  Robot.JointsRot.PosRef[5,0] := DegToRad(StrToFloatDef(EdJointsRefQ6.Text,0));
 end;
 
 procedure TFMain.CbCommsDbgClearClick(Sender: TObject);
@@ -178,6 +245,17 @@ end;
 procedure TFMain.FormCreate(Sender: TObject);
 begin
   Robot := TRobot.Create;
+end;
+
+procedure TFMain.FormShow(Sender: TObject);
+begin
+  BtConfigSet.Click;
+  RbModeManualChange(RbModeManual);
+end;
+
+procedure TFMain.RbModeManualChange(Sender: TObject);
+begin
+  ControlManualConfig(RbModeManual.Checked);
 end;
 
 procedure TFMain.UDPError(const msg: string; aSocket: TLSocket);
@@ -238,6 +316,12 @@ end;
 procedure TFMain.ControlManual;
 begin
 
+end;
+
+procedure TFMain.ControlManualConfig(enable: boolean);
+begin
+  GbKinematicsJointsRef.Enabled := enable;
+  GbKinematicsInverse.Enabled   := enable;
 end;
 
 procedure TFMain.ParseUDPMessage(var msg: String);
