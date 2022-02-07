@@ -214,7 +214,13 @@ begin
   Robot.Tool.RotRef := RzMat(thz) * RyMat(thy) * RxMat(thx);
 
   // Inverse Kinematics
-  Robot.IK(CbIKelbowUp.Checked);
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+  except
+    on E: Exception do StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
 end;
 
 procedure TFMain.BtJointsRefResetClick(Sender: TObject);
