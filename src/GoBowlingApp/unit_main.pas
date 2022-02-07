@@ -351,7 +351,7 @@ begin
     mess.Text := msg;
 
     // Check number of messages vs expected
-    //if mess.Count < NUMJOINTS then exit;
+    if mess.Count < 14 then exit;
 
     // Current joint values
     Robot.JointsPrism.Pos[0,0] := StrToFloatDef(mess.Strings[0], 0);
@@ -360,6 +360,10 @@ begin
     end;
 
     // Current joint velocities
+    Robot.JointsPrism.Vel[0,0] := StrToFloatDef(mess.Strings[7], 0);
+    for i := 0 to 5 do begin
+      Robot.JointsRot.Vel[i,0] := StrToFloatDef(mess.Strings[i+8], 0);
+    end;
 
     // Debug
     if (CbCommsDgRx.Checked) then begin
@@ -415,7 +419,7 @@ begin
   SgKinJoints.Cells[3,1] := format('%.6g',[Robot.JointsPrism.PosRef[0,0]]);
   for i := 0 to 5 do begin
     SgKinJoints.Cells[1,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.Pos[i,0])]);
-    SgKinJoints.Cells[2,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.Vel[i,0])]);
+    SgKinJoints.Cells[2,2+i] := format('%.6g',[Robot.JointsRot.Vel[i,0]]);
     SgKinJoints.Cells[3,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.PosRef[i,0])]);
   end;
 
