@@ -43,6 +43,7 @@ type
       constructor Create;
       procedure FK;
       procedure FK(var JPrismMat, JRotMat: TDMatrix; var RMat, TMat: TDMatrix);
+      procedure IK(elbow_up: boolean);
       procedure SetConfigH0W(var R, T: TDMatrix);
       procedure UpdateConfigH0W;
       procedure Stop;
@@ -145,8 +146,6 @@ begin
 end;
 
 procedure TRobot.FK;
-var HTool: TDMatrix;
-    H10, H21, H32, H43, H54, H65: TDMatrix;
 begin
   FK(JointsPrism.Pos, JointsRot.Pos, Tool.Rot, Tool.Pos);
 end;
@@ -168,6 +167,38 @@ begin
 
   // FK
   HMat2RT(HTool, RMat, TMat);
+end;
+
+procedure TRobot.IK(elbow_up: boolean);
+var ToolLength, WristPosRef, WristRotRef: TDMatrix;
+    s, r, cth3: double;
+begin
+  // Initialization
+  ToolLength := Mzeros(3,1);
+  ToolLength[2,0] := config.lt;
+
+  // Inverse Kinematics: Central Point of the Wrist
+  // - central point
+  WristPosRef := Tool.PosRef - Tool.RotRef * ToolLength;
+
+  // - joints 1-3 (reference)
+  // (J1)
+  if ((WristPosRef[0,0] <> 0) AND (WristPosRef[1,0] <> 0)) then
+    Robot.JointsRot.PosRef[0,0] := ArcTan2(WristPosRef[1,0],WristPosRef[0,0]);
+    // or Robot.JointsRot.PosRef[0,0] := pi + ArcTan2(WristPosRef[1,0],WristPosRef[0,0]);
+  // (J3)
+  s := WristPosRef[2,0] + config.l1;
+  r := Sqrt(Sqr(WristPosRef[0,0]) + Sqr(WristPosRef[1,0]));
+  cth3 := (Sqr(s) + Sqr(r) - Sqr(config.l2) - Sqr(config.l3)) / (2*config.l2*config.l3);
+  if (elbow_up) then begin
+    Robot.JointsRot.PosRef[2,0] := ArcTan2(Sqrt(1-Sqr(cth3)),cth3);
+  end else begin
+    Robot.JointsRot.PosRef[2,0] := ArcTan2(-Sqrt(1-Sqr(cth3)),cth3);
+  end;
+  // (J2)
+  Robot.JointsRot.PosRef[1,0] :=
+    ArcTan2(s,r) -
+    ArcTan2(config.l3*sin(Robot.JointsRot.PosRef[2,0]), config.l2 + config.l3*cos(Robot.JointsRot.PosRef[2,0]));
 end;
 
 procedure TRobot.SetConfigH0W(var R, T: TDMatrix);

@@ -2679,7 +2679,7 @@ object FMain: TFMain
         object EdIKRtRx: TEdit
           Left = 56
           Height = 23
-          Top = 144
+          Top = 120
           Width = 56
           Alignment = taRightJustify
           TabOrder = 3
@@ -2687,7 +2687,7 @@ object FMain: TFMain
         object EdIKRtRy: TEdit
           Left = 56
           Height = 23
-          Top = 120
+          Top = 96
           Width = 56
           Alignment = taRightJustify
           TabOrder = 4
@@ -2695,7 +2695,7 @@ object FMain: TFMain
         object EdIKRtRz: TEdit
           Left = 56
           Height = 23
-          Top = 96
+          Top = 72
           Width = 56
           Alignment = taRightJustify
           TabOrder = 5
@@ -2703,7 +2703,7 @@ object FMain: TFMain
         object LbIKRtRx: TLabel
           Left = 8
           Height = 15
-          Top = 148
+          Top = 124
           Width = 32
           Caption = 'Rx (º):'
           ParentColor = False
@@ -2711,7 +2711,7 @@ object FMain: TFMain
         object LbIKRtRy: TLabel
           Left = 8
           Height = 15
-          Top = 124
+          Top = 100
           Width = 32
           Caption = 'Ry (º):'
           ParentColor = False
@@ -2719,7 +2719,7 @@ object FMain: TFMain
         object LbIKRtRz: TLabel
           Left = 8
           Height = 15
-          Top = 100
+          Top = 76
           Width = 31
           Caption = 'Rz (º):'
           ParentColor = False
@@ -2732,6 +2732,23 @@ object FMain: TFMain
           Caption = 'Set'
           OnClick = BtIKsetClick
           TabOrder = 6
+        end
+        object BtIKreset: TButton
+          Left = 120
+          Height = 23
+          Top = 24
+          Width = 56
+          Caption = 'Reset'
+          OnClick = BtJointsRefResetClick
+          TabOrder = 7
+        end
+        object CbIKelbowUp: TCheckBox
+          Left = 8
+          Height = 19
+          Top = 148
+          Width = 70
+          Caption = 'Elbow Up'
+          TabOrder = 8
         end
       end
       object GbKinematicsConfig: TGroupBox

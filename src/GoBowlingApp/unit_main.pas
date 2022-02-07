@@ -17,12 +17,14 @@ type
     BtCommsConnect: TButton;
     BtIKset: TButton;
     BtConfigSet: TButton;
+    BtIKreset: TButton;
     BtJointsRefSet: TButton;
     BtJointsRefReset: TButton;
     CbCommsDbgClear: TButton;
     CbDebug: TCheckBox;
     CbCommsDgRx: TCheckBox;
     CbCommsDgTx: TCheckBox;
+    CbIKelbowUp: TCheckBox;
     EdCommsIPS2: TEdit;
     EdCommsPortS2: TEdit;
     EdCommsPortLz: TEdit;
@@ -210,6 +212,9 @@ begin
   thy := DegToRad(StrToFloatDef(EdIKRtRy.Text,0));
   thz := DegToRad(StrToFloatDef(EdIKRtRz.Text,90));
   Robot.Tool.RotRef := RzMat(thz) * RyMat(thy) * RxMat(thx);
+
+  // Inverse Kinematics
+  Robot.IK(CbIKelbowUp.Checked);
 end;
 
 procedure TFMain.BtJointsRefResetClick(Sender: TObject);
