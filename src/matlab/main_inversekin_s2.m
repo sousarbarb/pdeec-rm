@@ -1,0 +1,5 @@
+main_fowardkin_s2
+
+%% INVERSE KINEMATICS
+
+B=H43*H54*H65
