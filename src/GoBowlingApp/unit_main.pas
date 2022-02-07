@@ -265,6 +265,7 @@ end;
 
 procedure TFMain.FormShow(Sender: TObject);
 begin
+  BtCommsConnect.Click;
   BtConfigSet.Click;
   RbModeManualChange(RbModeManual);
 end;
