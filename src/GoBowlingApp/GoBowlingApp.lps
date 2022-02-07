@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="11"/>
     <BuildModes Active="Default"/>
-    <Units Count="8">
+    <Units Count="9">
       <Unit0>
         <Filename Value="GoBowlingApp.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -12,7 +12,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="35"/>
+        <UsageCount Value="45"/>
       </Unit0>
       <Unit1>
         <Filename Value="unit_main.pas"/>
@@ -21,9 +21,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="186"/>
-        <CursorPos X="14" Y="204"/>
-        <UsageCount Value="35"/>
+        <TopLine Value="206"/>
+        <CursorPos X="30" Y="220"/>
+        <UsageCount Value="45"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -31,15 +31,15 @@
         <Filename Value="unit_robot.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="114"/>
-        <CursorPos X="16" Y="144"/>
-        <UsageCount Value="30"/>
+        <TopLine Value="157"/>
+        <CursorPos X="41" Y="163"/>
+        <UsageCount Value="40"/>
         <Loaded Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="..\..\..\..\..\..\..\5dpo\git\robot_at_factory\5dpo_ratf_lazarus\src\RoboSRAU_Laz_PI_4P\main.lfm"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit3>
       <Unit4>
@@ -48,150 +48,158 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit4>
       <Unit5>
         <Filename Value="..\..\..\..\..\..\..\inesctec\projects\optiodom-odometry-calibration\git\optiodom\src\robot\diff\RoboSRAU_Laz_PI-rbs\main.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="487"/>
         <CursorPos X="16" Y="10"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit5>
       <Unit6>
         <Filename Value="..\..\..\..\..\..\..\5dpo\git\5dpo_msl_hwcontrol\unit_testmotors.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1113"/>
         <CursorPos Y="1116"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit6>
       <Unit7>
         <Filename Value="..\..\..\..\..\..\..\5dpo\lazarus\SdpoDynmatrix\dynmatrix.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="436"/>
-        <CursorPos Y="444"/>
-        <UsageCount Value="10"/>
+        <TopLine Value="80"/>
+        <CursorPos X="3" Y="35"/>
+        <UsageCount Value="9"/>
       </Unit7>
+      <Unit8>
+        <Filename Value="C:\lazarus\fpc\3.2.0\source\rtl\objpas\math.pp"/>
+        <UnitName Value="Math"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="895"/>
+        <CursorPos X="10" Y="902"/>
+        <UsageCount Value="9"/>
+      </Unit8>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="228" Column="20" TopLine="217"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="196" Column="45" TopLine="165"/>
       </Position1>
       <Position2>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="229" Column="20" TopLine="218"/>
+        <Caret Line="222" Column="24" TopLine="201"/>
       </Position2>
       <Position3>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="230" Column="20" TopLine="219"/>
+        <Caret Line="215" Column="16" TopLine="200"/>
       </Position3>
       <Position4>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="231" Column="20" TopLine="220"/>
+        <Caret Line="216" Column="16" TopLine="201"/>
       </Position4>
       <Position5>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="230" Column="20" TopLine="219"/>
+        <Caret Line="217" Column="16" TopLine="202"/>
       </Position5>
       <Position6>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="231" Column="21" TopLine="220"/>
+        <Caret Line="216" Column="16" TopLine="201"/>
       </Position6>
       <Position7>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="133" Column="20" TopLine="119"/>
+        <Caret Line="217" Column="31" TopLine="196"/>
       </Position7>
       <Position8>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="297" Column="27" TopLine="279"/>
+        <Caret Line="432" Column="35" TopLine="418"/>
       </Position8>
       <Position9>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="301" Column="54" TopLine="266"/>
+        <Caret Line="196" Column="18" TopLine="179"/>
       </Position9>
       <Position10>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="238" Column="45" TopLine="224"/>
+        <Caret Line="208" Column="71" TopLine="182"/>
       </Position10>
       <Position11>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="240" Column="34" TopLine="230"/>
+        <Caret Line="196" Column="18" TopLine="183"/>
       </Position11>
       <Position12>
-        <Filename Value="unit_robot.pas"/>
-        <Caret Line="40" Column="18" TopLine="23"/>
+        <Filename Value="unit_main.pas"/>
+        <Caret Line="208" Column="71" TopLine="182"/>
       </Position12>
       <Position13>
         <Filename Value="unit_robot.pas"/>
-        <Caret Line="158" Column="52" TopLine="142"/>
+        <Caret Line="194" Column="32" TopLine="167"/>
       </Position13>
       <Position14>
-        <Filename Value="unit_robot.pas"/>
-        <Caret Line="41" Column="18" TopLine="15"/>
+        <Filename Value="unit_main.pas"/>
+        <Caret Line="214" Column="25" TopLine="188"/>
       </Position14>
       <Position15>
-        <Filename Value="unit_robot.pas"/>
-        <Caret Line="158" Column="80" TopLine="140"/>
+        <Filename Value="unit_main.pas"/>
+        <Caret Line="121" Column="15" TopLine="124"/>
       </Position15>
       <Position16>
-        <Filename Value="unit_robot.pas"/>
-        <Caret Line="41" Column="79" TopLine="41"/>
+        <Filename Value="unit_main.pas"/>
+        <Caret Line="214" Column="26" TopLine="190"/>
       </Position16>
       <Position17>
         <Filename Value="unit_robot.pas"/>
-        <Caret Line="143" Column="4" TopLine="135"/>
+        <Caret Line="62" Column="10" TopLine="44"/>
       </Position17>
       <Position18>
         <Filename Value="unit_robot.pas"/>
-        <Caret Line="41" Column="18" TopLine="23"/>
+        <Caret Line="187" Column="42" TopLine="165"/>
       </Position18>
       <Position19>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="208" Column="27" TopLine="194"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="188" Column="29" TopLine="167"/>
       </Position19>
       <Position20>
         <Filename Value="unit_robot.pas"/>
-        <Caret Line="145" Column="16" TopLine="134"/>
+        <Caret Line="194" TopLine="170"/>
       </Position20>
       <Position21>
         <Filename Value="unit_robot.pas"/>
-        <Caret Line="41" Column="21" TopLine="28"/>
+        <Caret Line="189" Column="28" TopLine="170"/>
       </Position21>
       <Position22>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="211" Column="52" TopLine="211"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="194" Column="39" TopLine="170"/>
       </Position22>
       <Position23>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="142" Column="19" TopLine="114"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="191" Column="24" TopLine="170"/>
       </Position23>
       <Position24>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="411" Column="19" TopLine="344"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="199" Column="23" TopLine="170"/>
       </Position24>
       <Position25>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="29" Column="9" TopLine="11"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="192" Column="55" TopLine="171"/>
       </Position25>
       <Position26>
         <Filename Value="unit_main.pas"/>
-        <Caret Line="230" Column="11" TopLine="204"/>
+        <Caret Line="220" Column="7" TopLine="190"/>
       </Position26>
       <Position27>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="205" Column="14" TopLine="192"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="58" Column="14" TopLine="39"/>
       </Position27>
       <Position28>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="206" Column="14" TopLine="192"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="84" Column="3" TopLine="82"/>
       </Position28>
       <Position29>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="212" Column="14" TopLine="192"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="46" Column="19" TopLine="34"/>
       </Position29>
       <Position30>
-        <Filename Value="unit_main.pas"/>
-        <Caret Line="438" Column="57" TopLine="410"/>
+        <Filename Value="unit_robot.pas"/>
+        <Caret Line="180" Column="48" TopLine="166"/>
       </Position30>
     </JumpHistory>
     <RunParams>
@@ -199,4 +207,11 @@
       <Modes Count="0" ActiveMode=""/>
     </RunParams>
   </ProjectSession>
+  <Debugging>
+    <Watches Count="1">
+      <Item1>
+        <Expression Value="WristPosRef"/>
+      </Item1>
+    </Watches>
+  </Debugging>
 </CONFIG>

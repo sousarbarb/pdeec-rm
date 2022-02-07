@@ -2384,7 +2384,7 @@ object FMain: TFMain
         Height = 200
         Top = 224
         Width = 376
-        Caption = 'Forward Kinematics (Q > W):'
+        Caption = 'Forward Kinematics (Q > 0):'
         ClientHeight = 180
         ClientWidth = 372
         TabOrder = 1
@@ -2624,7 +2624,7 @@ object FMain: TFMain
         Height = 200
         Top = 224
         Width = 184
-        Caption = 'Inverse Kinematics (W > Q):'
+        Caption = 'Inverse Kinematics (0 > Q):'
         ClientHeight = 180
         ClientWidth = 180
         TabOrder = 2

@@ -204,6 +204,9 @@ begin
   Robot.JointsRot.PosRef[1,0] :=
     ArcTan2(s,r) -
     ArcTan2(config.l3*sin(Robot.JointsRot.PosRef[2,0]), config.l2 + config.l3*cos(Robot.JointsRot.PosRef[2,0]));
+  // (-J2,-J3) due to SimTwo
+  Robot.JointsRot.PosRef[1,0] := -Robot.JointsRot.PosRef[1,0];
+  Robot.JointsRot.PosRef[2,0] := -Robot.JointsRot.PosRef[2,0];
 
   // - wrist orientation
   // DH convention
