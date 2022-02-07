@@ -17,12 +17,14 @@ type
     BtCommsConnect: TButton;
     BtIKset: TButton;
     BtConfigSet: TButton;
+    BtIKreset: TButton;
     BtJointsRefSet: TButton;
     BtJointsRefReset: TButton;
     CbCommsDbgClear: TButton;
     CbDebug: TCheckBox;
     CbCommsDgRx: TCheckBox;
     CbCommsDgTx: TCheckBox;
+    CbIKelbowUp: TCheckBox;
     EdCommsIPS2: TEdit;
     EdCommsPortS2: TEdit;
     EdCommsPortLz: TEdit;
@@ -210,6 +212,15 @@ begin
   thy := DegToRad(StrToFloatDef(EdIKRtRy.Text,0));
   thz := DegToRad(StrToFloatDef(EdIKRtRz.Text,90));
   Robot.Tool.RotRef := RzMat(thz) * RyMat(thy) * RxMat(thx);
+
+  // Inverse Kinematics
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+  except
+    on E: Exception do StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
 end;
 
 procedure TFMain.BtJointsRefResetClick(Sender: TObject);
@@ -265,6 +276,7 @@ end;
 
 procedure TFMain.FormShow(Sender: TObject);
 begin
+  BtCommsConnect.Click;
   BtConfigSet.Click;
   RbModeManualChange(RbModeManual);
 end;
@@ -350,7 +362,7 @@ begin
     mess.Text := msg;
 
     // Check number of messages vs expected
-    //if mess.Count < NUMJOINTS then exit;
+    if mess.Count < 14 then exit;
 
     // Current joint values
     Robot.JointsPrism.Pos[0,0] := StrToFloatDef(mess.Strings[0], 0);
@@ -359,6 +371,10 @@ begin
     end;
 
     // Current joint velocities
+    Robot.JointsPrism.Vel[0,0] := StrToFloatDef(mess.Strings[7], 0);
+    for i := 0 to 5 do begin
+      Robot.JointsRot.Vel[i,0] := StrToFloatDef(mess.Strings[i+8], 0);
+    end;
 
     // Debug
     if (CbCommsDgRx.Checked) then begin
@@ -414,7 +430,7 @@ begin
   SgKinJoints.Cells[3,1] := format('%.6g',[Robot.JointsPrism.PosRef[0,0]]);
   for i := 0 to 5 do begin
     SgKinJoints.Cells[1,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.Pos[i,0])]);
-    SgKinJoints.Cells[2,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.Vel[i,0])]);
+    SgKinJoints.Cells[2,2+i] := format('%.6g',[Robot.JointsRot.Vel[i,0]]);
     SgKinJoints.Cells[3,2+i] := format('%.6g',[RadToDeg(Robot.JointsRot.PosRef[i,0])]);
   end;
 

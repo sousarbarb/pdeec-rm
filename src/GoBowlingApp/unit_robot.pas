@@ -43,6 +43,7 @@ type
       constructor Create;
       procedure FK;
       procedure FK(var JPrismMat, JRotMat: TDMatrix; var RMat, TMat: TDMatrix);
+      procedure IK(elbow_up: boolean);
       procedure SetConfigH0W(var R, T: TDMatrix);
       procedure UpdateConfigH0W;
       procedure Stop;
@@ -145,8 +146,6 @@ begin
 end;
 
 procedure TRobot.FK;
-var HTool: TDMatrix;
-    H10, H21, H32, H43, H54, H65: TDMatrix;
 begin
   FK(JointsPrism.Pos, JointsRot.Pos, Tool.Rot, Tool.Pos);
 end;
@@ -168,6 +167,73 @@ begin
 
   // FK
   HMat2RT(HTool, RMat, TMat);
+end;
+
+procedure TRobot.IK(elbow_up: boolean);
+var ToolLength, WristPosRef, WristRotRef: TDMatrix;
+    H10, H21, H32, H30, R30, T30: TDMatrix;
+    s, r, cth3: double;
+begin
+  // Initialization
+  ToolLength := Mzeros(3,1);
+  ToolLength[2,0] := config.lt;
+  R30 := Meye(3);
+  T30 := Mzeros(3,1);
+
+  // Inverse Kinematics: Central Point of the Wrist
+  // - central point
+  WristPosRef := Tool.PosRef - Tool.RotRef * ToolLength;
+
+  // - joints 1-3 (reference)
+  // (J1)
+  if ((WristPosRef[0,0] <> 0) AND (WristPosRef[1,0] <> 0)) then
+    Robot.JointsRot.PosRef[0,0] := ArcTan2(WristPosRef[1,0],WristPosRef[0,0]);
+    // or Robot.JointsRot.PosRef[0,0] := pi + ArcTan2(WristPosRef[1,0],WristPosRef[0,0]);
+  // (J3)
+  s := WristPosRef[2,0] + config.l1;
+  r := Sqrt(Sqr(WristPosRef[0,0]) + Sqr(WristPosRef[1,0]));
+  cth3 := (Sqr(s) + Sqr(r) - Sqr(config.l2) - Sqr(config.l3)) / (2*config.l2*config.l3);
+  if (1-Sqr(cth3) < 0) then
+    raise Exception.Create('Pose not possible due to 1 - sqrt(cth3) < 0 (outside of the robot work volume)');
+  if (elbow_up) then begin
+    Robot.JointsRot.PosRef[2,0] := ArcTan2(Sqrt(1-Sqr(cth3)),cth3);
+  end else begin
+    Robot.JointsRot.PosRef[2,0] := ArcTan2(-Sqrt(1-Sqr(cth3)),cth3);
+  end;
+  // (J2)
+  Robot.JointsRot.PosRef[1,0] :=
+    ArcTan2(s,r) -
+    ArcTan2(config.l3*sin(Robot.JointsRot.PosRef[2,0]), config.l2 + config.l3*cos(Robot.JointsRot.PosRef[2,0]));
+  // (-J2,-J3) due to SimTwo
+  Robot.JointsRot.PosRef[1,0] := -Robot.JointsRot.PosRef[1,0];
+  Robot.JointsRot.PosRef[2,0] := -Robot.JointsRot.PosRef[2,0];
+
+  // - wrist orientation
+  // DH convention
+  H10 := DHMat( Robot.JointsRot.PosRef[0,0]      , -config.l1 , 0         , pi/2 );
+  H21 := DHMat(-Robot.JointsRot.PosRef[1,0]      , 0          , config.l2 , 0    );
+  H32 := DHMat(-Robot.JointsRot.PosRef[2,0]+pi/2 , 0          , 0         , pi/2 );
+  H30 := H10 * H21 * H32;
+  HMat2RT(H30,R30,T30);
+  WristRotRef := Mtran(R30) * Tool.RotRef;
+
+  // - joints 4-6 (reference)
+  // (J5)
+  Robot.JointsRot.PosRef[4,0] := ArcTan2(Sqrt(1-WristRotRef[2,2]),WristRotRef[2,2]);
+  // or Robot.JointsRot.PosRef[4,0] := ArcTan2(-Sqrt(1-WristRotRef[2,2]),WristRotRef[2,2]);
+  // (J4,J6)
+  if (WristRotRef[2,2] <> 0) then begin
+    Robot.JointsRot.PosRef[3,0] := ArcTan2(WristRotRef[0,2],-WristRotRef[1,2]);
+    Robot.JointsRot.PosRef[5,0] := ArcTan2(WristRotRef[2,1],-WristRotRef[2,0]);
+  end else begin
+    Robot.JointsRot.PosRef[3,0] := 0;
+    if (WristRotRef[2,2] = 1) then begin
+      Robot.JointsRot.PosRef[5,0] :=  ArcTan2( WristRotRef[0,0],WristRotRef[0,1]);
+    end else begin
+      Robot.JointsRot.PosRef[5,0] := -ArcTan2(-WristRotRef[0,0],WristRotRef[0,1]);
+    end;
+    // or infinite solutions for th4 + th6 or th4 - th6
+  end;
 end;
 
 procedure TRobot.SetConfigH0W(var R, T: TDMatrix);

@@ -2126,7 +2126,7 @@ object FMain: TFMain
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  SessionProperties = 'CbCommsDgRx.Checked;CbCommsDgTx.Checked;CbDebug.Checked;EdCommsIPS2.Text;EdCommsPortLz.Text;EdCommsPortS2.Text;EdConfigL1.Text;EdConfigL2.Text;EdConfigL3.Text;EdConfigLt.Text;EdConfigR0wRx.Text;EdConfigR0wRy.Text;EdConfigR0wRz.Text;EdConfigT0wX.Text;EdConfigT0wY.Text;EdConfigT0wZ.Text;EdIKRtRx.Text;EdIKRtRy.Text;EdIKRtRz.Text;EdIKXt.Text;EdIKYt.Text;EdIKZt.Text;PcMain.ActivePage;EdJointsRefQ0.Text;EdJointsRefQ1.Text;EdJointsRefQ2.Text;EdJointsRefQ3.Text;EdJointsRefQ4.Text;EdJointsRefQ5.Text;EdJointsRefQ6.Text'
+  SessionProperties = 'CbCommsDgRx.Checked;CbCommsDgTx.Checked;CbDebug.Checked;EdCommsIPS2.Text;EdCommsPortLz.Text;EdCommsPortS2.Text;EdConfigL1.Text;EdConfigL2.Text;EdConfigL3.Text;EdConfigLt.Text;EdConfigR0wRx.Text;EdConfigR0wRy.Text;EdConfigR0wRz.Text;EdConfigT0wX.Text;EdConfigT0wY.Text;EdConfigT0wZ.Text;EdIKRtRx.Text;EdIKRtRy.Text;EdIKRtRz.Text;EdIKXt.Text;EdIKYt.Text;EdIKZt.Text;EdJointsRefQ0.Text;EdJointsRefQ1.Text;EdJointsRefQ2.Text;EdJointsRefQ3.Text;EdJointsRefQ4.Text;EdJointsRefQ5.Text;EdJointsRefQ6.Text;PcMain.ActivePage;CbIKelbowUp.Checked'
   LCLVersion = '2.0.10.0'
   object CbDebug: TCheckBox
     Left = 8
@@ -2384,7 +2384,7 @@ object FMain: TFMain
         Height = 200
         Top = 224
         Width = 376
-        Caption = 'Forward Kinematics (Q > W):'
+        Caption = 'Forward Kinematics (Q > 0):'
         ClientHeight = 180
         ClientWidth = 372
         TabOrder = 1
@@ -2624,7 +2624,7 @@ object FMain: TFMain
         Height = 200
         Top = 224
         Width = 184
-        Caption = 'Inverse Kinematics (W > Q):'
+        Caption = 'Inverse Kinematics (0 > Q):'
         ClientHeight = 180
         ClientWidth = 180
         TabOrder = 2
@@ -2679,7 +2679,7 @@ object FMain: TFMain
         object EdIKRtRx: TEdit
           Left = 56
           Height = 23
-          Top = 144
+          Top = 120
           Width = 56
           Alignment = taRightJustify
           TabOrder = 3
@@ -2687,7 +2687,7 @@ object FMain: TFMain
         object EdIKRtRy: TEdit
           Left = 56
           Height = 23
-          Top = 120
+          Top = 96
           Width = 56
           Alignment = taRightJustify
           TabOrder = 4
@@ -2695,7 +2695,7 @@ object FMain: TFMain
         object EdIKRtRz: TEdit
           Left = 56
           Height = 23
-          Top = 96
+          Top = 72
           Width = 56
           Alignment = taRightJustify
           TabOrder = 5
@@ -2703,7 +2703,7 @@ object FMain: TFMain
         object LbIKRtRx: TLabel
           Left = 8
           Height = 15
-          Top = 148
+          Top = 124
           Width = 32
           Caption = 'Rx (º):'
           ParentColor = False
@@ -2711,7 +2711,7 @@ object FMain: TFMain
         object LbIKRtRy: TLabel
           Left = 8
           Height = 15
-          Top = 124
+          Top = 100
           Width = 32
           Caption = 'Ry (º):'
           ParentColor = False
@@ -2719,7 +2719,7 @@ object FMain: TFMain
         object LbIKRtRz: TLabel
           Left = 8
           Height = 15
-          Top = 100
+          Top = 76
           Width = 31
           Caption = 'Rz (º):'
           ParentColor = False
@@ -2732,6 +2732,23 @@ object FMain: TFMain
           Caption = 'Set'
           OnClick = BtIKsetClick
           TabOrder = 6
+        end
+        object BtIKreset: TButton
+          Left = 120
+          Height = 23
+          Top = 24
+          Width = 56
+          Caption = 'Reset'
+          OnClick = BtJointsRefResetClick
+          TabOrder = 7
+        end
+        object CbIKelbowUp: TCheckBox
+          Left = 8
+          Height = 19
+          Top = 148
+          Width = 70
+          Caption = 'Elbow Up'
+          TabOrder = 8
         end
       end
       object GbKinematicsConfig: TGroupBox

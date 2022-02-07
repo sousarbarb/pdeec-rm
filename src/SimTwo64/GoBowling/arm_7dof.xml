@@ -44,6 +44,7 @@
       <pos x='0' y='0' z='-B1_height/2'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='128' g='128' b='128'/>
+      <drag stokes='1e-2' roll='1e-1'/>
     </cylinder>
 
     <cuboid>
@@ -53,6 +54,7 @@
       <pos x='B2_length/2' y='B3_height' z='-B1_height+B2_height/2'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='32' g='32' b='32'/>
+      <drag stokes='1e-2' roll='1e-1'/>
     </cuboid>
 
     <cuboid>
@@ -62,6 +64,7 @@
       <pos x='B2_length+B3_length/2' y='0' z='-B1_height+B2_height/2'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='64' g='64' b='64'/>
+      <drag stokes='1e-2' roll='1e-1'/>
     </cuboid>
 
     <cuboid>

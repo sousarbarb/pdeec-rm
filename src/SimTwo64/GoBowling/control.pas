@@ -7,7 +7,7 @@ var
   iBall, iRobot, iB0, iB6: integer;
   l0, l1, l2, l3, lt: double;
 
-  JointPos, JointPosRef: array[0..NUM_JOINTS - 1] of double;
+  JointPos, JointVel, JointPosRef: array[0..NUM_JOINTS - 1] of double;
 
 
 
@@ -22,6 +22,9 @@ begin
     for i := 0 to NUM_JOINTS -1 do begin
       mess.add(format('%.4g',[JointPos[i]]));
     end;
+    for i := 0 to NUM_JOINTS -1 do begin
+      mess.add(format('%.4g',[JointVel[i]]));
+    end;
 
     WriteUDPData('127.0.0.1', 9809, mess.text);
 
@@ -31,7 +34,6 @@ begin
       if mess.count >= NUM_JOINTS then begin
         for i := 0 to NUM_JOINTS -1 do begin
           JointPosRef[i] := StrToFloat(mess.strings[i]);
-          SetRCValue(3 + i, 3,  format('%.3g',[Deg(JointPosRef[i])]));
         end;
       end;
     end;
@@ -73,9 +75,12 @@ procedure Control;
 var
   i: integer;
 begin
-  // Read joint positions
+  // Read joint positions and velocities
   for i:=0 to NUM_JOINTS-1 do begin
     JointPos[i] := GetAxisPos(iRobot, i);
+  end;
+  for i:=0 to NUM_JOINTS-1 do begin
+    JointVel[i] := GetAxisSpeed(iRobot, i);
   end;
 
   // Read UDP data + send joints state
