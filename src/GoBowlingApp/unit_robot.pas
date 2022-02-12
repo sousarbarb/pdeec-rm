@@ -39,6 +39,7 @@ type
       JointsPrism: TJoints;
       JointsRot: TJoints;
       Tool: TTool;
+      solenoid: Boolean;
 
       constructor Create;
       procedure FK;
@@ -143,6 +144,9 @@ begin
   Tool.RotRef := Meye(3);
   Tool.PosRefFK := Mzeros(3,1);
   Tool.RotRefFK := Meye(3);
+
+  // Initialize solenoid
+  solenoid := false;
 end;
 
 procedure TRobot.FK;

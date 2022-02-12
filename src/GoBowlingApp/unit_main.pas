@@ -15,9 +15,11 @@ type
 
   TFMain = class(TForm)
     BtCommsConnect: TButton;
+    BtSolenoidStatusOff: TButton;
     BtIKset: TButton;
     BtConfigSet: TButton;
     BtIKreset: TButton;
+    BtSolenoidStatusOn: TButton;
     BtJointsRefSet: TButton;
     BtJointsRefReset: TButton;
     CbCommsDbgClear: TButton;
@@ -32,6 +34,9 @@ type
     EdConfigR0wRx: TEdit;
     EdConfigR0wRy: TEdit;
     EdConfigR0wRz: TEdit;
+    EdSimBallX: TEdit;
+    EdSimBallY: TEdit;
+    EdSimBallZ: TEdit;
     EdIKXt: TEdit;
     EdIKRtRx: TEdit;
     EdFKactYt: TEdit;
@@ -64,8 +69,13 @@ type
     GbKinematicsForward: TGroupBox;
     GbFKactual: TGroupBox;
     GbFKref: TGroupBox;
+    GbSimBall: TGroupBox;
+    GbSimSolenoid: TGroupBox;
     IniPropStorage: TIniPropStorage;
     LbConfigR0w: TLabel;
+    LbSimBallX: TLabel;
+    LbSimBallY: TLabel;
+    LbSimBallZ: TLabel;
     LbIKRtRx: TLabel;
     LbConfigR0wRx: TLabel;
     LbJointsRefQ3: TLabel;
@@ -105,6 +115,8 @@ type
     SgConfigR0w: TStringGrid;
     SgKinJoints: TStringGrid;
     SgFKrefRt: TStringGrid;
+    ShSolenoidStatus: TShape;
+    TsSimulation: TTabSheet;
     TsKinematics: TTabSheet;
     UDP: TLUDPComponent;
     MmCommsDebug: TMemo;
@@ -112,7 +124,6 @@ type
     RbModeStop: TRadioButton;
     RbModeManual: TRadioButton;
     RbModeBall: TRadioButton;
-    RbModeFull: TRadioButton;
     RgModeCtrl: TRadioGroup;
     StatusBar: TStatusBar;
     TsComms: TTabSheet;
@@ -121,6 +132,8 @@ type
     procedure BtIKsetClick(Sender: TObject);
     procedure BtJointsRefResetClick(Sender: TObject);
     procedure BtJointsRefSetClick(Sender: TObject);
+    procedure BtSolenoidStatusOffClick(Sender: TObject);
+    procedure BtSolenoidStatusOnClick(Sender: TObject);
     procedure CbCommsDbgClearClick(Sender: TObject);
     procedure CbCommsDgRxChange(Sender: TObject);
     procedure CbCommsDgTxChange(Sender: TObject);
@@ -128,7 +141,9 @@ type
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure RbModeBallChange(Sender: TObject);
     procedure RbModeManualChange(Sender: TObject);
+    procedure RbModeStopChange(Sender: TObject);
     procedure UDPError(const msg: string; aSocket: TLSocket);
     procedure UDPReceive(aSocket: TLSocket);
   private
@@ -137,8 +152,10 @@ type
     procedure AddMemoMessage(Memo: TMemo; msg: String);
     procedure Control;
     procedure ControlStop;
+    procedure ControlStopConfig(enable: boolean);
     procedure ControlManual;
     procedure ControlManualConfig(enable: boolean);
+    procedure ControlBallConfig(enable: boolean);
     procedure ParseUDPMessage(var msg: String);
     procedure SendUDPMessage;
     procedure UpdateGUI;
@@ -147,6 +164,8 @@ type
     UDPipS2, UDPstrS2: String;
     UDPportS2: Integer;
     UDPportLz: Integer;
+
+    Ball: TDMatrix;
 
   end;
 
@@ -239,6 +258,16 @@ begin
   Robot.JointsRot.PosRef[5,0] := DegToRad(StrToFloatDef(EdJointsRefQ6.Text,0));
 end;
 
+procedure TFMain.BtSolenoidStatusOffClick(Sender: TObject);
+begin
+  Robot.solenoid := false;
+end;
+
+procedure TFMain.BtSolenoidStatusOnClick(Sender: TObject);
+begin
+  Robot.solenoid := true;
+end;
+
 procedure TFMain.CbCommsDbgClearClick(Sender: TObject);
 begin
   MmCommsDebug.Clear;
@@ -271,6 +300,7 @@ end;
 
 procedure TFMain.FormCreate(Sender: TObject);
 begin
+  Ball  := Mzeros(3,1);
   Robot := TRobot.Create;
 end;
 
@@ -278,12 +308,24 @@ procedure TFMain.FormShow(Sender: TObject);
 begin
   BtCommsConnect.Click;
   BtConfigSet.Click;
+  RbModeStopChange(RbModeStop);
   RbModeManualChange(RbModeManual);
+  RbModeBallChange(RbModeBall);
+end;
+
+procedure TFMain.RbModeBallChange(Sender: TObject);
+begin
+  ControlBallConfig(RbModeBall.Checked);
 end;
 
 procedure TFMain.RbModeManualChange(Sender: TObject);
 begin
   ControlManualConfig(RbModeManual.Checked);
+end;
+
+procedure TFMain.RbModeStopChange(Sender: TObject);
+begin
+  ControlStopConfig(RbModeStop.Checked);
 end;
 
 procedure TFMain.UDPError(const msg: string; aSocket: TLSocket);
@@ -341,6 +383,11 @@ begin
   Robot.Stop;
 end;
 
+procedure TFMain.ControlStopConfig(enable: boolean);
+begin
+  GbSimSolenoid.Enabled := NOT enable;
+end;
+
 procedure TFMain.ControlManual;
 begin
 
@@ -348,8 +395,14 @@ end;
 
 procedure TFMain.ControlManualConfig(enable: boolean);
 begin
+  Robot.solenoid := false;
   GbKinematicsJointsRef.Enabled := enable;
   GbKinematicsInverse.Enabled   := enable;
+end;
+
+procedure TFMain.ControlBallConfig(enable: boolean);
+begin
+  Robot.solenoid := false;
 end;
 
 procedure TFMain.ParseUDPMessage(var msg: String);
@@ -374,6 +427,11 @@ begin
     Robot.JointsPrism.Vel[0,0] := StrToFloatDef(mess.Strings[7], 0);
     for i := 0 to 5 do begin
       Robot.JointsRot.Vel[i,0] := StrToFloatDef(mess.Strings[i+8], 0);
+    end;
+
+    // Current ball position
+    for i := 0 to 2 do begin
+      Ball[i,0] := StrToFloatDef(mess.Strings[i+14], 0);
     end;
 
     // Debug
@@ -403,6 +461,13 @@ begin
     mess.add(format('%.4g',[Robot.JointsPrism.PosRef[0,0]]));
     for i := 0 to 5 do begin
       mess.add(format('%.4g',[Robot.JointsRot.PosRef[i,0]]));
+    end;
+
+    // Solenoid
+    if (Robot.solenoid) then begin
+      mess.add('1');
+    end else begin
+      mess.add('0');
     end;
 
     UDP.SendMessage(mess.text, UDPstrS2);
@@ -453,6 +518,18 @@ begin
     for j := 0 to 2 do begin
       SgFKrefRt.Cells[j,i] := format('%.6g',[Robot.Tool.RotRefFK[i,j]]);
     end;
+  end;
+
+  // Simulation
+  // - Ball
+  EdSimBallX.Text := format('%.6g',[Ball[0,0]]);
+  EdSimBallY.Text := format('%.6g',[Ball[1,0]]);
+  EdSimBallZ.Text := format('%.6g',[Ball[2,0]]);
+  // - Solenoid
+  if (Robot.solenoid) then begin
+    ShSolenoidStatus.Brush.Color := clGreen;
+  end else begin
+    ShSolenoidStatus.Brush.Color := clRed;
   end;
 end;
 
