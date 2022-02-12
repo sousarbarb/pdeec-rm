@@ -101,10 +101,10 @@ begin
 
   // Change solenoid state (tests wo/ communication w/ Lz)
   if (RCButtonPressed(17,7)) then begin
-    SetSensorVin(iRobot,iMagnet,1);
+    magnet := true;
   end;
   if (RCButtonPressed(17,8)) then begin
-    SetSensorVin(iRobot,iMagnet,0);
+    magnet := false;
   end;
 
   // Read Ball
