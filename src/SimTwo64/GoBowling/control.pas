@@ -4,9 +4,11 @@ const
 
 // Global Variables
 var
-  iBall, iRobot, iB0, iB6: integer;
+  iBall, iRobot, iMagnet, iB0, iB6: integer;
   l0, l1, l2, l3, lt: double;
 
+  magnet: boolean;
+  BallPos: Matrix;
   JointPos, JointVel, JointPosRef: array[0..NUM_JOINTS - 1] of double;
 
 
@@ -19,21 +21,33 @@ var
 begin
   mess := TStringList.create;
   try
+    // S2 > Lz
     for i := 0 to NUM_JOINTS -1 do begin
       mess.add(format('%.4g',[JointPos[i]]));
     end;
     for i := 0 to NUM_JOINTS -1 do begin
       mess.add(format('%.4g',[JointVel[i]]));
     end;
+    for i := 0 to 2 do begin
+      mess.add(format('%.4g',[Mgetv(BallPos,i,0)]));
+    end;
 
     WriteUDPData('127.0.0.1', 9809, mess.text);
 
+    // Lz > S2
     tmp := ReadUDPData();
     if tmp <> '' then begin
       mess.text := tmp;
       if mess.count >= NUM_JOINTS then begin
         for i := 0 to NUM_JOINTS -1 do begin
           JointPosRef[i] := StrToFloat(mess.strings[i]);
+        end;
+      end;
+      if mess.count >= NUM_JOINTS + 1 then begin
+        if (StrToInt(mess.strings[NUM_JOINTS]) = 1) then begin
+          magnet := true;
+        end else begin
+          magnet := false;
         end;
       end;
     end;
@@ -64,17 +78,40 @@ begin
     SetRCValue(9,2+i, Format('%d', [GetMotorControllerState(iRobot,i)]) );
     SetRCValue(10,2+i,Format('%s', [GetMotorControllerMode(iRobot,i)]) );
   end;
-  // - B6;
+  // - B6
   MatrixToRangeF(13,2,GetSolidPosMat(iRobot,iB6),'%.6g');
   MatrixToRangeF(13,4,GetSolidRotMat(iRobot,iB6),'%.6g');
   MatrixToRangeF(13,8,Msub(GetSolidPosMat(iRobot,iB6),GetSolidPosMat(iRobot,iB0)),'%.6g');
   MatrixToRangeF(13,10,GetSolidRotMat(iRobot,iB6),'%.6g');
+  // - Ball
+  MatrixToRangeF(18,2,BallPos,'%.6g');
+  // - Solenoid
+  SetRCValue(17,6, Format('%.1g', [GetSensorVal(iRobot,iMagnet)]) );
+  SetRCValue(18,6, Format('%d', [magnet]) );
 end;
 
 procedure Control;
 var
   i: integer;
 begin
+  // Change ball position
+  if (RCButtonPressed(17,3)) then begin
+    SetSolidPosMat(iBall,0,RangeToMatrix(18,3,3,1));
+    SetSolidLinearVel(iBall,0,0,0,0);
+    SetSolidAngularVel(iBall,0,0,0,0);
+  end;
+
+  // Change solenoid state (tests wo/ communication w/ Lz)
+  if (RCButtonPressed(17,7)) then begin
+    magnet := true;
+  end;
+  if (RCButtonPressed(17,8)) then begin
+    magnet := false;
+  end;
+
+  // Read Ball
+  BallPos := GetSolidPosMat(iBall,0);
+
   // Read joint positions and velocities
   for i:=0 to NUM_JOINTS-1 do begin
     JointPos[i] := GetAxisPos(iRobot, i);
@@ -91,6 +128,13 @@ begin
     SetAxisPosRef(iRobot, i, JointPosRef[i]);
   end;
 
+  // Set solenoid state
+  if (magnet) then begin
+    SetSensorVin(iRobot,iMagnet,1);
+  end else begin
+    SetSensorVin(iRobot,iMagnet,0);
+  end;
+
   // Display debug information in the sheet
   if (DEBUG) then
     VisualizeSheet;
@@ -101,8 +145,11 @@ procedure Initialize;
 var
   i: integer;
 begin
+  BallPos:= Mzeros(3,1);
+  magnet := false;
   iBall  := GetRobotIndex('ball');
   iRobot := GetRobotIndex('Arm7D');
+  iMagnet:= GetSensorIndex(iRobot,'grab');
   iB0    := GetSolidIndex(iRobot,'B0');
   iB6    := GetSolidIndex(iRobot,'B6');
 
@@ -158,4 +205,17 @@ begin
   SetRCValue(12,10,'(0):');
   SetRCValue(12,11,'(1):');
   SetRCValue(12,12,'(2):');
+  SetRCValue(17,1,'BALL');
+  SetRCValue(18,1,'x:');
+  SetRCValue(19,1,'y:');
+  SetRCValue(20,1,'z:');
+  SetRCValue(17,2,'Pos:');
+  SetRCValue(17,3,'[SET]');
+  SetRCValue(18,3,'0.57125');
+  SetRCValue(19,3,'0');
+  SetRCValue(20,3,'0.1');
+  SetRCValue(17,5,'MAGNET');
+  SetRCValue(18,5,'Ref:');
+  SetRCValue(17,7,'[ON]');
+  SetRCValue(17,8,'[OFF]');
 end;

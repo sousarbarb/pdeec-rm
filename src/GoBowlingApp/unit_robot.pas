@@ -39,6 +39,7 @@ type
       JointsPrism: TJoints;
       JointsRot: TJoints;
       Tool: TTool;
+      solenoid: Boolean;
 
       constructor Create;
       procedure FK;
@@ -143,6 +144,9 @@ begin
   Tool.RotRef := Meye(3);
   Tool.PosRefFK := Mzeros(3,1);
   Tool.RotRefFK := Meye(3);
+
+  // Initialize solenoid
+  solenoid := false;
 end;
 
 procedure TRobot.FK;
@@ -195,7 +199,7 @@ begin
   cth3 := (Sqr(s) + Sqr(r) - Sqr(config.l2) - Sqr(config.l3)) / (2*config.l2*config.l3);
   if (1-Sqr(cth3) < 0) then
     raise Exception.Create('Pose not possible due to 1 - sqrt(cth3) < 0 (outside of the robot work volume)');
-  if (elbow_up) then begin
+  if (NOT elbow_up) then begin
     Robot.JointsRot.PosRef[2,0] := ArcTan2(Sqrt(1-Sqr(cth3)),cth3);
   end else begin
     Robot.JointsRot.PosRef[2,0] := ArcTan2(-Sqrt(1-Sqr(cth3)),cth3);
