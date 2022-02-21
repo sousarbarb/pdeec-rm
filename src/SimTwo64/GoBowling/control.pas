@@ -97,6 +97,8 @@ begin
   // Change ball position
   if (RCButtonPressed(17,3)) then begin
     SetSolidPosMat(iBall,0,RangeToMatrix(18,3,3,1));
+    SetSolidLinearVel(iBall,0,0,0,0);
+    SetSolidAngularVel(iBall,0,0,0,0);
   end;
 
   // Change solenoid state (tests wo/ communication w/ Lz)
