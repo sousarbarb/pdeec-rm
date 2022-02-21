@@ -10,6 +10,7 @@
       <surface mu='0.1' softness='0.1'/>
       <drag coefficient='1e-4' stokes='1e-4' roll='5e-4'/>
       <color_rgb r='8' g='75' b='130'/>
+      <ferromagnetic/>
     </sphere>
   </solids>
 
