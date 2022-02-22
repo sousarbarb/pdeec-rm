@@ -458,9 +458,9 @@ begin
   mess := TStringList.create;
   try
     // Reference joints value
-    mess.add(format('%.4g',[Robot.JointsPrism.PosRef[0,0]]));
+    mess.add(format('%.6g',[Robot.JointsPrism.PosRef[0,0]]));
     for i := 0 to 5 do begin
-      mess.add(format('%.4g',[Robot.JointsRot.PosRef[i,0]]));
+      mess.add(format('%.6g',[Robot.JointsRot.PosRef[i,0]]));
     end;
 
     // Solenoid

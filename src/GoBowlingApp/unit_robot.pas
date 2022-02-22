@@ -198,7 +198,8 @@ begin
   r := Sqrt(Sqr(WristPosRef[0,0]) + Sqr(WristPosRef[1,0]));
   cth3 := (Sqr(s) + Sqr(r) - Sqr(config.l2) - Sqr(config.l3)) / (2*config.l2*config.l3);
   if (1-Sqr(cth3) < 0) then
-    raise Exception.Create('Pose not possible due to 1 - sqrt(cth3) < 0 (outside of the robot work volume)');
+    raise Exception.Create(Format('Pose not possible due to 1 - sqrt(cth3) = %.6g < 0 (outside of the robot work volume)',
+                                  [1-Sqr(cth3)]));
   if (NOT elbow_up) then begin
     Robot.JointsRot.PosRef[2,0] := ArcTan2(Sqrt(1-Sqr(cth3)),cth3);
   end else begin
