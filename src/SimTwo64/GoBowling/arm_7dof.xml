@@ -250,7 +250,7 @@
 
     <solenoid>
       <ID value='grab'/>
-      <beam length='0.15' initial_width='0.011' final_width='0.011'/>
+      <beam length='0.20' initial_width='0.02' final_width='0.02'/>
       <solid id='B6'/>
       <size x='claw_gap/2 + claw_width' z='B6_height'/>
       <rot_deg x='0' y='0' z='0'/>

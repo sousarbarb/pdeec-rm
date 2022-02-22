@@ -45,11 +45,46 @@ type
       procedure FK;
       procedure FK(var JPrismMat, JRotMat: TDMatrix; var RMat, TMat: TDMatrix);
       procedure IK(elbow_up: boolean);
+      function IsStopped: boolean;
       procedure SetConfigH0W(var R, T: TDMatrix);
       procedure UpdateConfigH0W;
       procedure Stop;
     private
   end;
+
+  TPickBallSM = class
+    public
+      state: integer;
+      pick_ball, throw_ball: boolean;
+
+    private
+      X0, Xa, Xf: TDMatrix;
+
+    public
+      constructor Create;
+      procedure Update(var Rob: TRobot; var Tool, Ball: TDMatrix);
+      procedure ResetState;
+
+    private
+      procedure UpdateState(var Rob: TRobot; var Tool, Ball: TDMatrix);
+      procedure ExecuteState(var Rob: TRobot; var Tool, Ball: TDMatrix);
+      procedure ExecuteStateInit(var Rob: TRobot; var Tool, Ball: TDMatrix);
+      procedure ExecuteStateGoPickBall(var Rob: TRobot; var Tool, Ball: TDMatrix);
+      procedure ExecuteStatePickBall(var Rob: TRobot; var Tool, Ball: TDMatrix);
+      procedure ExecuteStateSetThrowDir(var Rob: TRobot; var Tool, Ball: TDMatrix);
+      procedure ExecuteStateThrowBall(var Rob: TRobot; var Tool, Ball: TDMatrix);
+      procedure ExecuteStateThrowBallDelay(var Rob: TRobot; var Tool, Ball: TDMatrix);
+      procedure ExecuteStateGoBack(var Rob: TRobot; var Tool, Ball: TDMatrix);
+  end;
+
+const
+  STATE_INIT             = 0;
+  STATE_GO_PICK_BALL     = 1;
+  STATE_PICK_BALL        = 2;
+  STATE_SET_THROW_DIR    = 3;
+  STATE_THROW_BALL       = 4;
+  STATE_THROW_BALL_DELAY = 5;
+  STATE_GO_BACK          = 6;
 
 var
   Robot: TRobot;
@@ -61,6 +96,11 @@ procedure RT2HMat(var R, T, H: TDMatrix);
 function RxMat(thetaX: double): TDMatrix;
 function RyMat(thetaY: double): TDMatrix;
 function RzMat(thetaZ: double): TDMatrix;
+
+procedure InterpolatePosition(var X0: TDMatrix; vnom, dt: double; var Xf, Xa: TDMatrix);
+procedure InterpolatePosition(var X0: TDMatrix; vnom, dt: double; var Xf: TDMatrix);
+
+function VNorm2(V: TDMatrix): double;
 
 implementation
 
@@ -120,6 +160,35 @@ begin
   Result := Meye(3);
   Result[0,0] := cos(thetaZ); Result[0,1] := -sin(thetaZ);
   Result[1,0] := sin(thetaZ); Result[1,1] :=  cos(thetaZ);
+end;
+
+procedure InterpolatePosition(var X0: TDMatrix; vnom, dt: double; var Xf, Xa: TDMatrix);
+var DX: TDMatrix;
+    DXnorm: double;
+begin
+  DXnorm := vnom * dt / VNorm2(Xf - X0);
+  DX := (Xf - X0) * DXnorm;
+
+  if (VNorm2(Xf - Xa) <= vnom * dt) then begin
+    Xa := Xf;
+  end else begin
+    Xa := Xa + DX;
+  end;
+end;
+
+procedure InterpolatePosition(var X0: TDMatrix; vnom, dt: double; var Xf: TDMatrix);
+begin
+  InterpolatePosition(X0, vnom, dt, Xf, X0);
+end;
+
+function VNorm2(V: TDMatrix): double;
+var i: Integer;
+begin
+  Result := 0;
+  for i:=0 to V.NumRows do begin
+    Result := Result + Sqr(V[i,0]);
+  end;
+  Result := Sqrt(Result);
 end;
 
 constructor TRobot.Create;
@@ -241,6 +310,22 @@ begin
   end;
 end;
 
+function TRobot.IsStopped: boolean;
+const STOP_VEL_LIN = 0.01;
+      STOP_VEL_ANG = 1 * Pi / 180;
+var i: integer;
+begin
+  Result := true;
+
+  // Check velocity of the joints
+  if (Abs(JointsPrism.Vel[0,0]) > STOP_VEL_LIN) then
+    Result := false;
+  for i := 0 to 5 do begin
+    if (Abs(JointsRot.Vel[0,0]) > STOP_VEL_ANG) then
+      Result := false;
+  end;
+end;
+
 procedure TRobot.SetConfigH0W(var R, T: TDMatrix);
 begin
   config.R0W := R;
@@ -260,6 +345,248 @@ begin
   for i := 0 to 5 do begin
     JointsRot.PosRef[i,0] := 0;
   end;
+end;
+
+constructor TPickBallSM.Create;
+begin
+  // Reset state machine
+  ResetState;
+
+  // Initialize matrices
+  X0 := Mzeros(3,1);
+  Xa := Mzeros(3,1);
+  Xf := Mzeros(3,1);
+end;
+
+procedure TPickBallSM.Update(var Rob: TRobot; var Tool, Ball: TDMatrix);
+begin
+  // Change state
+  UpdateState(Rob, Tool, Ball);
+
+  // Execute actions given a certain state
+  ExecuteState(Rob, Tool, Ball);
+end;
+
+procedure TPickBallSM.ResetState;
+begin
+  // Reset state
+  state := STATE_INIT;
+
+  // Reset other variable
+  pick_ball  := false;
+  throw_ball := false;
+end;
+
+procedure TPickBallSM.UpdateState(var Rob: TRobot; var Tool, Ball: TDMatrix);
+const DIST_APPROACH_BALL = 0.02;
+      MAX_LIM_Q0 = 0.57125;
+      THROW_DELAY_RATIO = 0.20;
+      THROW_LIMIT = 0.05;
+begin
+  case (state) of
+
+    STATE_INIT: begin
+      if (pick_ball) then begin
+        pick_ball := false;
+        X0 := Tool;
+        Xa := X0;
+        Xf := Ball;
+        Xf[2,0] := Xf[2,0] + DIST_APPROACH_BALL;
+
+        state := STATE_GO_PICK_BALL;
+      end;
+    end;
+
+    STATE_GO_PICK_BALL: begin
+      if (VNorm2(Tool - Xf) < DIST_APPROACH_BALL*2) then begin
+        state := STATE_PICK_BALL;
+      end;
+    end;
+
+    STATE_PICK_BALL: begin
+      if (Rob.solenoid) then begin  // TODO: maybe distance ball - tool < DIST_APPROACH_BALL / 2?
+        state := STATE_SET_THROW_DIR;
+      end;
+    end;
+
+    STATE_SET_THROW_DIR: begin
+      if (throw_ball) then begin
+        throw_ball := false;
+
+        state := STATE_THROW_BALL;
+      end;
+    end;
+
+    STATE_THROW_BALL: begin
+      if (Rob.JointsPrism.Pos[0,0] > (1-THROW_DELAY_RATIO)*MAX_LIM_Q0) then begin
+        state := STATE_THROW_BALL_DELAY;
+      end;
+    end;
+
+    STATE_THROW_BALL_DELAY: begin
+      if (Rob.JointsPrism.Pos[0,0] > (1-THROW_LIMIT)*MAX_LIM_Q0) then begin
+        {X0 := Rob.Tool.Pos; // TODO: now relative to local frame
+        Xa := X0;
+        Xf := Mzeros(3,1);
+        Xf[0,0] := 0.805;
+        Xf[2,0] := -0.30;}
+
+        state := STATE_GO_BACK;
+      end;
+    end;
+
+    STATE_GO_BACK: begin
+      if (Rob.IsStopped) then begin  // TODO: maybe isstopped + desired posed reached?
+        state := STATE_INIT;
+      end;
+    end;
+
+    else begin
+      ResetState;
+    end;
+
+  end;
+end;
+
+procedure TPickBallSM.ExecuteState(var Rob: TRobot; var Tool, Ball: TDMatrix);
+begin
+  case (state) of
+
+    STATE_INIT: begin
+      ExecuteStateInit(Rob, Tool, Ball);
+    end;
+
+    STATE_GO_PICK_BALL: begin
+      ExecuteStateGoPickBall(Rob, Tool, Ball);
+    end;
+
+    STATE_PICK_BALL: begin
+      ExecuteStatePickBall(Rob, Tool, Ball);
+    end;
+
+    STATE_SET_THROW_DIR: begin
+      ExecuteStateSetThrowDir(Rob, Tool, Ball);
+    end;
+
+    STATE_THROW_BALL: begin
+      ExecuteStateThrowBall(Rob, Tool, Ball);
+    end;
+
+    STATE_THROW_BALL_DELAY: begin
+      ExecuteStateThrowBallDelay(Rob, Tool, Ball);
+    end;
+
+    STATE_GO_BACK: begin
+      ExecuteStateGoBack(Rob, Tool, Ball);
+    end;
+
+    else begin
+      ResetState;
+    end;
+
+  end;
+end;
+
+procedure TPickBallSM.ExecuteStateInit(var Rob: TRobot; var Tool, Ball: TDMatrix);
+begin
+  // Stop Robot
+  Rob.Stop;
+
+  // Solenoid
+  Rob.solenoid := false;
+
+  // q0: prismatic joint
+  Rob.JointsPrism.PosRef[0,0] := 0;
+end;
+
+procedure TPickBallSM.ExecuteStateGoPickBall(var Rob: TRobot; var Tool, Ball: TDMatrix);
+begin
+  // Solenoid
+  Rob.solenoid := false;
+
+  // TODO: Position
+  // put here linear interpolation for the robot's tool reference
+  // InterpolatePosition(X0, 0.05, 0.40, Xf, Xa);
+  // ToolRefW := Xa;
+
+  // Orientation
+  Rob.Tool.RotRef := RzMat(DegToRad(90.0)) * RyMat(DegToRad(0.0)) * RxMat(DegToRad(180.0));
+
+  // Inverse kinematics (probably)
+
+  // q0: prismatic joint
+  Rob.JointsPrism.PosRef[0,0] := 0;
+end;
+
+procedure TPickBallSM.ExecuteStatePickBall(var Rob: TRobot; var Tool, Ball: TDMatrix);
+begin
+  // Solenoid
+  Rob.solenoid := true;
+
+  // TODO: Position
+  // ToolRefW := Xf;
+
+  // Orientation
+  Rob.Tool.RotRef := RzMat(DegToRad(90.0)) * RyMat(DegToRad(0.0)) * RxMat(DegToRad(180.0));
+
+  // Inverse kinematics (probably)
+
+  // q0: prismatic joint
+  Rob.JointsPrism.PosRef[0,0] := 0;
+end;
+
+procedure TPickBallSM.ExecuteStateSetThrowDir(var Rob: TRobot; var Tool, Ball: TDMatrix);
+begin
+  // Solenoid
+  Rob.solenoid := true;
+
+  // Orientation
+  Rob.Tool.RotRef := RzMat(DegToRad(90.0)) * RyMat(DegToRad(0.0)) * RxMat(DegToRad(180.0));
+
+  // DO NOT CHANGE REFERENCE OF THE TOOL POSITION (manually changed)
+end;
+
+procedure TPickBallSM.ExecuteStateThrowBall(var Rob: TRobot; var Tool, Ball: TDMatrix);
+begin
+  // Solenoid
+  Rob.solenoid := true;
+
+  // Orientation
+  Rob.Tool.RotRef := RzMat(DegToRad(90.0)) * RyMat(DegToRad(0.0)) * RxMat(DegToRad(180.0));
+
+  // TODO: change directly q0 (incrementing e.g.)
+  // Rob.JointsPrism.PosRef[0,0] := Rob.JointsPrism.PosRef[0,0] + VNOM * DT;
+end;
+
+procedure TPickBallSM.ExecuteStateThrowBallDelay(var Rob: TRobot; var Tool, Ball: TDMatrix);
+begin
+  // Solenoid
+  Rob.solenoid := false;
+
+  // Orientation
+  Rob.Tool.RotRef := RzMat(DegToRad(90.0)) * RyMat(DegToRad(0.0)) * RxMat(DegToRad(180.0));
+
+  // TODO: change directly q0 (keep incrementing e.g.)
+  // Rob.JointsPrism.PosRef[0,0] := Rob.JointsPrism.PosRef[0,0] + VNOM * DT;
+end;
+
+procedure TPickBallSM.ExecuteStateGoBack(var Rob: TRobot; var Tool, Ball: TDMatrix);
+begin
+  // Solenoid
+  Rob.solenoid := false;
+
+  // TODO: Position
+  // put here linear interpolation for the robot's tool reference
+  // InterpolatePosition(X0, 0.05, 0.40, Xf, Xa);
+  // ToolRefW := Xa;
+
+  // Orientation
+  Rob.Tool.RotRef := RzMat(DegToRad(90.0)) * RyMat(DegToRad(0.0)) * RxMat(DegToRad(90.0));
+
+  // Inverse kinematics (probably)
+
+  // q0: prismatic joint
+  Rob.JointsPrism.PosRef[0,0] := 0
 end;
 
 end.

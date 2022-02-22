@@ -23,13 +23,13 @@ begin
   try
     // S2 > Lz
     for i := 0 to NUM_JOINTS -1 do begin
-      mess.add(format('%.4g',[JointPos[i]]));
+      mess.add(format('%.6g',[JointPos[i]]));
     end;
     for i := 0 to NUM_JOINTS -1 do begin
-      mess.add(format('%.4g',[JointVel[i]]));
+      mess.add(format('%.6g',[JointVel[i]]));
     end;
     for i := 0 to 2 do begin
-      mess.add(format('%.4g',[Mgetv(BallPos,i,0)]));
+      mess.add(format('%.6g',[Mgetv(BallPos,i,0)]));
     end;
 
     WriteUDPData('127.0.0.1', 9809, mess.text);
