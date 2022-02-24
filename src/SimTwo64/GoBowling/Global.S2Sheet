@@ -4,27 +4,27 @@
     <defaultcol width="50" />
   </columns>
   <cells>
-    <cell r="4" c="2" text="0.00213927" />
-    <cell r="4" c="3" text="0.0000887855" />
+    <cell r="4" c="2" text="-0.0000809627" />
+    <cell r="4" c="3" text="0.00198976" />
     <cell r="5" c="2" text="0" />
     <cell r="5" c="3" text="0" />
-    <cell r="4" c="4" text="-0.0171606" />
+    <cell r="4" c="4" text="0.014439" />
     <cell r="5" c="4" text="0" />
-    <cell r="6" c="2" text="0.000687796" />
-    <cell r="6" c="3" text="0.00989032" />
-    <cell r="6" c="4" text="-2.71178" />
+    <cell r="6" c="2" text="0.00181613" />
+    <cell r="6" c="3" text="0.0132292" />
+    <cell r="6" c="4" text="-0.365335" />
     <cell r="3" c="1" text="p_ref:" />
     <cell r="8" c="1" text="t:" />
-    <cell r="3" c="5" text="0" />
-    <cell r="4" c="6" text="0.000153046" />
-    <cell r="4" c="7" text="0.000301858" />
-    <cell r="4" c="8" text="0.00010368" />
+    <cell r="3" c="5" text="60.596" />
+    <cell r="4" c="6" text="1.44891E-6" />
+    <cell r="4" c="7" text="0.000190532" />
+    <cell r="4" c="8" text="-0.0000483491" />
     <cell r="5" c="6" text="0" />
     <cell r="5" c="7" text="0" />
     <cell r="5" c="8" text="0" />
-    <cell r="6" c="8" text="0.0154009" />
-    <cell r="6" c="7" text="0.0150155" />
-    <cell r="6" c="6" text="0.0161163" />
+    <cell r="6" c="8" text="0.0163667" />
+    <cell r="6" c="7" text="0.0145685" />
+    <cell r="6" c="6" text="-0.0157529" />
     <cell r="9" c="1" text="ctrl:" />
     <cell r="9" c="2" text="1" />
     <cell r="9" c="3" text="1" />
@@ -43,46 +43,46 @@
     <cell r="1" c="7" text="5" />
     <cell r="1" c="8" text="6" />
     <cell r="2" c="1" text="p:" />
-    <cell r="2" c="2" text="-0.0000700951" />
-    <cell r="2" c="3" text="0.000846943" />
-    <cell r="2" c="4" text="0.000300528" />
-    <cell r="2" c="5" text="0.000273208" />
-    <cell r="2" c="6" text="0.0000273208" />
-    <cell r="2" c="7" text="0.0013114" />
-    <cell r="2" c="8" text="0.000764981" />
+    <cell r="2" c="2" text="7.15256E-7" />
+    <cell r="2" c="3" text="180" />
+    <cell r="2" c="4" text="61.0062" />
+    <cell r="2" c="5" text="60.598" />
+    <cell r="2" c="6" text="90" />
+    <cell r="2" c="7" text="24.3296" />
+    <cell r="2" c="8" text="90.0001" />
     <cell r="2" c="9" text="(m/deg)" />
     <cell r="3" c="2" text="0" />
-    <cell r="3" c="3" text="0" />
-    <cell r="3" c="4" text="0" />
-    <cell r="3" c="6" text="0" />
-    <cell r="3" c="7" text="0" />
-    <cell r="3" c="8" text="0" />
+    <cell r="3" c="3" text="180" />
+    <cell r="3" c="4" text="61.0063" />
+    <cell r="3" c="6" text="90.0002" />
+    <cell r="3" c="7" text="24.3295" />
+    <cell r="3" c="8" text="90.0002" />
     <cell r="3" c="9" text="(deg)" />
     <cell r="4" c="1" text="w:" />
-    <cell r="4" c="5" text="-0.000362986" />
+    <cell r="4" c="5" text="0.000294126" />
     <cell r="4" c="9" text="(rad/s)" />
     <cell r="5" c="1" text="w_ref:" />
     <cell r="5" c="5" text="0" />
     <cell r="5" c="9" text="(rad/s)" />
     <cell r="6" c="1" text="u:" />
-    <cell r="6" c="5" text="-0.94118" />
+    <cell r="6" c="5" text="0.485483" />
     <cell r="6" c="9" text="(V)" />
     <cell r="7" c="1" text="i:" />
-    <cell r="7" c="2" text="0.0108149" />
-    <cell r="7" c="3" text="0.19759" />
-    <cell r="7" c="4" text="-54.1935" />
-    <cell r="7" c="5" text="-18.8246" />
-    <cell r="7" c="6" text="0.320618" />
-    <cell r="7" c="7" text="0.299679" />
-    <cell r="7" c="8" text="0.308329" />
+    <cell r="7" c="2" text="0.0366895" />
+    <cell r="7" c="3" text="0.267167" />
+    <cell r="7" c="4" text="-7.24056" />
+    <cell r="7" c="5" text="9.70888" />
+    <cell r="7" c="6" text="-0.315056" />
+    <cell r="7" c="7" text="0.284633" />
+    <cell r="7" c="8" text="0.327845" />
     <cell r="7" c="9" text="(A)" />
-    <cell r="8" c="2" text="0.00321998" />
-    <cell r="8" c="3" text="0.0592751" />
-    <cell r="8" c="4" text="-16.2577" />
-    <cell r="8" c="5" text="-5.64739" />
-    <cell r="8" c="6" text="0.0961711" />
-    <cell r="8" c="7" text="0.0898985" />
-    <cell r="8" c="8" text="0.0925014" />
+    <cell r="8" c="2" text="0.0110099" />
+    <cell r="8" c="3" text="0.0801717" />
+    <cell r="8" c="4" text="-2.17162" />
+    <cell r="8" c="5" text="2.91266" />
+    <cell r="8" c="6" text="-0.0945167" />
+    <cell r="8" c="7" text="0.0853338" />
+    <cell r="8" c="8" text="0.0983577" />
     <cell r="8" c="9" text="(N/m)" />
     <cell r="9" c="5" text="1" />
     <cell r="9" c="6" text="1" />
@@ -116,30 +116,30 @@
     <cell r="12" c="10" text="(0):" />
     <cell r="12" c="11" text="(1):" />
     <cell r="12" c="12" text="(2):" />
-    <cell r="13" c="2" text="1.3762" />
-    <cell r="14" c="2" text="6.71659E-6" />
-    <cell r="15" c="2" text="0.850046" />
-    <cell r="13" c="4" text="1" />
-    <cell r="13" c="5" text="-0.0000278561" />
-    <cell r="13" c="6" text="-0.0000576968" />
-    <cell r="14" c="4" text="0.0000278555" />
+    <cell r="13" c="2" text="0.575678" />
+    <cell r="14" c="2" text="5.52385E-6" />
+    <cell r="15" c="2" text="0.150286" />
+    <cell r="13" c="4" text="0.126612" />
+    <cell r="13" c="5" text="7.48947E-6" />
+    <cell r="13" c="6" text="0.991952" />
+    <cell r="14" c="4" text="9.60407E-6" />
     <cell r="14" c="5" text="1" />
-    <cell r="14" c="6" text="-0.000010839" />
-    <cell r="15" c="4" text="0.0000576971" />
-    <cell r="15" c="5" text="0.0000108374" />
-    <cell r="15" c="6" text="1" />
-    <cell r="13" c="8" text="0.805025" />
-    <cell r="14" c="8" text="6.70951E-6" />
-    <cell r="15" c="8" text="-0.299953" />
-    <cell r="13" c="10" text="1" />
-    <cell r="13" c="11" text="-0.0000278561" />
-    <cell r="13" c="12" text="-0.0000576968" />
-    <cell r="14" c="10" text="0.0000278555" />
+    <cell r="14" c="6" text="-8.77609E-6" />
+    <cell r="15" c="4" text="-0.991952" />
+    <cell r="15" c="5" text="0.0000106379" />
+    <cell r="15" c="6" text="0.126612" />
+    <cell r="13" c="8" text="0.00442773" />
+    <cell r="14" c="8" text="5.52269E-6" />
+    <cell r="15" c="8" text="-0.999714" />
+    <cell r="13" c="10" text="0.126612" />
+    <cell r="13" c="11" text="7.48947E-6" />
+    <cell r="13" c="12" text="0.991952" />
+    <cell r="14" c="10" text="9.60407E-6" />
     <cell r="14" c="11" text="1" />
-    <cell r="14" c="12" text="-0.000010839" />
-    <cell r="15" c="10" text="0.0000576971" />
-    <cell r="15" c="11" text="0.0000108374" />
-    <cell r="15" c="12" text="1" />
+    <cell r="14" c="12" text="-8.77609E-6" />
+    <cell r="15" c="10" text="-0.991952" />
+    <cell r="15" c="11" text="0.0000106379" />
+    <cell r="15" c="12" text="0.126612" />
     <cell r="17" c="1" text="BALL" />
     <cell r="18" c="1" text="x:" />
     <cell r="19" c="1" text="y:" />
@@ -149,8 +149,8 @@
     <cell r="18" c="3" text="0.57125" />
     <cell r="19" c="3" text="0" />
     <cell r="20" c="3" text="0.1" />
-    <cell r="18" c="2" text="0.57125" />
-    <cell r="19" c="2" text="0" />
+    <cell r="18" c="2" text="0.567619" />
+    <cell r="19" c="2" text="-0.14568" />
     <cell r="20" c="2" text="0.0421485" />
     <cell r="17" c="5" text="MAGNET" />
     <cell r="17" c="6" text="0" />

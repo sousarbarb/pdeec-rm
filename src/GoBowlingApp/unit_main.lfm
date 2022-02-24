@@ -2341,19 +2341,19 @@ object FMain: TFMain
               Alignment = taCenter
               Title.Alignment = taCenter
               Title.Caption = 'pos (m,º):'
-              Width = 78
+              Width = 98
             end          
             item
               Alignment = taCenter
               Title.Alignment = taCenter
               Title.Caption = 'vel (m/s,rad/s):'
-              Width = 78
+              Width = 98
             end          
             item
               Alignment = taCenter
               Title.Alignment = taCenter
               Title.Caption = 'ref (m,º):'
-              Width = 79
+              Width = 99
             end>
           Enabled = False
           Font.Height = -11
@@ -2361,10 +2361,10 @@ object FMain: TFMain
           RowCount = 8
           TabOrder = 0
           ColWidths = (
-            64
-            78
-            78
-            79
+            80
+            98
+            98
+            99
           )
           Cells = (
             7
@@ -2491,17 +2491,17 @@ object FMain: TFMain
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 58
               end>
             Enabled = False
             FixedCols = 0
@@ -2514,9 +2514,9 @@ object FMain: TFMain
             TitleFont.Height = -12
             TitleFont.Name = 'Sans'
             ColWidths = (
-              45
-              45
-              45
+              56
+              56
+              58
             )
             RowHeights = (
               22
@@ -2614,17 +2614,17 @@ object FMain: TFMain
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 58
               end>
             Enabled = False
             FixedCols = 0
@@ -2637,9 +2637,9 @@ object FMain: TFMain
             TitleFont.Height = -12
             TitleFont.Name = 'Sans'
             ColWidths = (
-              45
-              45
-              45
+              56
+              56
+              58
             )
             RowHeights = (
               22
@@ -2937,17 +2937,17 @@ object FMain: TFMain
             item
               Alignment = taRightJustify
               Title.Caption = 'Title'
-              Width = 45
+              Width = 56
             end          
             item
               Alignment = taRightJustify
               Title.Caption = 'Title'
-              Width = 45
+              Width = 56
             end          
             item
               Alignment = taRightJustify
               Title.Caption = 'Title'
-              Width = 45
+              Width = 58
             end>
           Enabled = False
           FixedCols = 0
@@ -2960,9 +2960,9 @@ object FMain: TFMain
           TitleFont.Height = -12
           TitleFont.Name = 'Sans'
           ColWidths = (
-            45
-            45
-            45
+            56
+            56
+            58
           )
           RowHeights = (
             22

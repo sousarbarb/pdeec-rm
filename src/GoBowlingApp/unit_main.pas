@@ -237,13 +237,13 @@ var thx, thy, thz: double;
 begin
   // Configuration Robot: T 0 >>> World
   Robot.config.T0W[0,0] := StrToFloatDef(EdConfigT0wX.Text,0.57125);
-  Robot.config.T0W[1,0] := StrToFloatDef(EdConfigT0wY.Text,0);
+  Robot.config.T0W[1,0] := StrToFloatDef(EdConfigT0wY.Text,0.00);
   Robot.config.T0W[2,0] := StrToFloatDef(EdConfigT0wZ.Text,1.15);
 
   // Configuration Robot: R 0 >>> World
-  thx := DegToRad(StrToFloatDef(EdConfigR0wRx.Text,0));
-  thy := DegToRad(StrToFloatDef(EdConfigR0wRy.Text,0));
-  thz := DegToRad(StrToFloatDef(EdConfigR0wRz.Text,0));
+  thx := DegToRad(StrToFloatDef(EdConfigR0wRx.Text,0.0));
+  thy := DegToRad(StrToFloatDef(EdConfigR0wRy.Text,0.0));
+  thz := DegToRad(StrToFloatDef(EdConfigR0wRz.Text,0.0));
   Robot.config.R0W := RzMat(thz) * RyMat(thy) * RxMat(thx);
   for i := 0 to 2 do begin
     for j := 0 to 2 do begin
@@ -266,13 +266,13 @@ var thx, thy, thz: double;
 begin
   // Tool Reference: Position
   Robot.Tool.PosRef[0,0] := StrToFloatDef(EdIKXt.Text,Robot.config.l2+Robot.config.l3+Robot.config.lt);
-  Robot.Tool.PosRef[1,0] := StrToFloatDef(EdIKYt.Text,0);
+  Robot.Tool.PosRef[1,0] := StrToFloatDef(EdIKYt.Text,0.0);
   Robot.Tool.PosRef[2,0] := StrToFloatDef(EdIKZt.Text,-Robot.config.l1);
 
   // Tool Reference: Rotation
-  thx := DegToRad(StrToFloatDef(EdIKRtRx.Text,90));
-  thy := DegToRad(StrToFloatDef(EdIKRtRy.Text,0));
-  thz := DegToRad(StrToFloatDef(EdIKRtRz.Text,90));
+  thx := DegToRad(StrToFloatDef(EdIKRtRx.Text,90.0));
+  thy := DegToRad(StrToFloatDef(EdIKRtRy.Text, 0.0));
+  thz := DegToRad(StrToFloatDef(EdIKRtRz.Text,90.0));
   Robot.Tool.RotRef := RzMat(thz) * RyMat(thy) * RxMat(thx);
 
   // Inverse Kinematics
@@ -293,12 +293,12 @@ end;
 procedure TFMain.BtJointsRefSetClick(Sender: TObject);
 begin
   Robot.JointsPrism.PosRef[0,0] := StrToFloatDef(EdJointsRefQ0.Text,0);
-  Robot.JointsRot.PosRef[0,0] := DegToRad(StrToFloatDef(EdJointsRefQ1.Text,0));
-  Robot.JointsRot.PosRef[1,0] := DegToRad(StrToFloatDef(EdJointsRefQ2.Text,0));
-  Robot.JointsRot.PosRef[2,0] := DegToRad(StrToFloatDef(EdJointsRefQ3.Text,0));
-  Robot.JointsRot.PosRef[3,0] := DegToRad(StrToFloatDef(EdJointsRefQ4.Text,0));
-  Robot.JointsRot.PosRef[4,0] := DegToRad(StrToFloatDef(EdJointsRefQ5.Text,0));
-  Robot.JointsRot.PosRef[5,0] := DegToRad(StrToFloatDef(EdJointsRefQ6.Text,0));
+  Robot.JointsRot.PosRef[0,0] := DegToRad(StrToFloatDef(EdJointsRefQ1.Text,0.0));
+  Robot.JointsRot.PosRef[1,0] := DegToRad(StrToFloatDef(EdJointsRefQ2.Text,0.0));
+  Robot.JointsRot.PosRef[2,0] := DegToRad(StrToFloatDef(EdJointsRefQ3.Text,0.0));
+  Robot.JointsRot.PosRef[3,0] := DegToRad(StrToFloatDef(EdJointsRefQ4.Text,0.0));
+  Robot.JointsRot.PosRef[4,0] := DegToRad(StrToFloatDef(EdJointsRefQ5.Text,0.0));
+  Robot.JointsRot.PosRef[5,0] := DegToRad(StrToFloatDef(EdJointsRefQ6.Text,0.0));
 end;
 
 procedure TFMain.BtSimActionReleaseBallClick(Sender: TObject);
@@ -680,9 +680,9 @@ begin
   mess := TStringList.create;
   try
     // Reference joints value
-    mess.add(format('%.4g',[Robot.JointsPrism.PosRef[0,0]]));
+    mess.add(format('%.6g',[Robot.JointsPrism.PosRef[0,0]]));
     for i := 0 to 5 do begin
-      mess.add(format('%.4g',[Robot.JointsRot.PosRef[i,0]]));
+      mess.add(format('%.6g',[Robot.JointsRot.PosRef[i,0]]));
     end;
 
     // Solenoid

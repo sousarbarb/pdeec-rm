@@ -21,9 +21,9 @@
 
     <const name='ball_diameter_scaled' value='ball_diameter/scale_factor'/>
 
-    <const name='claw_width' value='0.01'/>
-    <const name='claw_length' value='0.08'/>
-    <const name='claw_gap' value='ball_diameter_scaled * 4 * sqrt(2) / 3'/>
+    <const name='claw_width' value='0.005'/>
+    <const name='claw_length' value='ball_diameter_scaled * 2 / 3'/>
+    <const name='claw_gap' value='ball_diameter_scaled * 2 * sqrt(2) / 3'/>
   </defines>
   
   <solids>
@@ -139,8 +139,8 @@
     <cylinder>
       <ID value='B6_claw_base'/>
       <solid id='B6'/>
-      <size x='claw_gap/2 + claw_width' z='B6_height'/>
-      <pos x='B6_length/2 + claw_width/2' y='0' z='0'/>
+      <size x='claw_gap/2 + claw_width/2' z='0.01'/>
+      <pos x='B6_length/2 + 0.01/2' y='0' z='0'/>
       <rot_deg x='0' y='90' z='0'/>
       <color_rgb r='128' g='128' b='128'/>
     </cylinder>
@@ -148,8 +148,8 @@
     <cuboid>
       <ID value='B6_claw_finger_left'/>
       <solid id='B6'/>
-      <size x='claw_length' y='claw_width' z='B6_height'/>
-      <pos x='B6_length/2 + claw_length/2' y='-claw_gap/2 - claw_width/2' z='0'/>
+      <size x='claw_length' y='claw_width' z='0.01'/>
+      <pos x='B6_length/2 + claw_length/2' y='-claw_gap/2' z='0'/>
       <rot_deg x='0' y='0' z='0'/>
       <color_rgb r='128' g='128' b='128'/>
     </cuboid>
@@ -157,8 +157,8 @@
     <cuboid>
       <ID value='B6_claw_finger_240'/>
       <solid id='B6'/>
-      <size x='claw_length' y='claw_width' z='B6_height'/>
-      <pos x='B6_length/2 + claw_length/2' y='(-claw_gap/2 - claw_width/2) * -1/2' z='(-claw_gap/2 - claw_width/2) * -sqrt(3)/2'/>
+      <size x='claw_length' y='claw_width' z='0.01'/>
+      <pos x='B6_length/2 + claw_length/2' y='(-claw_gap/2) * -1/2' z='(-claw_gap/2) * -sqrt(3)/2'/>
       <rot_deg x='240' y='0' z='0'/>
       <color_rgb r='128' g='128' b='128'/>
     </cuboid>
@@ -166,8 +166,8 @@
     <cuboid>
       <ID value='B6_claw_finger_120'/>
       <solid id='B6'/>
-      <size x='claw_length' y='claw_width' z='B6_height'/>
-      <pos x='B6_length/2 + claw_length/2' y='(-claw_gap/2 - claw_width/2) * -1/2' z='(-claw_gap/2 - claw_width/2) *  sqrt(3)/2'/>
+      <size x='claw_length' y='claw_width' z='0.01'/>
+      <pos x='B6_length/2 + claw_length/2' y='(-claw_gap/2) * -1/2' z='(-claw_gap/2) *  sqrt(3)/2'/>
       <rot_deg x='120' y='0' z='0'/>
       <color_rgb r='128' g='128' b='128'/>
     </cuboid>
@@ -250,12 +250,12 @@
 
     <solenoid>
       <ID value='grab'/>
-      <beam length='0.15' initial_width='0.011' final_width='0.011'/>
+      <beam length='0.20' initial_width='0.02' final_width='0.02'/>
       <solid id='B6'/>
       <size x='claw_gap/2 + claw_width' z='B6_height'/>
       <rot_deg x='0' y='0' z='0'/>
       <tag value='00'/>
-      <force fmax='10' k2='0.5'/>
+      <force fmax='100' k2='0.5'/>
       <color_rgb r='0' g='255' b='0'/>
     </solenoid>
 

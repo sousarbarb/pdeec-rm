@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<robot>
+
+  <solids>
+    <cylinder>
+      <ID value='Cbottom'/>
+      <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+      <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
+      <pos x='0' y='0' z='0.5*pin_height/scale_factor'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='240' g='240' b='240'/>
+    </cylinder>
+
+    <cylinder>
+      <ID value='Ctop'/>
+      <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+      <size x='pin_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='(pin_height-pin_mid_height)/scale_factor'/>
+      <pos x='0' y='0' z='0.5*(pin_height+pin_mid_height)/scale_factor'/>
+      <rot_deg x='0' y='0' z='0'/>
+      <color_rgb r='240' g='240' b='240'/>
+    </cylinder>
+  </solids>
+
+  <articulations>
+    <joint>
+        <ID value="J1"/>
+        <connect B1="Cbottom" B2="Ctop"/>
+        <pos x="0" y="0" z="0.5*pin_height/scale_factor"/>
+        <axis x="0" y="0" z="1"/>
+        <type value="Hinge"/>
+        <motor active="0"/>
+        <controller active="0"/>
+    </joint>
+  </articulations>
+
+</robot>
