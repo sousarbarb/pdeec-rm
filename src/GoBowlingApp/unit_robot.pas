@@ -14,6 +14,7 @@ type
     l3: double;
     lt: double;
     H0W: TDMatrix;
+    HW0: TDMatrix;
     R0W: TDMatrix;
     T0W: TDMatrix;
   end;
@@ -26,6 +27,7 @@ type
 
   TTool = record
     Pos: TDMatrix;
+    WPos: TDMatrix;
     Rot: TDMatrix;
     PosRef: TDMatrix;
     RotRef: TDMatrix;
@@ -48,6 +50,7 @@ type
       function IsStopped: boolean;
       procedure SetConfigH0W(var R, T: TDMatrix);
       procedure UpdateConfigH0W;
+      procedure UpdateConfigHW0;
       procedure Stop;
     private
   end;
@@ -195,6 +198,7 @@ constructor TRobot.Create;
 begin
   // Initialize configuration
   config.H0W := Meye(4);
+  config.HW0 := Meye(4);
   config.R0W := Meye(3);
   config.T0W := Mzeros(3,1);
 
@@ -208,6 +212,7 @@ begin
 
   // Initialize tool
   Tool.Pos := Mzeros(3,1);
+  Tool.WPos := Mzeros(3,1);
   Tool.Rot := Meye(3);
   Tool.PosRef := Mzeros(3,1);
   Tool.RotRef := Meye(3);
@@ -336,6 +341,16 @@ end;
 procedure TRobot.UpdateConfigH0W;
 begin
   RT2HMat(config.R0W,config.T0W,config.H0W);
+end;
+
+procedure TRobot.UpdateConfigHW0;
+begin
+
+  config.HW0 := config.H0W;
+  config.HW0[0,3] := -config.HW0[0,3];
+  config.HW0[1,3] := -config.HW0[1,3];
+  config.HW0[2,3] := -config.HW0[2,3];
+
 end;
 
 procedure TRobot.Stop;
