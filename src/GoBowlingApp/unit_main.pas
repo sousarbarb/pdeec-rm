@@ -215,8 +215,8 @@ type
   end;
 
 const
-  OFFSET_Q0_HOVER_BALL_X = 0.3;
-  OFFSET_Q0_HOVER_BALL_Z = 0.15;
+  OFFSET_HOVER_BALL_X = 0.3;
+  OFFSET_HOVER_BALL_Z = 0.15;
 
 var
   FMain: TFMain;
@@ -442,12 +442,12 @@ end;
 
 procedure TFMain.BtSimActionHoverBallClick(Sender: TObject);
 begin
-  Robot.JointsPrism.PosRef[0,0] := Robot.JointsPrism.Pos[0,0]+RBall[0,0]+OFFSET_Q0_HOVER_BALL_X;
+  Robot.JointsPrism.PosRef[0,0] := Robot.JointsPrism.Pos[0,0]+RBall[0,0]+OFFSET_HOVER_BALL_X;
   UpdateGUI;
   // Tool Reference: Position
-  Robot.Tool.PosRef[0,0] := Robot.JointsPrism.Pos[0,0]+RBall[0,0]-OFFSET_Q0_HOVER_BALL_X;
+  Robot.Tool.PosRef[0,0] := Robot.JointsPrism.Pos[0,0]+RBall[0,0]-OFFSET_HOVER_BALL_X;
   Robot.Tool.PosRef[1,0] := RBall[1,0];
-  Robot.Tool.PosRef[2,0] := RBall[2,0]+OFFSET_Q0_HOVER_BALL_Z;
+  Robot.Tool.PosRef[2,0] := RBall[2,0]+OFFSET_HOVER_BALL_Z;
 
   Robot.Tool.RotRef := RxMat(DegToRad(180));
   // Inverse Kinematics
