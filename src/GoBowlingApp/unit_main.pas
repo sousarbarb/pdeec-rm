@@ -409,7 +409,7 @@ end;
 
 procedure TFMain.BtSolenoidStatusOnClick(Sender: TObject);
 begin
-  Robot.solenoid := false;
+  Robot.solenoid := true;
 end;
 
 procedure TFMain.BtSimIncPXClick(Sender: TObject);
