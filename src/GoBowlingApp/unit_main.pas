@@ -197,6 +197,7 @@ type
     procedure ControlStopConfig(enable: boolean);
     procedure ControlManual;
     procedure ControlManualConfig(enable: boolean);
+    procedure ControlBall;
     procedure ControlBallConfig(enable: boolean);
     procedure ParseUDPMessage(var msg: String);
     procedure SendUDPMessage;
@@ -219,9 +220,14 @@ const
   OFFSET_HOVER_BALL_Z = 0.15;
   OFFSET_GO_BALL_X = 0.0;
   OFFSET_GO_BALL_Z = 0.1;
+  Q0_THROW_BACK    = -1.0;
+  Q0_THROW_FORWARD = 1.0;
+  MAX_LIM_Q0 = 0.57125;
 
 var
   FMain: TFMain;
+  throw_ball: boolean;
+  throw_ball_forward: boolean;
 
 implementation
 
@@ -315,21 +321,22 @@ end;
 
 procedure TFMain.BtSimActionReleaseBallClick(Sender: TObject);
 begin
-
+  Robot.solenoid := false;
 end;
 
 procedure TFMain.BtSimActionThrowBallClick(Sender: TObject);
 begin
-
+  throw_ball := true;
+  throw_ball_forward := false;
+  Robot.JointsPrism.PosRef[0,0] := -MAX_LIM_Q0;
 end;
 
 procedure TFMain.BtSimIncNXClick(Sender: TObject);
 begin
-
   // Tool Reference: Position
-  Robot.Tool.PosRef[0,0] := Robot.Tool.Pos[0,0] - SimIncStep;
-  Robot.Tool.PosRef[1,0] := Robot.Tool.Pos[1,0];
-  Robot.Tool.PosRef[2,0] := Robot.Tool.Pos[2,0];
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0] - SimIncStep;
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0];
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0];
   // Inverse Kinematics
   try
     Robot.IK(CbIKelbowUp.Checked);
@@ -345,9 +352,9 @@ end;
 procedure TFMain.BtSimIncNYClick(Sender: TObject);
 begin
        // Tool Reference: Position
-  Robot.Tool.PosRef[0,0] := Robot.Tool.Pos[0,0];
-  Robot.Tool.PosRef[1,0] := Robot.Tool.Pos[1,0] - SimIncStep;
-  Robot.Tool.PosRef[2,0] := Robot.Tool.Pos[2,0];
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0];
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0] - SimIncStep;
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0];
   // Inverse Kinematics
   try
     Robot.IK(CbIKelbowUp.Checked);
@@ -363,9 +370,9 @@ end;
 procedure TFMain.BtSimIncNZClick(Sender: TObject);
 begin
          // Tool Reference: Position
-  Robot.Tool.PosRef[0,0] := Robot.Tool.Pos[0,0];
-  Robot.Tool.PosRef[1,0] := Robot.Tool.Pos[1,0];
-  Robot.Tool.PosRef[2,0] := Robot.Tool.Pos[2,0] - SimIncStep;
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0];
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0];
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0] - SimIncStep;
   // Inverse Kinematics
   try
     Robot.IK(CbIKelbowUp.Checked);
@@ -381,9 +388,9 @@ end;
 procedure TFMain.BtSimIncPYClick(Sender: TObject);
 begin
            // Tool Reference: Position
-  Robot.Tool.PosRef[0,0] := Robot.Tool.Pos[0,0];
-  Robot.Tool.PosRef[1,0] := Robot.Tool.Pos[1,0] + SimIncStep;
-  Robot.Tool.PosRef[2,0] := Robot.Tool.Pos[2,0];
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0];
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0] + SimIncStep;
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0];
   // Inverse Kinematics
   try
     Robot.IK(CbIKelbowUp.Checked);
@@ -399,9 +406,9 @@ end;
 procedure TFMain.BtSimIncPZClick(Sender: TObject);
 begin
           // Tool Reference: Position
-  Robot.Tool.PosRef[0,0] := Robot.Tool.Pos[0,0];//Robot.Tool.Pos[0,0];
-  Robot.Tool.PosRef[1,0] := Robot.Tool.Pos[1,0];
-  Robot.Tool.PosRef[2,0] := Robot.Tool.Pos[2,0] + SimIncStep;
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0];//Robot.Tool.Pos[0,0];
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0];
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0] + SimIncStep;
   // Inverse Kinematics
   try
     Robot.IK(CbIKelbowUp.Checked);
@@ -495,12 +502,12 @@ end;
 
 procedure TFMain.BtSimActionInitPosClick(Sender: TObject);
 begin
-
+  Robot.Stop;
 end;
 
 procedure TFMain.BtSimActionGrabBallClick(Sender: TObject);
 begin
-    Robot.solenoid := true;
+  Robot.solenoid := true;
 end;
 
 procedure TFMain.CbCommsDbgClearClick(Sender: TObject);
@@ -634,6 +641,8 @@ begin
     ControlStop;
   end else if (RbModeManual.Checked) then begin
     ControlManual;
+  end else if (RbModeBall.Checked) then begin
+    ControlBall;
   end;
 
   // Output joints reference
@@ -664,6 +673,22 @@ begin
   Robot.solenoid := false;
   GbKinematicsJointsRef.Enabled := enable;
   GbKinematicsInverse.Enabled   := enable;
+end;
+
+procedure TFMain.ControlBall;
+begin
+  if (throw_ball) then begin
+    if (Robot.JointsPrism.Pos[0,0] < -0.975 * MAX_LIM_Q0) then begin
+      throw_ball_forward := true;
+      Robot.JointsPrism.PosRef[0,0] := MAX_LIM_Q0;
+    end else if ((throw_ball_forward) AND (Robot.JointsPrism.Pos[0,0] > 0.60 * MAX_LIM_Q0)) then begin
+      Robot.solenoid := false;
+    end else if ((throw_ball_forward) AND (Robot.JointsPrism.Pos[0,0] > 0.95 * MAX_LIM_Q0)) then begin
+      throw_ball := false;
+      throw_ball_forward := false;
+      Robot.Stop;
+    end;
+  end;
 end;
 
 procedure TFMain.ControlBallConfig(enable: boolean);

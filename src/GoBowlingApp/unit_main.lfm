@@ -2127,7 +2127,7 @@ object FMain: TFMain
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  SessionProperties = 'CbCommsDgRx.Checked;CbCommsDgTx.Checked;CbDebug.Checked;EdCommsIPS2.Text;EdCommsPortLz.Text;EdCommsPortS2.Text;EdConfigL1.Text;EdConfigL2.Text;EdConfigL3.Text;EdConfigLt.Text;EdConfigR0wRx.Text;EdConfigR0wRy.Text;EdConfigR0wRz.Text;EdConfigT0wX.Text;EdConfigT0wY.Text;EdConfigT0wZ.Text;EdIKRtRx.Text;EdIKRtRy.Text;EdIKRtRz.Text;EdIKXt.Text;EdIKYt.Text;EdIKZt.Text;EdJointsRefQ0.Text;EdJointsRefQ1.Text;EdJointsRefQ2.Text;EdJointsRefQ3.Text;EdJointsRefQ4.Text;EdJointsRefQ5.Text;EdJointsRefQ6.Text;PcMain.ActivePage;CbIKelbowUp.Checked'
+  SessionProperties = 'CbCommsDgRx.Checked;CbCommsDgTx.Checked;CbDebug.Checked;CbIKelbowUp.Checked;EdCommsIPS2.Text;EdCommsPortLz.Text;EdCommsPortS2.Text;EdConfigL1.Text;EdConfigL2.Text;EdConfigL3.Text;EdConfigLt.Text;EdConfigR0wRx.Text;EdConfigR0wRy.Text;EdConfigR0wRz.Text;EdConfigT0wX.Text;EdConfigT0wY.Text;EdConfigT0wZ.Text;EdIKRtRx.Text;EdIKRtRy.Text;EdIKRtRz.Text;EdIKXt.Text;EdIKYt.Text;EdIKZt.Text;EdJointsRefQ0.Text;EdJointsRefQ1.Text;EdJointsRefQ2.Text;EdJointsRefQ3.Text;EdJointsRefQ4.Text;EdJointsRefQ5.Text;EdJointsRefQ6.Text;PcMain.ActivePage;EdSimIncValue.Text'
   LCLVersion = '2.0.10.0'
   object CbDebug: TCheckBox
     Left = 10
