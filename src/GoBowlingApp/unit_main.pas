@@ -556,6 +556,7 @@ procedure TFMain.FormShow(Sender: TObject);
 begin
   BtCommsConnect.Click;
   BtConfigSet.Click;
+  BtSimIncSet.Click;
   RbModeStopChange(RbModeStop);
   RbModeManualChange(RbModeManual);
   RbModeBallChange(RbModeBall);
@@ -681,7 +682,7 @@ begin
     if (Robot.JointsPrism.Pos[0,0] < -0.975 * MAX_LIM_Q0) then begin
       throw_ball_forward := true;
       Robot.JointsPrism.PosRef[0,0] := MAX_LIM_Q0;
-    end else if ((throw_ball_forward) AND (Robot.JointsPrism.Pos[0,0] > 0.75 * MAX_LIM_Q0)) then begin
+    end else if ((throw_ball_forward) AND (Robot.JointsPrism.Pos[0,0] > 0.975 * MAX_LIM_Q0)) then begin
       throw_ball := false;
       throw_ball_forward := false;
       Robot.Stop;
