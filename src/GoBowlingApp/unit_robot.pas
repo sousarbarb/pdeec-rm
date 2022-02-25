@@ -14,9 +14,11 @@ type
     l3: double;
     lt: double;
     H0W: TDMatrix;
-    HW0: TDMatrix;
     R0W: TDMatrix;
     T0W: TDMatrix;
+    HW0: TDMatrix;
+    RW0: TDMatrix;
+    TW0: TDMatrix;
   end;
 
   TJoints = record
@@ -198,9 +200,11 @@ constructor TRobot.Create;
 begin
   // Initialize configuration
   config.H0W := Meye(4);
-  config.HW0 := Meye(4);
   config.R0W := Meye(3);
   config.T0W := Mzeros(3,1);
+  config.HW0 := Meye(4);
+  config.RW0 := Meye(3);
+  config.TW0 := Mzeros(3,1);
 
   // Initialize joints
   JointsPrism.Pos := Mzeros(1,1);
@@ -344,12 +348,9 @@ end;
 
 procedure TRobot.UpdateConfigHW0;
 begin
-
-  config.HW0 := config.H0W;
-  config.HW0[0,3] := -config.HW0[0,3];
-  config.HW0[1,3] := -config.HW0[1,3];
-  config.HW0[2,3] := -config.HW0[2,3];
-
+  config.RW0 :=  Mtran(config.R0W);
+  config.TW0 := -Mtran(config.R0W) * config.T0W;
+  RT2HMat(config.RW0,config.TW0,config.HW0);
 end;
 
 procedure TRobot.Stop;

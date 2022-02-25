@@ -253,7 +253,7 @@ begin
     end;
   end;
 
-  // Configuration Robot: H 0 >>> World
+  // Configuration Robot: H 0 >>> World || World >>> H 0
   Robot.UpdateConfigH0W;
   Robot.UpdateConfigHW0;
 
