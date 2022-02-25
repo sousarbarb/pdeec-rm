@@ -2315,8 +2315,8 @@ object FMain: TFMain
     end
     object TsKinematics: TTabSheet
       Caption = 'Kinematics'
-      ClientHeight = 428
-      ClientWidth = 776
+      ClientHeight = 537
+      ClientWidth = 972
       ParentFont = False
       object GbKinematicsJoints: TGroupBox
         Left = 10
@@ -2344,7 +2344,7 @@ object FMain: TFMain
               MaxSize = 250
               Title.Alignment = taCenter
               Title.Caption = 'pos (m,º):'
-              Width = 91
+              Width = 98
             end          
             item
               Alignment = taCenter
@@ -2352,7 +2352,7 @@ object FMain: TFMain
               MaxSize = 250
               Title.Alignment = taCenter
               Title.Caption = 'vel (m/s,rad/s):'
-              Width = 91
+              Width = 98
             end          
             item
               Alignment = taCenter
@@ -2360,7 +2360,7 @@ object FMain: TFMain
               MaxSize = 250
               Title.Alignment = taCenter
               Title.Caption = 'ref (m,º):'
-              Width = 93
+              Width = 100
             end>
           Enabled = False
           Font.Height = -14
@@ -2369,9 +2369,9 @@ object FMain: TFMain
           TabOrder = 0
           ColWidths = (
             100
-            91
-            91
-            93
+            98
+            98
+            100
           )
           Cells = (
             7
@@ -2421,43 +2421,43 @@ object FMain: TFMain
           TabOrder = 0
           object LbFKactXt: TLabel
             Left = 10
-            Height = 15
+            Height = 20
             Top = 5
-            Width = 36
+            Width = 44
             Caption = 'Xt (m):'
             ParentColor = False
             ParentFont = False
           end
           object LbFKactYt: TLabel
             Left = 10
-            Height = 15
+            Height = 20
             Top = 35
-            Width = 36
+            Width = 43
             Caption = 'Yt (m):'
             ParentColor = False
             ParentFont = False
           end
           object LbFKactZt: TLabel
             Left = 10
-            Height = 15
+            Height = 20
             Top = 65
-            Width = 36
+            Width = 44
             Caption = 'Zt (m):'
             ParentColor = False
             ParentFont = False
           end
           object LbFKactRt: TLabel
             Left = 10
-            Height = 15
+            Height = 20
             Top = 95
-            Width = 14
+            Width = 17
             Caption = 'Rt:'
             ParentColor = False
             ParentFont = False
           end
           object EdFKactXt: TEdit
             Left = 60
-            Height = 23
+            Height = 28
             Top = 0
             Width = 70
             Alignment = taRightJustify
@@ -2467,7 +2467,7 @@ object FMain: TFMain
           end
           object EdFKactYt: TEdit
             Left = 60
-            Height = 23
+            Height = 28
             Top = 30
             Width = 70
             Alignment = taRightJustify
@@ -2477,7 +2477,7 @@ object FMain: TFMain
           end
           object EdFKactZt: TEdit
             Left = 60
-            Height = 23
+            Height = 28
             Top = 60
             Width = 70
             Alignment = taRightJustify
@@ -2500,21 +2500,21 @@ object FMain: TFMain
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 56
+                Width = 63
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 56
+                Width = 63
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 58
+                Width = 65
               end>
             Enabled = False
             FixedCols = 0
@@ -2527,9 +2527,9 @@ object FMain: TFMain
             TitleFont.Height = -15
             TitleFont.Name = 'Sans'
             ColWidths = (
-              56
-              56
-              58
+              63
+              63
+              65
             )
             RowHeights = (
               28
@@ -2550,43 +2550,43 @@ object FMain: TFMain
           TabOrder = 1
           object LbFKrefXt: TLabel
             Left = 10
-            Height = 15
+            Height = 20
             Top = 5
-            Width = 36
+            Width = 44
             Caption = 'Xt (m):'
             ParentColor = False
             ParentFont = False
           end
           object LbFKrefYt: TLabel
             Left = 10
-            Height = 15
+            Height = 20
             Top = 35
-            Width = 36
+            Width = 43
             Caption = 'Yt (m):'
             ParentColor = False
             ParentFont = False
           end
           object LbFKrefZt: TLabel
             Left = 10
-            Height = 15
+            Height = 20
             Top = 65
-            Width = 36
+            Width = 44
             Caption = 'Zt (m):'
             ParentColor = False
             ParentFont = False
           end
           object LbFKrefRt: TLabel
             Left = 10
-            Height = 15
+            Height = 20
             Top = 95
-            Width = 14
+            Width = 17
             Caption = 'Rt:'
             ParentColor = False
             ParentFont = False
           end
           object EdFKrefXt: TEdit
             Left = 60
-            Height = 23
+            Height = 28
             Top = 0
             Width = 70
             Alignment = taRightJustify
@@ -2596,7 +2596,7 @@ object FMain: TFMain
           end
           object EdFKrefYt: TEdit
             Left = 60
-            Height = 23
+            Height = 28
             Top = 30
             Width = 70
             Alignment = taRightJustify
@@ -2606,7 +2606,7 @@ object FMain: TFMain
           end
           object EdFKrefZt: TEdit
             Left = 60
-            Height = 23
+            Height = 28
             Top = 60
             Width = 70
             Alignment = taRightJustify
@@ -2629,21 +2629,21 @@ object FMain: TFMain
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 56
+                Width = 63
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 56
+                Width = 63
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 58
+                Width = 65
               end>
             Enabled = False
             FixedCols = 0
@@ -2656,9 +2656,9 @@ object FMain: TFMain
             TitleFont.Height = -15
             TitleFont.Name = 'Sans'
             ColWidths = (
-              56
-              56
-              58
+              63
+              63
+              65
             )
             RowHeights = (
               28
@@ -2680,34 +2680,34 @@ object FMain: TFMain
         TabOrder = 2
         object LbIKXt: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 5
-          Width = 36
+          Width = 44
           Caption = 'Xt (m):'
           ParentColor = False
           ParentFont = False
         end
         object LbIKYt: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 35
-          Width = 36
+          Width = 43
           Caption = 'Yt (m):'
           ParentColor = False
           ParentFont = False
         end
         object LbIKZt: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 65
-          Width = 36
+          Width = 44
           Caption = 'Zt (m):'
           ParentColor = False
           ParentFont = False
         end
         object EdIKXt: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 0
           Width = 70
           Alignment = taRightJustify
@@ -2716,7 +2716,7 @@ object FMain: TFMain
         end
         object EdIKYt: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 30
           Width = 70
           Alignment = taRightJustify
@@ -2725,7 +2725,7 @@ object FMain: TFMain
         end
         object EdIKZt: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 60
           Width = 70
           Alignment = taRightJustify
@@ -2734,7 +2734,7 @@ object FMain: TFMain
         end
         object EdIKRtRx: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 150
           Width = 70
           Alignment = taRightJustify
@@ -2743,7 +2743,7 @@ object FMain: TFMain
         end
         object EdIKRtRy: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 120
           Width = 70
           Alignment = taRightJustify
@@ -2752,7 +2752,7 @@ object FMain: TFMain
         end
         object EdIKRtRz: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 90
           Width = 70
           Alignment = taRightJustify
@@ -2761,27 +2761,27 @@ object FMain: TFMain
         end
         object LbIKRtRx: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 155
-          Width = 32
+          Width = 39
           Caption = 'Rx (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbIKRtRy: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 125
-          Width = 32
+          Width = 39
           Caption = 'Ry (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbIKRtRz: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 95
-          Width = 31
+          Width = 39
           Caption = 'Rz (º):'
           ParentColor = False
           ParentFont = False
@@ -2808,9 +2808,9 @@ object FMain: TFMain
         end
         object CbIKelbowUp: TCheckBox
           Left = 10
-          Height = 19
+          Height = 24
           Top = 185
-          Width = 70
+          Width = 88
           Caption = 'Elbow Up'
           ParentFont = False
           TabOrder = 8
@@ -2828,70 +2828,70 @@ object FMain: TFMain
         TabOrder = 3
         object LbConfigT0wX: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 5
-          Width = 66
+          Width = 83
           Caption = 'T0^W X (m):'
           ParentColor = False
           ParentFont = False
         end
         object LbConfigT0wY: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 35
-          Width = 66
+          Width = 82
           Caption = 'T0^W Y (m):'
           ParentColor = False
           ParentFont = False
         end
         object LbConfigT0wZ: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 65
-          Width = 66
+          Width = 83
           Caption = 'T0^W Z (m):'
           ParentColor = False
           ParentFont = False
         end
         object LbConfigR0wRx: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 180
-          Width = 32
+          Width = 39
           Caption = 'Rx (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbConfigR0wRy: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 150
-          Width = 32
+          Width = 39
           Caption = 'Ry (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbConfigR0wRz: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 120
-          Width = 31
+          Width = 39
           Caption = 'Rz (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbConfigR0w: TLabel
           Left = 159
-          Height = 15
+          Height = 20
           Top = 120
-          Width = 14
+          Width = 17
           Caption = 'Rt:'
           ParentColor = False
           ParentFont = False
         end
         object EdConfigT0wX: TEdit
           Left = 100
-          Height = 23
+          Height = 28
           Top = 0
           Width = 70
           Alignment = taRightJustify
@@ -2900,7 +2900,7 @@ object FMain: TFMain
         end
         object EdConfigT0wY: TEdit
           Left = 100
-          Height = 23
+          Height = 28
           Top = 30
           Width = 70
           Alignment = taRightJustify
@@ -2909,7 +2909,7 @@ object FMain: TFMain
         end
         object EdConfigT0wZ: TEdit
           Left = 100
-          Height = 23
+          Height = 28
           Top = 60
           Width = 70
           Alignment = taRightJustify
@@ -2918,7 +2918,7 @@ object FMain: TFMain
         end
         object EdConfigR0wRx: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 175
           Width = 70
           Alignment = taRightJustify
@@ -2927,7 +2927,7 @@ object FMain: TFMain
         end
         object EdConfigR0wRy: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 145
           Width = 70
           Alignment = taRightJustify
@@ -2936,7 +2936,7 @@ object FMain: TFMain
         end
         object EdConfigR0wRz: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 115
           Width = 70
           Alignment = taRightJustify
@@ -2958,21 +2958,21 @@ object FMain: TFMain
               MinSize = 12
               MaxSize = 250
               Title.Caption = 'Title'
-              Width = 56
+              Width = 63
             end          
             item
               Alignment = taRightJustify
               MinSize = 12
               MaxSize = 250
               Title.Caption = 'Title'
-              Width = 56
+              Width = 63
             end          
             item
               Alignment = taRightJustify
               MinSize = 12
               MaxSize = 250
               Title.Caption = 'Title'
-              Width = 58
+              Width = 65
             end>
           Enabled = False
           FixedCols = 0
@@ -2985,9 +2985,9 @@ object FMain: TFMain
           TitleFont.Height = -15
           TitleFont.Name = 'Sans'
           ColWidths = (
-            56
-            56
-            58
+            63
+            63
+            65
           )
           RowHeights = (
             28
@@ -2997,34 +2997,34 @@ object FMain: TFMain
         end
         object LbConfigL1: TLabel
           Left = 190
-          Height = 15
+          Height = 20
           Top = 5
-          Width = 37
+          Width = 45
           Caption = 'L1 (m):'
           ParentColor = False
           ParentFont = False
         end
         object LbConfigL2: TLabel
           Left = 190
-          Height = 15
+          Height = 20
           Top = 35
-          Width = 37
+          Width = 45
           Caption = 'L2 (m):'
           ParentColor = False
           ParentFont = False
         end
         object LbConfigL3: TLabel
           Left = 190
-          Height = 15
+          Height = 20
           Top = 65
-          Width = 37
+          Width = 45
           Caption = 'L3 (m):'
           ParentColor = False
           ParentFont = False
         end
         object EdConfigL1: TEdit
           Left = 250
-          Height = 23
+          Height = 28
           Top = 0
           Width = 70
           Alignment = taRightJustify
@@ -3033,7 +3033,7 @@ object FMain: TFMain
         end
         object EdConfigL2: TEdit
           Left = 250
-          Height = 23
+          Height = 28
           Top = 30
           Width = 70
           Alignment = taRightJustify
@@ -3042,7 +3042,7 @@ object FMain: TFMain
         end
         object EdConfigL3: TEdit
           Left = 250
-          Height = 23
+          Height = 28
           Top = 60
           Width = 70
           Alignment = taRightJustify
@@ -3051,16 +3051,16 @@ object FMain: TFMain
         end
         object LbConfigLt: TLabel
           Left = 340
-          Height = 15
+          Height = 20
           Top = 65
-          Width = 35
+          Width = 42
           Caption = 'Lt (m):'
           ParentColor = False
           ParentFont = False
         end
         object EdConfigLt: TEdit
           Left = 390
-          Height = 23
+          Height = 28
           Top = 60
           Width = 70
           Alignment = taRightJustify
@@ -3090,70 +3090,70 @@ object FMain: TFMain
         TabOrder = 4
         object LbJointsRefQ0: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 5
-          Width = 38
+          Width = 47
           Caption = 'q0 (m):'
           ParentColor = False
           ParentFont = False
         end
         object LbJointsRefQ1: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 35
-          Width = 32
+          Width = 40
           Caption = 'q1 (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbJointsRefQ2: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 65
-          Width = 32
+          Width = 40
           Caption = 'q2 (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbJointsRefQ3: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 95
-          Width = 32
+          Width = 40
           Caption = 'q3 (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbJointsRefQ4: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 125
-          Width = 32
+          Width = 40
           Caption = 'q4 (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbJointsRefQ5: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 155
-          Width = 32
+          Width = 40
           Caption = 'q5 (º):'
           ParentColor = False
           ParentFont = False
         end
         object LbJointsRefQ6: TLabel
           Left = 10
-          Height = 15
+          Height = 20
           Top = 185
-          Width = 32
+          Width = 40
           Caption = 'q6 (º):'
           ParentColor = False
           ParentFont = False
         end
         object EdJointsRefQ0: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 0
           Width = 70
           Alignment = taRightJustify
@@ -3162,7 +3162,7 @@ object FMain: TFMain
         end
         object EdJointsRefQ1: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 30
           Width = 70
           Alignment = taRightJustify
@@ -3171,7 +3171,7 @@ object FMain: TFMain
         end
         object EdJointsRefQ2: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 60
           Width = 70
           Alignment = taRightJustify
@@ -3180,7 +3180,7 @@ object FMain: TFMain
         end
         object EdJointsRefQ3: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 90
           Width = 70
           Alignment = taRightJustify
@@ -3189,7 +3189,7 @@ object FMain: TFMain
         end
         object EdJointsRefQ4: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 120
           Width = 70
           Alignment = taRightJustify
@@ -3198,7 +3198,7 @@ object FMain: TFMain
         end
         object EdJointsRefQ5: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 150
           Width = 70
           Alignment = taRightJustify
@@ -3207,7 +3207,7 @@ object FMain: TFMain
         end
         object EdJointsRefQ6: TEdit
           Left = 70
-          Height = 23
+          Height = 28
           Top = 180
           Width = 70
           Alignment = taRightJustify
