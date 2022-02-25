@@ -527,7 +527,7 @@ end;
 procedure TFMain.FormCreate(Sender: TObject);
 begin
   Ball  := Mzeros(3,1);
-  RBall  := Mzeros(4,1);
+  RBall := Mzeros(4,1);
   Robot := TRobot.Create;
 end;
 
@@ -601,9 +601,19 @@ begin
 end;
 
 procedure TFMain.Control;
+var AuxPos: TDMatrix;
 begin
   // Input data processment
-  Robot.FK;
+  // - forward kinematics
+  Robot.FKall;
+  // - ball in world position
+  AuxPos := Mzeros(4,1);
+  AuxPos[0,0] :=  Ball[0,0];
+  AuxPos[1,0] :=  Ball[1,0];
+  AuxPos[2,0] :=  Ball[2,0];
+  AuxPos[3,0] :=  1;
+  RBall := Robot.config.HW0 * AuxPos;
+  RBall[0,0] := RBall[0,0] - Robot.JointsPrism.Pos[0,0];
 
   // Control
   if (RbModeStop.Checked) then begin
@@ -736,7 +746,6 @@ end;
 
 procedure TFMain.UpdateGUI;
 var i, j: Integer;
-    auxPos: TDMatrix;
 begin
   // Joints 
   SgKinJoints.Cells[1,1] := format('%.6g',[Robot.JointsPrism.Pos[0,0]]);
@@ -775,24 +784,11 @@ begin
   EdSimBallY.Text := format('%.6g',[Ball[1,0]]);
   EdSimBallZ.Text := format('%.6g',[Ball[2,0]]);
   // - Tool Position
-  auxPos := Mzeros(4,1);
-  auxPos[0,0] :=  Robot.Tool.Pos[0,0]; 
-  auxPos[1,0] :=  Robot.Tool.Pos[1,0];
-  auxPos[2,0] :=  Robot.Tool.Pos[2,0];
-  auxPos[3,0] :=  1;
-  Robot.Tool.WPos := Robot.config.H0W * auxPos;
-  Robot.Tool.WPos[0,0] :=   Robot.Tool.WPos[0,0] + Robot.JointsPrism.Pos[0,0];
-  EdSimPosX.Text := format('%.3f',[auxPos[0,0]]);
-  EdSimPosY.Text := format('%.3f',[auxPos[1,0]]);
-  EdSimPosZ.Text := format('%.3f',[auxPos[2,0]]);
+  EdSimPosX.Text := format('%.3f',[Robot.Tool.Pos[0,0]]);
+  EdSimPosY.Text := format('%.3f',[Robot.Tool.Pos[1,0]]);
+  EdSimPosZ.Text := format('%.3f',[Robot.Tool.Pos[2,0]]);
 
   // - Ball Position
-  auxPos[0,0] :=  Ball[0,0];
-  auxPos[1,0] :=  Ball[1,0];
-  auxPos[2,0] :=  Ball[2,0];
-  auxPos[3,0] :=  1;
-  RBall := Robot.config.HW0 * auxPos;
-  RBall[0,0] := RBall[0,0] - Robot.JointsPrism.Pos[0,0];
   SgSimPosValues.Cells[1,0] := 'Tool robot';
   SgSimPosValues.Cells[2,0] := 'Tool world';
   SgSimPosValues.Cells[3,0] := 'Ball robot';

@@ -48,7 +48,9 @@ type
       constructor Create;
       procedure FK;
       procedure FK(var JPrismMat, JRotMat: TDMatrix; var RMat, TMat: TDMatrix);
+      procedure FKall;
       procedure IK(elbow_up: boolean);
+      procedure IKall(elbow_up: boolean);
       function IsStopped: boolean;
       procedure SetConfigH0W(var R, T: TDMatrix);
       procedure UpdateConfigH0W;
@@ -251,6 +253,21 @@ begin
   HMat2RT(HTool, RMat, TMat);
 end;
 
+procedure TRobot.FKall;
+var AuxPos: TDMatrix;
+begin
+  FK(JointsPrism.Pos, JointsRot.Pos, Tool.Rot, Tool.Pos);
+
+  // Consideration of the joint 0 position
+  AuxPos := Mzeros(4,1);
+  AuxPos[0,0] := Tool.Pos[0,0];
+  AuxPos[1,0] := Tool.Pos[1,0];
+  AuxPos[2,0] := Tool.Pos[2,0];
+  AuxPos[3,0] := 1;
+  Tool.WPos := config.H0W * AuxPos;
+  Tool.WPos[0,0] := Tool.WPos[0,0] + JointsPrism.Pos[0,0];
+end;
+
 procedure TRobot.IK(elbow_up: boolean);
 var ToolLength, WristPosRef, WristRotRef: TDMatrix;
     H10, H21, H32, H30, R30, T30: TDMatrix;
@@ -317,6 +334,13 @@ begin
     end;
     // or infinite solutions for th4 + th6 or th4 - th6
   end;
+end;
+
+procedure TRobot.IKall(elbow_up: boolean);
+begin
+  IK(elbow_up);
+
+  // Consideration of Q0
 end;
 
 function TRobot.IsStopped: boolean;

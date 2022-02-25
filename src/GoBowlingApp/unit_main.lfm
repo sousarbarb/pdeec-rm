@@ -2344,7 +2344,7 @@ object FMain: TFMain
               MaxSize = 250
               Title.Alignment = taCenter
               Title.Caption = 'pos (m,º):'
-              Width = 100
+              Width = 91
             end          
             item
               Alignment = taCenter
@@ -2352,7 +2352,7 @@ object FMain: TFMain
               MaxSize = 250
               Title.Alignment = taCenter
               Title.Caption = 'vel (m/s,rad/s):'
-              Width = 100
+              Width = 91
             end          
             item
               Alignment = taCenter
@@ -2360,7 +2360,7 @@ object FMain: TFMain
               MaxSize = 250
               Title.Alignment = taCenter
               Title.Caption = 'ref (m,º):'
-              Width = 100
+              Width = 93
             end>
           Enabled = False
           Font.Height = -14
@@ -2369,9 +2369,9 @@ object FMain: TFMain
           TabOrder = 0
           ColWidths = (
             100
-            100
-            100
-            100
+            91
+            91
+            93
           )
           Cells = (
             7
@@ -2500,21 +2500,21 @@ object FMain: TFMain
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 63
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 63
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 65
+                Width = 58
               end>
             Enabled = False
             FixedCols = 0
@@ -2527,9 +2527,9 @@ object FMain: TFMain
             TitleFont.Height = -15
             TitleFont.Name = 'Sans'
             ColWidths = (
-              63
-              63
-              65
+              56
+              56
+              58
             )
             RowHeights = (
               28
@@ -2629,21 +2629,21 @@ object FMain: TFMain
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 63
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 63
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 65
+                Width = 58
               end>
             Enabled = False
             FixedCols = 0
@@ -2656,9 +2656,9 @@ object FMain: TFMain
             TitleFont.Height = -15
             TitleFont.Name = 'Sans'
             ColWidths = (
-              63
-              63
-              65
+              56
+              56
+              58
             )
             RowHeights = (
               28
@@ -2958,21 +2958,21 @@ object FMain: TFMain
               MinSize = 12
               MaxSize = 250
               Title.Caption = 'Title'
-              Width = 63
+              Width = 56
             end          
             item
               Alignment = taRightJustify
               MinSize = 12
               MaxSize = 250
               Title.Caption = 'Title'
-              Width = 63
+              Width = 56
             end          
             item
               Alignment = taRightJustify
               MinSize = 12
               MaxSize = 250
               Title.Caption = 'Title'
-              Width = 65
+              Width = 58
             end>
           Enabled = False
           FixedCols = 0
@@ -2985,9 +2985,9 @@ object FMain: TFMain
           TitleFont.Height = -15
           TitleFont.Name = 'Sans'
           ColWidths = (
-            63
-            63
-            65
+            56
+            56
+            58
           )
           RowHeights = (
             28
