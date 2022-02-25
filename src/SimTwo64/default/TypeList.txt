@@ -1,11 +1,13 @@
 !NotificationVariant
 !OPENARRAYOFCONST
 !OPENARRAYOFDOUBLE
+!OPENARRAYOFRECORD_TPOINT3D
 !OPENARRAYOFS32
 !OPENARRAYOFTOBJECT
 !OPENARRAYOFVARIANT
 ___Pointer
 AnsiString
+AnyMethod
 AnyString
 Boolean
 Byte
@@ -38,8 +40,6 @@ SmallInt
 string
 TAlign
 TAlignment
-TAnchorKind
-TAnchors
 TApplication
 TAxisPoint
 TAxisState
@@ -105,6 +105,8 @@ TEditCharCase
 TEndDragEvent
 TEOwnerDrawState
 TEShiftState
+TExtents
+TFace
 TFileStream
 TFindItemKind
 TFont
@@ -116,6 +118,7 @@ TFormBorderStyle
 TFormStyle
 TFrictionDef
 TGetStrProc
+TGLPixel32
 TGraphic
 TGraphicControl
 TGraphicsObject
@@ -125,6 +128,7 @@ THandleStream
 THeader
 THelpContext
 THelpEvent
+THistogram
 TIdleEvent
 TIFException
 TImage
@@ -161,6 +165,7 @@ TOwnedCollection
 TOwnerDrawState
 TPage
 TPaintBox
+TPaintVisuals
 TPanel
 TPanelBevel
 TParser
@@ -205,6 +210,7 @@ TStringStream
 TTextLayout
 TTimer
 TTrackButton
+TTriangles
 TUDPBuffer
 TVariantArray
 TVarType

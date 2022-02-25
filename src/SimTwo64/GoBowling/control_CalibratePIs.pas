@@ -11,6 +11,10 @@ var
   BallPos: Matrix;
   JointPos, JointVel, JointPosRef: array[0..NUM_JOINTS - 1] of double;
 
+  t: double;
+  log_on: boolean;
+  Log: TStringList;
+
 
 
 procedure CommunicationLazarus;
@@ -23,13 +27,13 @@ begin
   try
     // S2 > Lz
     for i := 0 to NUM_JOINTS -1 do begin
-      mess.add(format('%.6g',[JointPos[i]]));
+      mess.add(format('%.4g',[JointPos[i]]));
     end;
     for i := 0 to NUM_JOINTS -1 do begin
-      mess.add(format('%.6g',[JointVel[i]]));
+      mess.add(format('%.4g',[JointVel[i]]));
     end;
     for i := 0 to 2 do begin
-      mess.add(format('%.6g',[Mgetv(BallPos,i,0)]));
+      mess.add(format('%.4g',[Mgetv(BallPos,i,0)]));
     end;
 
     WriteUDPData('127.0.0.1', 9809, mess.text);
@@ -88,17 +92,28 @@ begin
   // - Solenoid
   SetRCValue(17,6, Format('%.1g', [GetSensorVal(iRobot,iMagnet)]) );
   SetRCValue(18,6, Format('%d', [magnet]) );
+  // - Log state
+  if (log_on) then begin
+    SetRCValue(22,2,'On');
+  end else begin
+    SetRCValue(22,2,'Off');
+  end;
+  SetRCValue(25,2, Format('%.6g', [t]) );
 end;
 
 procedure Control;
 var
   i: integer;
+  string_log: String;
 begin
+  // Update time
+  if (log_on) then begin
+    t := t + ScriptPeriod;
+  end;
+
   // Change ball position
   if (RCButtonPressed(17,3)) then begin
     SetSolidPosMat(iBall,0,RangeToMatrix(18,3,3,1));
-    SetSolidLinearVel(iBall,0,0,0,0);
-    SetSolidAngularVel(iBall,0,0,0,0);
   end;
 
   // Change solenoid state (tests wo/ communication w/ Lz)
@@ -107,6 +122,50 @@ begin
   end;
   if (RCButtonPressed(17,8)) then begin
     magnet := false;
+  end;
+
+  // Log: On/Off
+  if (RCButtonPressed(22,3)) then begin
+    if (NOT log_on) then begin
+      t := 0;
+      log_on := true;
+      SetRCValue(24,2,'');
+
+      if (Log <> nil) then begin
+        Log.Clear;
+        Log.Free;
+      end;
+      Log := TStringList.Create;
+      string_log := '';
+
+      string_log := '';
+      string_log := string_log + Format('%.12g,',[ t ]);
+      for i:=0 to NUM_JOINTS-1 do begin // v
+        string_log := string_log + Format('v_%d (V):,',[ i ]);
+      end;
+      for i:=0 to NUM_JOINTS-1 do begin // i
+        string_log := string_log + Format('i_%d (A):,',[ i ]);
+      end;
+      for i:=0 to NUM_JOINTS-1 do begin // torque
+        string_log := string_log + Format('tq_%d (Nm):,',[ i ]);
+      end;
+      for i:=0 to NUM_JOINTS-1 do begin // pos
+        string_log := string_log + Format('pos_%d (m or rad):,',[ i ]);
+      end;
+      for i:=0 to NUM_JOINTS-1 do begin // pos_ref
+        string_log := string_log + Format('pos_ref_%d (m or rad):,',[ i ]);
+      end;
+      for i:=0 to NUM_JOINTS-1 do begin // vel
+        string_log := string_log + Format('vel_%d (m/s or rad/s):,',[ i ]);
+      end;
+      for i:=0 to NUM_JOINTS-1 do begin // vel_ref
+        string_log := string_log + Format('vel_ref_%d (m/s or rad/s),',[ i ]);
+      end;
+      Log.Add(string_log);
+    end else begin
+      log_on := false;
+      SetRCValue(24,2,'');
+    end;
   end;
 
   // Read Ball
@@ -121,7 +180,7 @@ begin
   end;
 
   // Read UDP data + send joints state
-  CommunicationLazarus;
+  //CommunicationLazarus;
 
   // Set joint reference positions
   for i:=0 to NUM_JOINTS-1 do begin
@@ -133,6 +192,40 @@ begin
     SetSensorVin(iRobot,iMagnet,1);
   end else begin
     SetSensorVin(iRobot,iMagnet,0);
+  end;
+
+  // Log
+  if (log_on) then begin
+    string_log := '';
+    string_log := string_log + Format('%.12g,',[ t ]);
+    for i:=0 to NUM_JOINTS-1 do begin // v
+      string_log := string_log + Format('%.12g,',[ GetAxisU(iRobot,i) ]);
+    end;
+    for i:=0 to NUM_JOINTS-1 do begin // i
+      string_log := string_log + Format('%.12g,',[ GetAxisI(iRobot,i) ]);
+    end;
+    for i:=0 to NUM_JOINTS-1 do begin // torque
+      string_log := string_log + Format('%.12g,',[ GetAxisTorque(iRobot,i) ]);
+    end;
+    for i:=0 to NUM_JOINTS-1 do begin // pos
+      string_log := string_log + Format('%.12g,',[ GetAxisPos(iRobot,i) ]);
+    end;
+    for i:=0 to NUM_JOINTS-1 do begin // pos_ref
+      string_log := string_log + Format('%.12g,',[ GetAxisPosRef(iRobot,i) ]);
+    end;
+    for i:=0 to NUM_JOINTS-1 do begin // vel
+      string_log := string_log + Format('%.12g,',[ GetAxisSpeed(iRobot,i) ]);
+    end;
+    for i:=0 to NUM_JOINTS-1 do begin // vel_ref
+      string_log := string_log + Format('%.12g,',[ GetAxisSpeedRef(iRobot,i) ]);
+    end;
+    Log.Add(string_log);
+  end;
+
+  // Save log
+  if ((RCButtonPressed(24,3)) AND (Log <> nil)) then begin
+    SetRCValue(24,2,'log/' + GetRCText(23,2) + '.csv');
+    Log.SaveToFile( 'log/' + GetRCText(23,2) + '.csv' );
   end;
 
   // Display debug information in the sheet
@@ -152,6 +245,8 @@ begin
   iMagnet:= GetSensorIndex(iRobot,'grab');
   iB0    := GetSolidIndex(iRobot,'B0');
   iB6    := GetSolidIndex(iRobot,'B6');
+  t      := 0;
+  log_on := false;
 
   // Set links lengths
   l1 := 0.3;
@@ -218,4 +313,11 @@ begin
   SetRCValue(18,5,'Ref:');
   SetRCValue(17,7,'[ON]');
   SetRCValue(17,8,'[OFF]');
+  SetRCValue(22,1,'LOG');
+  SetRCValue(23,1,'filename:');
+  SetRCValue(23,2,'NAME');
+  SetRCValue(24,1,'saved in:');
+  SetRCValue(25,1,'time:');
+  SetRCValue(22,3,'[OnOff]');
+  SetRCValue(24,3,'[Save]');
 end;
