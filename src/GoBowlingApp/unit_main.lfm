@@ -2341,19 +2341,31 @@ object FMain: TFMain
               Alignment = taCenter
               Title.Alignment = taCenter
               Title.Caption = 'pos (m,º):'
+<<<<<<< HEAD
               Width = 84
+=======
+              Width = 98
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
             end          
             item
               Alignment = taCenter
               Title.Alignment = taCenter
               Title.Caption = 'vel (m/s,rad/s):'
+<<<<<<< HEAD
               Width = 84
+=======
+              Width = 98
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
             end          
             item
               Alignment = taCenter
               Title.Alignment = taCenter
               Title.Caption = 'ref (m,º):'
+<<<<<<< HEAD
               Width = 84
+=======
+              Width = 99
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
             end>
           Enabled = False
           Font.Height = -11
@@ -2361,10 +2373,17 @@ object FMain: TFMain
           RowCount = 8
           TabOrder = 0
           ColWidths = (
+<<<<<<< HEAD
             64
             84
             84
             84
+=======
+            80
+            98
+            98
+            99
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
           )
           Cells = (
             7
@@ -2491,17 +2510,29 @@ object FMain: TFMain
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
+<<<<<<< HEAD
                 Width = 50
+=======
+                Width = 56
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
+<<<<<<< HEAD
                 Width = 50
+=======
+                Width = 56
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
+<<<<<<< HEAD
                 Width = 52
+=======
+                Width = 58
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
               end>
             Enabled = False
             FixedCols = 0
@@ -2514,9 +2545,15 @@ object FMain: TFMain
             TitleFont.Height = -12
             TitleFont.Name = 'Sans'
             ColWidths = (
+<<<<<<< HEAD
               50
               50
               52
+=======
+              56
+              56
+              58
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
             )
             RowHeights = (
               22
@@ -2614,17 +2651,29 @@ object FMain: TFMain
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
+<<<<<<< HEAD
                 Width = 50
+=======
+                Width = 56
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
+<<<<<<< HEAD
                 Width = 50
+=======
+                Width = 56
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
+<<<<<<< HEAD
                 Width = 52
+=======
+                Width = 58
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
               end>
             Enabled = False
             FixedCols = 0
@@ -2637,9 +2686,15 @@ object FMain: TFMain
             TitleFont.Height = -12
             TitleFont.Name = 'Sans'
             ColWidths = (
+<<<<<<< HEAD
               50
               50
               52
+=======
+              56
+              56
+              58
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
             )
             RowHeights = (
               22
@@ -2937,17 +2992,29 @@ object FMain: TFMain
             item
               Alignment = taRightJustify
               Title.Caption = 'Title'
+<<<<<<< HEAD
               Width = 50
+=======
+              Width = 56
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
             end          
             item
               Alignment = taRightJustify
               Title.Caption = 'Title'
+<<<<<<< HEAD
               Width = 50
+=======
+              Width = 56
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
             end          
             item
               Alignment = taRightJustify
               Title.Caption = 'Title'
+<<<<<<< HEAD
               Width = 52
+=======
+              Width = 58
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
             end>
           Enabled = False
           FixedCols = 0
@@ -2960,9 +3027,15 @@ object FMain: TFMain
           TitleFont.Height = -12
           TitleFont.Name = 'Sans'
           ColWidths = (
+<<<<<<< HEAD
             50
             50
             52
+=======
+            56
+            56
+            58
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
           )
           RowHeights = (
             22

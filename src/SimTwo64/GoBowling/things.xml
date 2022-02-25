@@ -2,9 +2,8 @@
 <things>
 
   <cylinder>
-    <imovable/>
     <ID value='C1'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin)/scale_factor' y='0' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>
@@ -12,9 +11,8 @@
   </cylinder>
 
   <cylinder>
-    <imovable/>
     <ID value='C2'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin+pin_spacing_x)/scale_factor' y='(0.5*pin_spacing_y)/scale_factor' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>
@@ -22,9 +20,8 @@
   </cylinder>
 
   <cylinder>
-    <imovable/>
     <ID value='C3'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin+pin_spacing_x)/scale_factor' y='-(0.5*pin_spacing_y)/scale_factor' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>
@@ -32,9 +29,8 @@
   </cylinder>
 
   <cylinder>
-    <imovable/>
     <ID value='C4'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin+pin_spacing_x*2)/scale_factor' y='pin_spacing_y/scale_factor' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>
@@ -42,9 +38,8 @@
   </cylinder>
 
   <cylinder>
-    <imovable/>
     <ID value='C5'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin+pin_spacing_x*2)/scale_factor' y='0' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>
@@ -52,9 +47,8 @@
   </cylinder>
 
   <cylinder>
-    <imovable/>
     <ID value='C6'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin+pin_spacing_x*2)/scale_factor' y='-pin_spacing_y/scale_factor' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>
@@ -62,9 +56,8 @@
   </cylinder>
 
   <cylinder>
-    <imovable/>
     <ID value='C7'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin+pin_spacing_x*3)/scale_factor' y='(1.5*pin_spacing_y)/scale_factor' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>
@@ -72,9 +65,8 @@
   </cylinder>
 
   <cylinder>
-    <imovable/>
     <ID value='C8'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin+pin_spacing_x*3)/scale_factor' y='(0.5*pin_spacing_y)/scale_factor' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>
@@ -82,9 +74,8 @@
   </cylinder>
 
   <cylinder>
-    <imovable/>
     <ID value='C9'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin+pin_spacing_x*3)/scale_factor' y='-(0.5*pin_spacing_y)/scale_factor' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>
@@ -92,9 +83,8 @@
   </cylinder>
 
   <cylinder>
-    <imovable/>
     <ID value='C10'/>
-    <nmass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
+    <mass value='pin_mass/(scale_factor*scale_factor*scale_factor)'/>
     <size x='pin_base_diameter*0.5/scale_factor' y='pin_base_diameter*0.5/scale_factor' z='pin_height/scale_factor'/>
     <pos x='(approach_area_length+lane_length_headpin+pin_spacing_x*3)/scale_factor' y='-(1.5*pin_spacing_y)/scale_factor' z='(lane_thickness+0.5*pin_height)/scale_factor'/>
     <rot_deg x='0' y='0' z='0'/>

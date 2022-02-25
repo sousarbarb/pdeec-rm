@@ -1,9 +1,14 @@
 FViewer
 FSheets
+<<<<<<< HEAD
 FEditor
 FChart
+=======
+>>>>>>> 13169dfe471e6601a75b94abd0e81385e624e341
 FSceneEdit
 FParams
+FEditor
+FChart
 
 
 FWayPointsEdit
