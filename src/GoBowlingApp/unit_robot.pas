@@ -249,7 +249,6 @@ procedure TRobot.SetConfigH0W(var R, T: TDMatrix);
 begin
   config.R0W := R;
   config.T0W := T;
-  UpdateConfigH0W;
 end;
 
 procedure TRobot.UpdateConfigH0W;

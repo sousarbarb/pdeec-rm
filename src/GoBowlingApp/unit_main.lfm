@@ -1,7 +1,7 @@
 object FMain: TFMain
-  Left = 412
+  Left = 777
   Height = 540
-  Top = 199
+  Top = 206
   Width = 845
   Caption = 'FMain'
   ClientHeight = 540
@@ -2341,19 +2341,19 @@ object FMain: TFMain
               Alignment = taCenter
               Title.Alignment = taCenter
               Title.Caption = 'pos (m,º):'
-              Width = 78
+              Width = 84
             end          
             item
               Alignment = taCenter
               Title.Alignment = taCenter
               Title.Caption = 'vel (m/s,rad/s):'
-              Width = 78
+              Width = 84
             end          
             item
               Alignment = taCenter
               Title.Alignment = taCenter
               Title.Caption = 'ref (m,º):'
-              Width = 79
+              Width = 84
             end>
           Enabled = False
           Font.Height = -11
@@ -2362,9 +2362,9 @@ object FMain: TFMain
           TabOrder = 0
           ColWidths = (
             64
-            78
-            78
-            79
+            84
+            84
+            84
           )
           Cells = (
             7
@@ -2491,17 +2491,17 @@ object FMain: TFMain
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 50
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 50
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 52
               end>
             Enabled = False
             FixedCols = 0
@@ -2514,9 +2514,9 @@ object FMain: TFMain
             TitleFont.Height = -12
             TitleFont.Name = 'Sans'
             ColWidths = (
-              45
-              45
-              45
+              50
+              50
+              52
             )
             RowHeights = (
               22
@@ -2614,17 +2614,17 @@ object FMain: TFMain
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 50
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 50
               end            
               item
                 Alignment = taRightJustify
                 Title.Caption = 'Title'
-                Width = 45
+                Width = 52
               end>
             Enabled = False
             FixedCols = 0
@@ -2637,9 +2637,9 @@ object FMain: TFMain
             TitleFont.Height = -12
             TitleFont.Name = 'Sans'
             ColWidths = (
-              45
-              45
-              45
+              50
+              50
+              52
             )
             RowHeights = (
               22
@@ -2937,17 +2937,17 @@ object FMain: TFMain
             item
               Alignment = taRightJustify
               Title.Caption = 'Title'
-              Width = 45
+              Width = 50
             end          
             item
               Alignment = taRightJustify
               Title.Caption = 'Title'
-              Width = 45
+              Width = 50
             end          
             item
               Alignment = taRightJustify
               Title.Caption = 'Title'
-              Width = 45
+              Width = 52
             end>
           Enabled = False
           FixedCols = 0
@@ -2960,9 +2960,9 @@ object FMain: TFMain
           TitleFont.Height = -12
           TitleFont.Name = 'Sans'
           ColWidths = (
-            45
-            45
-            45
+            50
+            50
+            52
           )
           RowHeights = (
             22
@@ -3503,7 +3503,7 @@ object FMain: TFMain
             Top = 8
             Width = 96
             Caption = 'Hover ball'
-            OnClick = BtSimActionGoToBallClick
+            OnClick = BtSimActionHoverBallClick
             TabOrder = 0
           end
           object BtSimActionGoToBall: TButton
@@ -3552,6 +3552,14 @@ object FMain: TFMain
             TabOrder = 5
           end
         end
+      end
+      object SgSimPosValues: TStringGrid
+        Left = 344
+        Height = 120
+        Top = 16
+        Width = 424
+        ColCount = 6
+        TabOrder = 3
       end
     end
   end
