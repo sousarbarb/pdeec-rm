@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ComCtrls, IniPropStorage, Grids, lNetComponents, lNet, math, dynmatrix,
-  unit_robot;
+  ComCtrls, IniPropStorage, Grids, ValEdit, lNetComponents, lNet, math,
+  dynmatrix, unit_robot;
 
 type
 
@@ -15,6 +15,7 @@ type
 
   TFMain = class(TForm)
     BtCommsConnect: TButton;
+    BtSimActionGoToBall: TButton;
     BtSolenoidStatusOff: TButton;
     BtIKset: TButton;
     BtConfigSet: TButton;
@@ -22,6 +23,18 @@ type
     BtSolenoidStatusOn: TButton;
     BtJointsRefSet: TButton;
     BtJointsRefReset: TButton;
+    BtSimIncNX: TButton;
+    BtSimIncPX: TButton;
+    BtSimIncNY: TButton;
+    BtSimIncPY: TButton;
+    BtSimIncNZ: TButton;
+    BtSimIncPZ: TButton;
+    BtSimIncSet: TButton;
+    BtSimActionHoverBall: TButton;
+    BtSimActionInitPos: TButton;
+    BtSimActionGrabBall: TButton;
+    BtSimActionReleaseBall: TButton;
+    BtSimActionThrowBall: TButton;
     CbCommsDbgClear: TButton;
     CbDebug: TCheckBox;
     CbCommsDgRx: TCheckBox;
@@ -35,6 +48,10 @@ type
     EdConfigR0wRy: TEdit;
     EdConfigR0wRz: TEdit;
     EdSimBallX: TEdit;
+    EdSimPosX: TEdit;
+    EdSimPosY: TEdit;
+    EdSimPosZ: TEdit;
+    EdSimIncValue: TEdit;
     EdSimBallY: TEdit;
     EdSimBallZ: TEdit;
     EdIKXt: TEdit;
@@ -71,10 +88,16 @@ type
     GbFKref: TGroupBox;
     GbSimBall: TGroupBox;
     GbSimSolenoid: TGroupBox;
+    GbSimManualInc: TGroupBox;
+    GbSimManualToolPos: TGroupBox;
+    GbSimManualActions: TGroupBox;
     IniPropStorage: TIniPropStorage;
     LbConfigR0w: TLabel;
     LbSimBallX: TLabel;
+    LbSimBallX1: TLabel;
+    LbSimBallX2: TLabel;
     LbSimBallY: TLabel;
+    LbSimBallY1: TLabel;
     LbSimBallZ: TLabel;
     LbIKRtRx: TLabel;
     LbConfigR0wRx: TLabel;
@@ -111,11 +134,13 @@ type
     LbConfigL3: TLabel;
     LbJointsRefQ2: TLabel;
     LbJointsRefQ6: TLabel;
+    LbSimBallZ1: TLabel;
     SgFKactRt: TStringGrid;
     SgConfigR0w: TStringGrid;
     SgKinJoints: TStringGrid;
     SgFKrefRt: TStringGrid;
     ShSolenoidStatus: TShape;
+    SgSimPosValues: TStringGrid;
     TsSimulation: TTabSheet;
     TsKinematics: TTabSheet;
     UDP: TLUDPComponent;
@@ -132,15 +157,32 @@ type
     procedure BtIKsetClick(Sender: TObject);
     procedure BtJointsRefResetClick(Sender: TObject);
     procedure BtJointsRefSetClick(Sender: TObject);
+    procedure BtSimActionHoverBallClick(Sender: TObject);
+    procedure BtSimActionReleaseBallClick(Sender: TObject);
+    procedure BtSimActionThrowBallClick(Sender: TObject);
+    procedure BtSimIncNXClick(Sender: TObject);
+    procedure BtSimIncNYClick(Sender: TObject);
+    procedure BtSimIncNZClick(Sender: TObject);
+    procedure BtSimIncPYClick(Sender: TObject);
+    procedure BtSimIncPZClick(Sender: TObject);
     procedure BtSolenoidStatusOffClick(Sender: TObject);
     procedure BtSolenoidStatusOnClick(Sender: TObject);
+    procedure BtSimIncPXClick(Sender: TObject);
+    procedure BtSimIncSetClick(Sender: TObject);
+    procedure BtSimActionGoToBallClick(Sender: TObject);
+    procedure BtSimActionInitPosClick(Sender: TObject);
+    procedure BtSimActionGrabBallClick(Sender: TObject);
     procedure CbCommsDbgClearClick(Sender: TObject);
     procedure CbCommsDgRxChange(Sender: TObject);
     procedure CbCommsDgTxChange(Sender: TObject);
     procedure CbDebugChange(Sender: TObject);
+    procedure EdSimIncValueChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure GbSimManualIncClick(Sender: TObject);
+    procedure GbSimManualToolPosClick(Sender: TObject);
+    procedure LbSimBallX1Click(Sender: TObject);
     procedure RbModeBallChange(Sender: TObject);
     procedure RbModeManualChange(Sender: TObject);
     procedure RbModeStopChange(Sender: TObject);
@@ -155,6 +197,7 @@ type
     procedure ControlStopConfig(enable: boolean);
     procedure ControlManual;
     procedure ControlManualConfig(enable: boolean);
+    procedure ControlBall;
     procedure ControlBallConfig(enable: boolean);
     procedure ParseUDPMessage(var msg: String);
     procedure SendUDPMessage;
@@ -165,12 +208,26 @@ type
     UDPportS2: Integer;
     UDPportLz: Integer;
 
-    Ball: TDMatrix;
+
+    SimIncStep: Float;
+
+    Ball,RBall: TDMatrix;
 
   end;
 
+const
+  OFFSET_HOVER_BALL_X = 0.3;
+  OFFSET_HOVER_BALL_Z = 0.15;
+  OFFSET_GO_BALL_X = OFFSET_HOVER_BALL_X;
+  OFFSET_GO_BALL_Z = 0.1;
+  Q0_THROW_BACK    = -1.0;
+  Q0_THROW_FORWARD = 1.0;
+  MAX_LIM_Q0 = 0.57125;
+
 var
   FMain: TFMain;
+  throw_ball: boolean;
+  throw_ball_forward: boolean;
 
 implementation
 
@@ -194,13 +251,13 @@ var thx, thy, thz: double;
 begin
   // Configuration Robot: T 0 >>> World
   Robot.config.T0W[0,0] := StrToFloatDef(EdConfigT0wX.Text,0.57125);
-  Robot.config.T0W[1,0] := StrToFloatDef(EdConfigT0wY.Text,0);
+  Robot.config.T0W[1,0] := StrToFloatDef(EdConfigT0wY.Text,0.00);
   Robot.config.T0W[2,0] := StrToFloatDef(EdConfigT0wZ.Text,1.15);
 
   // Configuration Robot: R 0 >>> World
-  thx := DegToRad(StrToFloatDef(EdConfigR0wRx.Text,0));
-  thy := DegToRad(StrToFloatDef(EdConfigR0wRy.Text,0));
-  thz := DegToRad(StrToFloatDef(EdConfigR0wRz.Text,0));
+  thx := DegToRad(StrToFloatDef(EdConfigR0wRx.Text,0.0));
+  thy := DegToRad(StrToFloatDef(EdConfigR0wRy.Text,0.0));
+  thz := DegToRad(StrToFloatDef(EdConfigR0wRz.Text,0.0));
   Robot.config.R0W := RzMat(thz) * RyMat(thy) * RxMat(thx);
   for i := 0 to 2 do begin
     for j := 0 to 2 do begin
@@ -208,8 +265,9 @@ begin
     end;
   end;
 
-  // Configuration Robot: H 0 >>> World
+  // Configuration Robot: H 0 >>> World || World >>> H 0
   Robot.UpdateConfigH0W;
+  Robot.UpdateConfigHW0;
 
   // Configuration Robot: links + tools lengths
   Robot.config.l1 := StrToFloatDef(EdConfigL1.Text,0.3);
@@ -223,18 +281,19 @@ var thx, thy, thz: double;
 begin
   // Tool Reference: Position
   Robot.Tool.PosRef[0,0] := StrToFloatDef(EdIKXt.Text,Robot.config.l2+Robot.config.l3+Robot.config.lt);
-  Robot.Tool.PosRef[1,0] := StrToFloatDef(EdIKYt.Text,0);
+  Robot.Tool.PosRef[1,0] := StrToFloatDef(EdIKYt.Text,0.0);
   Robot.Tool.PosRef[2,0] := StrToFloatDef(EdIKZt.Text,-Robot.config.l1);
 
   // Tool Reference: Rotation
-  thx := DegToRad(StrToFloatDef(EdIKRtRx.Text,90));
-  thy := DegToRad(StrToFloatDef(EdIKRtRy.Text,0));
-  thz := DegToRad(StrToFloatDef(EdIKRtRz.Text,90));
+  thx := DegToRad(StrToFloatDef(EdIKRtRx.Text,90.0));
+  thy := DegToRad(StrToFloatDef(EdIKRtRy.Text, 0.0));
+  thz := DegToRad(StrToFloatDef(EdIKRtRz.Text,90.0));
   Robot.Tool.RotRef := RzMat(thz) * RyMat(thy) * RxMat(thx);
 
   // Inverse Kinematics
   try
     Robot.IK(CbIKelbowUp.Checked);
+    StatusBar.SimpleText := '';
   except
     on E: Exception do StatusBar.SimpleText := E.Message;
     else
@@ -250,12 +309,116 @@ end;
 procedure TFMain.BtJointsRefSetClick(Sender: TObject);
 begin
   Robot.JointsPrism.PosRef[0,0] := StrToFloatDef(EdJointsRefQ0.Text,0);
-  Robot.JointsRot.PosRef[0,0] := DegToRad(StrToFloatDef(EdJointsRefQ1.Text,0));
-  Robot.JointsRot.PosRef[1,0] := DegToRad(StrToFloatDef(EdJointsRefQ2.Text,0));
-  Robot.JointsRot.PosRef[2,0] := DegToRad(StrToFloatDef(EdJointsRefQ3.Text,0));
-  Robot.JointsRot.PosRef[3,0] := DegToRad(StrToFloatDef(EdJointsRefQ4.Text,0));
-  Robot.JointsRot.PosRef[4,0] := DegToRad(StrToFloatDef(EdJointsRefQ5.Text,0));
-  Robot.JointsRot.PosRef[5,0] := DegToRad(StrToFloatDef(EdJointsRefQ6.Text,0));
+  Robot.JointsRot.PosRef[0,0] := DegToRad(StrToFloatDef(EdJointsRefQ1.Text,0.0));
+  Robot.JointsRot.PosRef[1,0] := DegToRad(StrToFloatDef(EdJointsRefQ2.Text,0.0));
+  Robot.JointsRot.PosRef[2,0] := DegToRad(StrToFloatDef(EdJointsRefQ3.Text,0.0));
+  Robot.JointsRot.PosRef[3,0] := DegToRad(StrToFloatDef(EdJointsRefQ4.Text,0.0));
+  Robot.JointsRot.PosRef[4,0] := DegToRad(StrToFloatDef(EdJointsRefQ5.Text,0.0));
+  Robot.JointsRot.PosRef[5,0] := DegToRad(StrToFloatDef(EdJointsRefQ6.Text,0.0));
+end;
+
+
+
+procedure TFMain.BtSimActionReleaseBallClick(Sender: TObject);
+begin
+  Robot.solenoid := false;
+end;
+
+procedure TFMain.BtSimActionThrowBallClick(Sender: TObject);
+begin
+  throw_ball := true;
+  throw_ball_forward := false;
+  Robot.JointsPrism.PosRef[0,0] := -MAX_LIM_Q0;
+end;
+
+procedure TFMain.BtSimIncNXClick(Sender: TObject);
+begin
+  // Tool Reference: Position
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0] - SimIncStep;
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0];
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0];
+  // Inverse Kinematics
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+    StatusBar.SimpleText := '';
+  except
+    on E: Exception do
+       StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
+end;
+
+procedure TFMain.BtSimIncNYClick(Sender: TObject);
+begin
+       // Tool Reference: Position
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0];
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0] - SimIncStep;
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0];
+  // Inverse Kinematics
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+    StatusBar.SimpleText := '';
+  except
+    on E: Exception do
+       StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
+end;
+
+procedure TFMain.BtSimIncNZClick(Sender: TObject);
+begin
+         // Tool Reference: Position
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0];
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0];
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0] - SimIncStep;
+  // Inverse Kinematics
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+    StatusBar.SimpleText := '';
+  except
+    on E: Exception do
+       StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
+end;
+
+procedure TFMain.BtSimIncPYClick(Sender: TObject);
+begin
+           // Tool Reference: Position
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0];
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0] + SimIncStep;
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0];
+  // Inverse Kinematics
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+    StatusBar.SimpleText := '';
+  except
+    on E: Exception do
+       StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
+end;
+
+procedure TFMain.BtSimIncPZClick(Sender: TObject);
+begin
+          // Tool Reference: Position
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0];//Robot.Tool.Pos[0,0];
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0];
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0] + SimIncStep;
+  // Inverse Kinematics
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+    StatusBar.SimpleText := '';
+  except
+    on E: Exception do
+       StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
 end;
 
 procedure TFMain.BtSolenoidStatusOffClick(Sender: TObject);
@@ -264,6 +427,85 @@ begin
 end;
 
 procedure TFMain.BtSolenoidStatusOnClick(Sender: TObject);
+begin
+  Robot.solenoid := true;
+end;
+
+procedure TFMain.BtSimIncPXClick(Sender: TObject);
+begin
+          // Tool Reference: Position
+  Robot.Tool.PosRef[0,0] := Robot.Tool.PosRef[0,0] + SimIncStep;
+  Robot.Tool.PosRef[1,0] := Robot.Tool.PosRef[1,0];
+  Robot.Tool.PosRef[2,0] := Robot.Tool.PosRef[2,0];
+  // Inverse Kinematics
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+    StatusBar.SimpleText := '';
+  except
+    on E: Exception do
+       StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
+end;
+
+procedure TFMain.BtSimActionHoverBallClick(Sender: TObject);
+begin
+  // Q0
+  Robot.JointsPrism.PosRef[0,0] := Robot.JointsPrism.Pos[0,0]+RBall[0,0]+OFFSET_HOVER_BALL_X;
+
+  // Tool Reference: Position
+  Robot.Tool.PosRef[0,0] := Robot.JointsPrism.Pos[0,0]+RBall[0,0]-OFFSET_HOVER_BALL_X;
+  Robot.Tool.PosRef[1,0] := RBall[1,0];
+  Robot.Tool.PosRef[2,0] := RBall[2,0]+OFFSET_HOVER_BALL_Z;
+
+  Robot.Tool.RotRef := RxMat(DegToRad(180));
+  // Inverse Kinematics
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+    StatusBar.SimpleText := '';
+  except
+    on E: Exception do
+       StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
+end;
+
+procedure TFMain.BtSimIncSetClick(Sender: TObject);
+begin
+     SimIncStep := StrToFloatDef(EdSimIncValue.Text,0);
+end;
+
+procedure TFMain.BtSimActionGoToBallClick(Sender: TObject);
+begin
+  // Q0
+  Robot.JointsPrism.PosRef[0,0] := Robot.JointsPrism.Pos[0,0]+RBall[0,0]+OFFSET_GO_BALL_X;
+
+  // Tool Reference: Position
+  Robot.Tool.PosRef[0,0] := Robot.JointsPrism.Pos[0,0]+RBall[0,0]-OFFSET_GO_BALL_X;
+  Robot.Tool.PosRef[1,0] := RBall[1,0];
+  Robot.Tool.PosRef[2,0] := RBall[2,0]+OFFSET_GO_BALL_Z;
+
+  Robot.Tool.RotRef := RxMat(DegToRad(180));
+  // Inverse Kinematics
+  try
+    Robot.IK(CbIKelbowUp.Checked);
+    StatusBar.SimpleText := '';
+  except
+    on E: Exception do
+       StatusBar.SimpleText := E.Message;
+    else
+      StatusBar.SimpleText := 'Exception in Inverse Kinematics';
+  end;
+end;
+
+procedure TFMain.BtSimActionInitPosClick(Sender: TObject);
+begin
+  Robot.Stop;
+end;
+
+procedure TFMain.BtSimActionGrabBallClick(Sender: TObject);
 begin
   Robot.solenoid := true;
 end;
@@ -293,6 +535,11 @@ begin
   end;
 end;
 
+procedure TFMain.EdSimIncValueChange(Sender: TObject);
+begin
+
+end;
+
 procedure TFMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   UDP.Disconnect(true);
@@ -301,6 +548,7 @@ end;
 procedure TFMain.FormCreate(Sender: TObject);
 begin
   Ball  := Mzeros(3,1);
+  RBall := Mzeros(4,1);
   Robot := TRobot.Create;
 end;
 
@@ -308,9 +556,25 @@ procedure TFMain.FormShow(Sender: TObject);
 begin
   BtCommsConnect.Click;
   BtConfigSet.Click;
+  BtSimIncSet.Click;
   RbModeStopChange(RbModeStop);
   RbModeManualChange(RbModeManual);
   RbModeBallChange(RbModeBall);
+end;
+
+procedure TFMain.GbSimManualIncClick(Sender: TObject);
+begin
+
+end;
+
+procedure TFMain.GbSimManualToolPosClick(Sender: TObject);
+begin
+
+end;
+
+procedure TFMain.LbSimBallX1Click(Sender: TObject);
+begin
+
 end;
 
 procedure TFMain.RbModeBallChange(Sender: TObject);
@@ -359,15 +623,27 @@ begin
 end;
 
 procedure TFMain.Control;
+var AuxPos: TDMatrix;
 begin
   // Input data processment
-  Robot.FK;
+  // - forward kinematics
+  Robot.FKall;
+  // - ball in world position
+  AuxPos := Mzeros(4,1);
+  AuxPos[0,0] :=  Ball[0,0];
+  AuxPos[1,0] :=  Ball[1,0];
+  AuxPos[2,0] :=  Ball[2,0];
+  AuxPos[3,0] :=  1;
+  RBall := Robot.config.HW0 * AuxPos;
+  RBall[0,0] := RBall[0,0] - Robot.JointsPrism.Pos[0,0];
 
   // Control
   if (RbModeStop.Checked) then begin
     ControlStop;
   end else if (RbModeManual.Checked) then begin
     ControlManual;
+  end else if (RbModeBall.Checked) then begin
+    ControlBall;
   end;
 
   // Output joints reference
@@ -400,6 +676,22 @@ begin
   GbKinematicsInverse.Enabled   := enable;
 end;
 
+procedure TFMain.ControlBall;
+begin
+  if (throw_ball) then begin
+    if (Robot.JointsPrism.Pos[0,0] < -0.975 * MAX_LIM_Q0) then begin
+      throw_ball_forward := true;
+      Robot.JointsPrism.PosRef[0,0] := MAX_LIM_Q0;
+    end else if ((throw_ball_forward) AND (Robot.JointsPrism.Pos[0,0] > 0.975 * MAX_LIM_Q0)) then begin
+      throw_ball := false;
+      throw_ball_forward := false;
+      Robot.Stop;
+    end else if ((throw_ball_forward) AND (Robot.JointsPrism.Pos[0,0] > 0.50 * MAX_LIM_Q0)) then begin
+      Robot.solenoid := false;
+    end;
+  end;
+end;
+
 procedure TFMain.ControlBallConfig(enable: boolean);
 begin
   Robot.solenoid := false;
@@ -407,7 +699,7 @@ end;
 
 procedure TFMain.ParseUDPMessage(var msg: String);
 var mess: TStringList;
-    dbgMsg: String;
+    dbgMsg, msg_with_dots: String;
     i: Integer;
 begin
   mess := TStringList.create;
@@ -442,7 +734,10 @@ begin
         dbgMsg := dbgMsg + mess.Strings[i] + ' ';
       end;
 
-      AddMemoMessage(MmCommsDebug, dbgMsg);
+      msg_with_dots  := StringReplace(dbgMsg, ',', '.',
+                          [rfReplaceAll, rfIgnoreCase]);
+      //AddMemoMessage(MmCommsDebug, dbgMsg);
+      AddMemoMessage(MmCommsDebug, msg_with_dots);
     end;
 
   finally
@@ -452,15 +747,15 @@ end;
 
 procedure TFMain.SendUDPMessage;
 var mess: TStringList;
-    dbgMsg: String;
+    dbgMsg, msg_with_dots: String;
     i: integer;
 begin
   mess := TStringList.create;
   try
     // Reference joints value
-    mess.add(format('%.4g',[Robot.JointsPrism.PosRef[0,0]]));
+    mess.add(format('%.6g',[Robot.JointsPrism.PosRef[0,0]]));
     for i := 0 to 5 do begin
-      mess.add(format('%.4g',[Robot.JointsRot.PosRef[i,0]]));
+      mess.add(format('%.6g',[Robot.JointsRot.PosRef[i,0]]));
     end;
 
     // Solenoid
@@ -478,7 +773,10 @@ begin
         dbgMsg := dbgMsg + mess.Strings[i] + ' ';
       end;
 
-      AddMemoMessage(MmCommsDebug, dbgMsg);
+      msg_with_dots  := StringReplace(dbgMsg, ',', '.',
+                          [rfReplaceAll, rfIgnoreCase]);
+      //AddMemoMessage(MmCommsDebug, dbgMsg);
+      AddMemoMessage(MmCommsDebug, msg_with_dots);
     end;
 
   finally
@@ -525,6 +823,36 @@ begin
   EdSimBallX.Text := format('%.6g',[Ball[0,0]]);
   EdSimBallY.Text := format('%.6g',[Ball[1,0]]);
   EdSimBallZ.Text := format('%.6g',[Ball[2,0]]);
+  // - Tool Position
+  EdSimPosX.Text := format('%.3f',[Robot.Tool.Pos[0,0]]);
+  EdSimPosY.Text := format('%.3f',[Robot.Tool.Pos[1,0]]);
+  EdSimPosZ.Text := format('%.3f',[Robot.Tool.Pos[2,0]]);
+
+  // - Ball Position
+  SgSimPosValues.Cells[1,0] := 'Tool robot';
+  SgSimPosValues.Cells[2,0] := 'Tool world';
+  SgSimPosValues.Cells[3,0] := 'Ball robot';
+  SgSimPosValues.Cells[4,0] := 'Ball world';
+  SgSimPosValues.Cells[1,1] := format('%.3f',[Robot.Tool.Pos[0,0]]);
+  SgSimPosValues.Cells[1,2] := format('%.3f',[Robot.Tool.Pos[1,0]]);
+  SgSimPosValues.Cells[1,3] := format('%.3f',[Robot.Tool.Pos[2,0]]);
+
+  SgSimPosValues.Cells[2,1] := format('%.3f',[Robot.Tool.WPos[0,0]]);
+  SgSimPosValues.Cells[2,2] := format('%.3f',[Robot.Tool.WPos[1,0]]);
+  SgSimPosValues.Cells[2,3] := format('%.3f',[Robot.Tool.WPos[2,0]]);
+
+  SgSimPosValues.Cells[3,1] := format('%.3f',[RBall[0,0]]);
+  SgSimPosValues.Cells[3,2] := format('%.3f',[RBall[1,0]]);
+  SgSimPosValues.Cells[3,3] := format('%.3f',[RBall[2,0]]);
+
+  SgSimPosValues.Cells[4,1] := format('%.3f',[Ball[0,0]]);
+  SgSimPosValues.Cells[4,2] := format('%.3f',[Ball[1,0]]);
+  SgSimPosValues.Cells[4,3] := format('%.3f',[Ball[2,0]]);
+
+  SgSimPosValues.Cells[5,1] := format('%.3f',[Robot.config.HW0[0,3]]);
+  SgSimPosValues.Cells[5,2] := format('%.3f',[Robot.config.HW0[1,3]]);
+  SgSimPosValues.Cells[5,3] := format('%.3f',[Robot.config.HW0[2,3]]);
+
   // - Solenoid
   if (Robot.solenoid) then begin
     ShSolenoidStatus.Brush.Color := clGreen;

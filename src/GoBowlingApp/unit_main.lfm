@@ -1,11 +1,11 @@
 object FMain: TFMain
-  Left = 339
+  Left = 777
   Height = 675
-  Top = 271
-  Width = 1000
+  Top = 206
+  Width = 1056
   Caption = 'FMain'
   ClientHeight = 675
-  ClientWidth = 1000
+  ClientWidth = 1056
   DesignTimePPI = 120
   Icon.Data = {
     3E08010000000100010080800000010020002808010016000000280000008000
@@ -2127,7 +2127,7 @@ object FMain: TFMain
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  SessionProperties = 'CbCommsDgRx.Checked;CbCommsDgTx.Checked;CbDebug.Checked;EdCommsIPS2.Text;EdCommsPortLz.Text;EdCommsPortS2.Text;EdConfigL1.Text;EdConfigL2.Text;EdConfigL3.Text;EdConfigLt.Text;EdConfigR0wRx.Text;EdConfigR0wRy.Text;EdConfigR0wRz.Text;EdConfigT0wX.Text;EdConfigT0wY.Text;EdConfigT0wZ.Text;EdIKRtRx.Text;EdIKRtRy.Text;EdIKRtRz.Text;EdIKXt.Text;EdIKYt.Text;EdIKZt.Text;EdJointsRefQ0.Text;EdJointsRefQ1.Text;EdJointsRefQ2.Text;EdJointsRefQ3.Text;EdJointsRefQ4.Text;EdJointsRefQ5.Text;EdJointsRefQ6.Text;PcMain.ActivePage;CbIKelbowUp.Checked'
+  SessionProperties = 'CbCommsDgRx.Checked;CbCommsDgTx.Checked;CbDebug.Checked;CbIKelbowUp.Checked;EdCommsIPS2.Text;EdCommsPortLz.Text;EdCommsPortS2.Text;EdConfigL1.Text;EdConfigL2.Text;EdConfigL3.Text;EdConfigLt.Text;EdConfigR0wRx.Text;EdConfigR0wRy.Text;EdConfigR0wRz.Text;EdConfigT0wX.Text;EdConfigT0wY.Text;EdConfigT0wZ.Text;EdIKRtRx.Text;EdIKRtRy.Text;EdIKRtRz.Text;EdIKXt.Text;EdIKYt.Text;EdIKZt.Text;EdJointsRefQ0.Text;EdJointsRefQ1.Text;EdJointsRefQ2.Text;EdJointsRefQ3.Text;EdJointsRefQ4.Text;EdJointsRefQ5.Text;EdJointsRefQ6.Text;PcMain.ActivePage;EdSimIncValue.Text'
   LCLVersion = '2.0.10.0'
   object CbDebug: TCheckBox
     Left = 10
@@ -2200,48 +2200,48 @@ object FMain: TFMain
     TabOrder = 2
     object TsComms: TTabSheet
       Caption = 'Comms'
-      ClientHeight = 537
-      ClientWidth = 972
+      ClientHeight = 428
+      ClientWidth = 776
       ParentFont = False
       object LbCommsIPS2: TLabel
         Left = 10
-        Height = 20
+        Height = 15
         Top = 15
-        Width = 112
+        Width = 90
         Caption = 'IP SimTwo (IPv4):'
         ParentColor = False
         ParentFont = False
       end
       object LbCommsPortS2: TLabel
         Left = 10
-        Height = 20
+        Height = 15
         Top = 55
-        Width = 85
+        Width = 69
         Caption = 'Port SimTwo:'
         ParentColor = False
         ParentFont = False
       end
       object LbCommsPortLz: TLabel
         Left = 10
-        Height = 20
+        Height = 15
         Top = 95
-        Width = 61
+        Width = 50
         Caption = 'Port App:'
         ParentColor = False
         ParentFont = False
       end
       object LbCommsDebug: TLabel
         Left = 10
-        Height = 20
+        Height = 15
         Top = 142
-        Width = 48
+        Width = 38
         Caption = 'Debug:'
         ParentColor = False
         ParentFont = False
       end
       object EdCommsIPS2: TEdit
         Left = 131
-        Height = 28
+        Height = 23
         Top = 10
         Width = 100
         ParentFont = False
@@ -2249,7 +2249,7 @@ object FMain: TFMain
       end
       object EdCommsPortS2: TEdit
         Left = 131
-        Height = 28
+        Height = 23
         Top = 50
         Width = 100
         ParentFont = False
@@ -2257,7 +2257,7 @@ object FMain: TFMain
       end
       object EdCommsPortLz: TEdit
         Left = 131
-        Height = 28
+        Height = 23
         Top = 90
         Width = 100
         ParentFont = False
@@ -2265,9 +2265,9 @@ object FMain: TFMain
       end
       object CbCommsDgRx: TCheckBox
         Left = 70
-        Height = 24
+        Height = 19
         Top = 140
-        Width = 40
+        Width = 33
         Caption = 'Rx'
         OnChange = CbCommsDgRxChange
         ParentFont = False
@@ -2275,9 +2275,9 @@ object FMain: TFMain
       end
       object CbCommsDgTx: TCheckBox
         Left = 120
-        Height = 24
+        Height = 19
         Top = 140
-        Width = 39
+        Width = 32
         Caption = 'Tx'
         OnChange = CbCommsDgTxChange
         ParentFont = False
@@ -2344,7 +2344,7 @@ object FMain: TFMain
               MaxSize = 250
               Title.Alignment = taCenter
               Title.Caption = 'pos (m,º):'
-              Width = 105
+              Width = 91
             end          
             item
               Alignment = taCenter
@@ -2352,7 +2352,7 @@ object FMain: TFMain
               MaxSize = 250
               Title.Alignment = taCenter
               Title.Caption = 'vel (m/s,rad/s):'
-              Width = 105
+              Width = 91
             end          
             item
               Alignment = taCenter
@@ -2360,7 +2360,7 @@ object FMain: TFMain
               MaxSize = 250
               Title.Alignment = taCenter
               Title.Caption = 'ref (m,º):'
-              Width = 106
+              Width = 93
             end>
           Enabled = False
           Font.Height = -14
@@ -2368,10 +2368,10 @@ object FMain: TFMain
           RowCount = 8
           TabOrder = 0
           ColWidths = (
-            80
-            105
-            105
-            106
+            100
+            91
+            91
+            93
           )
           Cells = (
             7
@@ -2500,21 +2500,21 @@ object FMain: TFMain
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 63
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 63
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 65
+                Width = 58
               end>
             Enabled = False
             FixedCols = 0
@@ -2527,9 +2527,9 @@ object FMain: TFMain
             TitleFont.Height = -15
             TitleFont.Name = 'Sans'
             ColWidths = (
-              63
-              63
-              65
+              56
+              56
+              58
             )
             RowHeights = (
               28
@@ -2629,21 +2629,21 @@ object FMain: TFMain
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 63
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 63
+                Width = 56
               end            
               item
                 Alignment = taRightJustify
                 MinSize = 12
                 MaxSize = 250
                 Title.Caption = 'Title'
-                Width = 65
+                Width = 58
               end>
             Enabled = False
             FixedCols = 0
@@ -2656,9 +2656,9 @@ object FMain: TFMain
             TitleFont.Height = -15
             TitleFont.Name = 'Sans'
             ColWidths = (
-              63
-              63
-              65
+              56
+              56
+              58
             )
             RowHeights = (
               28
@@ -2958,21 +2958,21 @@ object FMain: TFMain
               MinSize = 12
               MaxSize = 250
               Title.Caption = 'Title'
-              Width = 63
+              Width = 56
             end          
             item
               Alignment = taRightJustify
               MinSize = 12
               MaxSize = 250
               Title.Caption = 'Title'
-              Width = 63
+              Width = 56
             end          
             item
               Alignment = taRightJustify
               MinSize = 12
               MaxSize = 250
               Title.Caption = 'Title'
-              Width = 65
+              Width = 58
             end>
           Enabled = False
           FixedCols = 0
@@ -2985,9 +2985,9 @@ object FMain: TFMain
           TitleFont.Height = -15
           TitleFont.Name = 'Sans'
           ColWidths = (
-            63
-            63
-            65
+            56
+            56
+            58
           )
           RowHeights = (
             28
@@ -3240,24 +3240,26 @@ object FMain: TFMain
       Caption = 'Simulation'
       ClientHeight = 537
       ClientWidth = 972
+      ParentFont = False
       object GbSimBall: TGroupBox
         Left = 10
         Height = 125
         Top = 10
-        Width = 145
+        Width = 180
         Caption = 'Ball:'
         ClientHeight = 100
-        ClientWidth = 141
+        ClientWidth = 176
         Enabled = False
+        ParentFont = False
         TabOrder = 0
         object EdSimBallX: TEdit
-          Left = 60
+          Left = 80
           Height = 28
           Top = 0
           Width = 70
           Alignment = taRightJustify
-          Enabled = False
           ParentFont = False
+          ReadOnly = True
           TabOrder = 0
         end
         object LbSimBallX: TLabel
@@ -3279,23 +3281,23 @@ object FMain: TFMain
           ParentFont = False
         end
         object EdSimBallY: TEdit
-          Left = 60
+          Left = 80
           Height = 28
           Top = 30
           Width = 70
           Alignment = taRightJustify
-          Enabled = False
           ParentFont = False
+          ReadOnly = True
           TabOrder = 1
         end
         object EdSimBallZ: TEdit
-          Left = 60
+          Left = 80
           Height = 28
           Top = 60
           Width = 70
           Alignment = taRightJustify
-          Enabled = False
           ParentFont = False
+          ReadOnly = True
           TabOrder = 2
         end
         object LbSimBallZ: TLabel
@@ -3309,25 +3311,26 @@ object FMain: TFMain
         end
       end
       object GbSimSolenoid: TGroupBox
-        Left = 10
-        Height = 95
-        Top = 145
-        Width = 145
+        Left = 210
+        Height = 125
+        Top = 10
+        Width = 170
         Caption = 'Solenoid:'
-        ClientHeight = 70
-        ClientWidth = 141
+        ClientHeight = 100
+        ClientWidth = 166
+        ParentFont = False
         TabOrder = 1
         object ShSolenoidStatus: TShape
           Left = 10
-          Height = 40
-          Top = 10
-          Width = 40
+          Height = 50
+          Top = 20
+          Width = 50
           Shape = stCircle
         end
         object BtSolenoidStatusOn: TButton
-          Left = 60
+          Left = 80
           Height = 29
-          Top = 0
+          Top = 10
           Width = 70
           Caption = 'On'
           OnClick = BtSolenoidStatusOnClick
@@ -3335,9 +3338,9 @@ object FMain: TFMain
           TabOrder = 0
         end
         object BtSolenoidStatusOff: TButton
-          Left = 60
+          Left = 80
           Height = 29
-          Top = 30
+          Top = 50
           Width = 70
           Caption = 'Off'
           OnClick = BtSolenoidStatusOffClick
@@ -3345,13 +3348,268 @@ object FMain: TFMain
           TabOrder = 1
         end
       end
+      object GbSimManualInc: TGroupBox
+        Left = 10
+        Height = 380
+        Top = 150
+        Width = 370
+        Caption = 'Manual'
+        ClientHeight = 355
+        ClientWidth = 366
+        ParentFont = False
+        TabOrder = 2
+        OnClick = GbSimManualIncClick
+        object BtSimIncNX: TButton
+          Left = 210
+          Height = 31
+          Top = 60
+          Width = 50
+          Caption = '-X'
+          OnClick = BtSimIncNXClick
+          ParentFont = False
+          TabOrder = 0
+        end
+        object BtSimIncPX: TButton
+          Left = 270
+          Height = 31
+          Top = 60
+          Width = 50
+          Caption = '+X'
+          OnClick = BtSimIncPXClick
+          ParentFont = False
+          TabOrder = 1
+        end
+        object BtSimIncNY: TButton
+          Left = 210
+          Height = 31
+          Top = 100
+          Width = 50
+          Caption = '-Y'
+          OnClick = BtSimIncNYClick
+          ParentFont = False
+          TabOrder = 2
+        end
+        object BtSimIncPY: TButton
+          Left = 270
+          Height = 31
+          Top = 100
+          Width = 50
+          Caption = '+Y'
+          OnClick = BtSimIncPYClick
+          ParentFont = False
+          TabOrder = 3
+        end
+        object BtSimIncNZ: TButton
+          Left = 210
+          Height = 31
+          Top = 140
+          Width = 50
+          Caption = '-Z'
+          OnClick = BtSimIncNZClick
+          ParentFont = False
+          TabOrder = 4
+        end
+        object BtSimIncPZ: TButton
+          Left = 270
+          Height = 31
+          Top = 140
+          Width = 50
+          Caption = '+Z'
+          OnClick = BtSimIncPZClick
+          ParentFont = False
+          TabOrder = 5
+        end
+        object LbSimBallX1: TLabel
+          Left = 10
+          Height = 20
+          Top = 5
+          Width = 93
+          Caption = 'Increment (m)'
+          ParentColor = False
+          ParentFont = False
+          OnClick = LbSimBallX1Click
+        end
+        object EdSimIncValue: TEdit
+          Left = 130
+          Height = 28
+          Top = 0
+          Width = 70
+          Alignment = taRightJustify
+          OnChange = EdSimIncValueChange
+          ParentFont = False
+          TabOrder = 6
+          Text = '0'
+        end
+        object BtSimIncSet: TButton
+          Left = 210
+          Height = 31
+          Top = 0
+          Width = 110
+          Caption = 'Set'
+          OnClick = BtSimIncSetClick
+          ParentFont = False
+          TabOrder = 7
+        end
+        object GbSimManualToolPos: TGroupBox
+          Left = -1
+          Height = 140
+          Top = 40
+          Width = 161
+          Caption = 'Tool Position'
+          ClientHeight = 115
+          ClientWidth = 157
+          ParentFont = False
+          TabOrder = 8
+          OnClick = GbSimManualToolPosClick
+          object LbSimBallX2: TLabel
+            Left = 20
+            Height = 20
+            Top = 10
+            Width = 44
+            Caption = 'Xt (m):'
+            ParentColor = False
+            ParentFont = False
+          end
+          object EdSimPosX: TEdit
+            Left = 80
+            Height = 28
+            Top = 0
+            Width = 70
+            Alignment = taRightJustify
+            Color = clBtnFace
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 0
+          end
+          object EdSimPosY: TEdit
+            Left = 80
+            Height = 28
+            Top = 40
+            Width = 70
+            Alignment = taRightJustify
+            Color = clBtnFace
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 1
+          end
+          object LbSimBallY1: TLabel
+            Left = 20
+            Height = 20
+            Top = 50
+            Width = 43
+            Caption = 'Yt (m):'
+            ParentColor = False
+            ParentFont = False
+          end
+          object LbSimBallZ1: TLabel
+            Left = 20
+            Height = 20
+            Top = 90
+            Width = 44
+            Caption = 'Zt (m):'
+            ParentColor = False
+            ParentFont = False
+          end
+          object EdSimPosZ: TEdit
+            Left = 80
+            Height = 28
+            Top = 80
+            Width = 70
+            Alignment = taRightJustify
+            Color = clBtnFace
+            ParentFont = False
+            ReadOnly = True
+            TabOrder = 2
+          end
+        end
+        object GbSimManualActions: TGroupBox
+          Left = -1
+          Height = 169
+          Top = 190
+          Width = 368
+          Caption = 'Actions'
+          ClientHeight = 144
+          ClientWidth = 364
+          ParentFont = False
+          TabOrder = 9
+          object BtSimActionHoverBall: TButton
+            Left = 30
+            Height = 31
+            Top = 10
+            Width = 120
+            Caption = 'Hover ball'
+            OnClick = BtSimActionHoverBallClick
+            ParentFont = False
+            TabOrder = 0
+          end
+          object BtSimActionGoToBall: TButton
+            Left = 30
+            Height = 31
+            Top = 50
+            Width = 120
+            Caption = 'Go to ball'
+            OnClick = BtSimActionGoToBallClick
+            ParentFont = False
+            TabOrder = 1
+          end
+          object BtSimActionInitPos: TButton
+            Left = 30
+            Height = 31
+            Top = 90
+            Width = 120
+            Caption = 'Initial Position'
+            OnClick = BtSimActionInitPosClick
+            ParentFont = False
+            TabOrder = 2
+          end
+          object BtSimActionGrabBall: TButton
+            Left = 210
+            Height = 31
+            Top = 10
+            Width = 120
+            Caption = 'Grab Ball'
+            OnClick = BtSimActionGrabBallClick
+            ParentFont = False
+            TabOrder = 3
+          end
+          object BtSimActionReleaseBall: TButton
+            Left = 210
+            Height = 31
+            Top = 50
+            Width = 120
+            Caption = 'Release Ball'
+            OnClick = BtSimActionReleaseBallClick
+            ParentFont = False
+            TabOrder = 4
+          end
+          object BtSimActionThrowBall: TButton
+            Left = 210
+            Height = 31
+            Top = 90
+            Width = 120
+            Caption = 'Throw Ball'
+            OnClick = BtSimActionThrowBallClick
+            ParentFont = False
+            TabOrder = 5
+          end
+        end
+      end
+      object SgSimPosValues: TStringGrid
+        Left = 430
+        Height = 150
+        Top = 20
+        Width = 530
+        ColCount = 6
+        ParentFont = False
+        TabOrder = 3
+      end
     end
   end
   object StatusBar: TStatusBar
     Left = 0
     Height = 29
     Top = 646
-    Width = 1000
+    Width = 1056
     Panels = <>
     ParentFont = False
   end
